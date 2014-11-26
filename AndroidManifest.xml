@@ -45,7 +45,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.android.phoneassistant.wifi.WifiMainInterfacece"
+            android:name="com.android.phoneassistant.share.ShareActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/share_zero_flow" >
+            <intent-filter>
+                <action android:name="com.android.phoneassistant.intent.action.PHONEASSISTANT" />
+                <category android:name="com.android.phoneassistant.intent.category.PHONEASSISTANT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.android.phoneassistant.wifi.WifiMainInterface"
             android:configChanges="orientation|screenSize"
             android:label="@string/wifi_admin" >
             <intent-filter>
@@ -61,7 +70,7 @@
         </activity>
 
         <service
-            android:name="com.android.phoneassistant.service.PhoneAssistantServicece"
+            android:name="com.android.phoneassistant.service.PhoneAssistantService"
             android:exported="false" >
             <intent-filter>
                 <action android:name="com.android.phoneassistant.action.INCOMING_PHONE" />
@@ -70,7 +79,7 @@
             </intent-filter>
         </service>
 
-        <receiver android:name="com.android.phoneassistant.receiver.CallStateReceiverer" >
+        <receiver android:name="com.android.phoneassistant.receiver.CallStateReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.NEW_OUTGOING_CALL" />
                 <action android:name="android.intent.action.PHONE_STATE" />
@@ -82,7 +91,7 @@
             android:authorities="com.android.phoneassistant" />
 
         <activity
-            android:name="com.android.phoneassistant.customer.CustomerDetailActivityty"
+            android:name="com.android.phoneassistant.customer.CustomerDetailActivity"
             android:configChanges="orientation|screenSize"
             android:windowSoftInputMode="stateHidden"
             android:label="@string/detail" >
@@ -92,10 +101,12 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.android.phoneassistant.black.SelectBlackListst"
+            android:name="com.android.phoneassistant.black.SelectBlackList"
             android:configChanges="orientation|screenSize"
             android:windowSoftInputMode="stateHidden"
             />
+
+        <service android:name="com.chukong.sdkmini.service.WebService" />
     </application>
 
 </manifest>

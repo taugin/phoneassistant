@@ -1,0 +1,45 @@
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td {margin:0;padding:0}
+
+html, body {font:12px "Lucida Grande",Geneva,Arial,Verdana,"Tahoma", "Arial", "微软雅黑", "黑体", "宋体";min-width:367px}
+body {padding-bottom:55px;position:relative;background: url(../img/middle-bg.jpg) repeat;margin:0 auto}
+
+a {text-decoration:none}
+
+.gmdes div {color:#191400;line-height:38px}
+.gamesall li div {padding:5px 20px 0 10px;width:108px}
+.gamesall li div h6 a, .gamesall li div h4 a {color:#191400;font-size:16px;line-height:1.8;overflow:hidden}
+.gamesall li div p {color:#57595c;font-size:14px;line-height:1.6;height:44px;overflow:hidden}
+.gamesall li div h4 {padding-top:0px}
+
+.fl {float:left;display:inline}
+.fr {float:right;display:inline}
+.cb {clear:both}
+.cl {clear:left}
+.cr {clear:right}
+
+/*.homegame {width:754px;padding-left:2px;min-height:200px;margin: 0 auto}*/
+.homegame {width:367px;padding-left:0px;min-height:200px;margin: 0 auto}
+.gmtopleft {background:url(../img/gmtopleft.png) no-repeat}
+
+.gctop {margin-top:-10px}
+
+.gamesingle {padding:20px 0 0 10px;overflow:hidden;height:135px}
+.home-sec .gamecell .gamesingle {height:108px}
+.home-sec .gamecell .gamesingle .gmicon {width:84px;height:78px;background-position:-114px -188px}
+.home-sec .gamecell .gamesingle .gmicon img {width:70px;height:70px}
+
+.gmicon {background:url(../img/topnav-cur.png) 0 -188px no-repeat}
+.gmicon {display:block;width:114px;height:108px;padding-top:7px;text-align:center}
+.gmicon img {width:100px;height:100px;-moz-border-radius:15px;-webkit-border-radius:15px;border-radius:15px;behavior:url(http://sx.coco.cn/modules/users/asset/js/PIE.htc);position:relative;}
+.home-sec .gamecell .gamesingle .gmicon {width:84px;height:78px;background-position:-114px -188px}
+.home-sec .gamecell .gamesingle .gmicon img {width:70px;height:70px}
+
+.gmdes {width:215px;margin-left:0px}
+.gmdes h6 {padding:8px 0 10px}
+.gmdes h6 a {color:#191400;font-size:18px}
+.gmdes p {color:#191400;line-height:1.6;height:38px;word-break:break-all;}
+.gmdes div {color:#191400;line-height:38px}
+
+.homebtn, .btnshome {background:url(../img/topnav-cur.png) 0 -148px no-repeat;display:inline-block; vertical-align:middle;width:104px;height:40px;color:#1164de;font-size:14px;text-align:center;line-height:40px}
+.homebtn:visited {background-position:-214px -148px;width:106px;color:#484849;margin-right:-2px}
+.homebtn:hover {background-position:-104px -148px;width:110px;margin-right:-3px}

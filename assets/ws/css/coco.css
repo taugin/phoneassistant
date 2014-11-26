@@ -1,0 +1,891 @@
+/* Reset Style */
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td {margin:0;padding:0}
+table {border-collapse:collapse;border-spacing:0}
+fieldset,img {border:0}
+address,caption,cite,code,dfn,em,strong,th,var {font-style:normal;font-weight:normal}
+ol,ul {list-style:none}
+caption,th {text-align:left}
+h1,h2,h3,h4,h5,h6 {font-size:100%;font-weight:normal}
+q:before,q:after {content:''}
+abbr,acronym {border:0}
+
+/* 定位 */
+.fl {float:left;display:inline}
+.fr {float:right;display:inline}
+.cb {clear:both}
+.cl {clear:left}
+.cr {clear:right}
+.clearfix:after {content:".";display:block;height:0;clear:both;visibility:hidden}.clearfix {display:inline-block}* html .clearfix {height:1%}.clearfix {display:block}
+
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px white inset;
+}
+@-moz-document url-prefix() {
+input[type="password"] {font-family:Arial,Helvetica,sans-serif!important}
+}
+
+.box_rotate {width:447px!important;height:295px!important;position:relative;top:76px;left:-76px;*top:0;*left:0;top:0\9;left:0\9;
+-moz-transform: rotate(90deg); /* FF3.5+ */
+-o-transform: rotate(90deg); /* Opera 10.5 */
+-webkit-transform: rotate(90deg); /* Saf3.1+, Chrome */
+filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=3); /* IE */
+}
+
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+/* 所有单选框样式 */
+input[type="radio"] {
+-webkit-appearance:none;
+-webkit-margin-end:3px;
+border-radius:100%;
+border:1px solid #C4C4C4;
+box-shadow:0 0 3px #ccc;
+*border:none;
+display:inline-block;
+height:15px;
+position:relative;
+top:3px;
+vertical-align:baseline;
+*vertical-align:-2px;
+width:15px;
+-webkit-user-select:none;
+}
+input[type='radio']:disabled {
+background: -webkit-linear-gradient(-45deg, #F2F2F2 0%, #F6F6F6 20%, #FDFDFD 40%, #FFFFFF 100%);
+border:1px solid #D7D7D7;
+*border:none;
+cursor:default;
+}
+input[type='radio']:not(:disabled):not(:active):not(:checked):hover {
+border-color:#0CF;
+}
+input[type='radio']:not(:disabled):not(:checked):active {
+border-color: #0088CC;
+opacity: 0.8;
+}
+input[type='radio']:checked {
+border-color: #0088CC;
+}
+input[type='radio']:checked::before {
+-webkit-margin-start: 4px;
+background: #0088CC;
+border-radius: 10px;
+content: '';
+display: inline-block;
+font-size: 14px;
+font-weight: bold;
+height: 5px;
+left: 0;
+margin-top: 4px;
+position: absolute;
+top: 0;
+vertical-align: top;
+width: 5px;
+}
+input[type='radio']:active:checked::before {
+opacity: 0.8;
+}
+
+/* 所有多选框样式 */
+input[type='checkbox'] {
+	-webkit-box-shadow: 0 1px 0 #FFFFFF inset,0 1px 1px #CCCCCC;
+	-webkit-appearance: none;
+	-webkit-margin-end: 3px;
+	background: -webkit-linear-gradient(top, #feffff 0%,#f8f8f8 49%,#efefef 100%); 
+	border-radius: 3px;
+	border: 1px solid #c2c1bd;
+	display: inline-block;
+	height: 15px;
+	margin-bottom: 0;
+	margin-top: 0;
+	position: relative;
+	top: 3px;
+	vertical-align: baseline;
+	width: 15px;
+	-webkit-user-select: none;
+}
+input[type='checkbox']:disabled {
+	background: #F0F0F0;
+	background: -webkit-linear-gradient(-45deg, #F2F2F2 0%,#F6F6F6 20%,#FDFDFD 40%,#FFFFFF 100%); 
+	border:1px solid #DFDFDF;
+	cursor:default;
+}
+input[type='checkbox']:not(:disabled):not(:active):not(:checked):hover {
+	background: -webkit-linear-gradient(top, #EDEDED 0%,#E7E7E7 49%,#E2E2E2 100%); 
+	-webkit-box-shadow: 0 1px 0 #FFFFFF inset,0 0 4px #C2C2C2,0 1px 1px #CCCCCC;
+	border-color: #c2c1bd;
+}
+input[type='checkbox']:not(:disabled):not(:checked):active {
+	background: -webkit-linear-gradient(top, #EDEDED 0%,#E7E7E7 49%,#E2E2E2 100%); 
+	border-color: #113bbe;
+	opacity: 0.8;
+}
+input[type='checkbox']:checked{
+	border-color: #113bbe;
+	box-shadow:0 0 3px RGBA(11,96,15,0.5);
+}
+input[type='checkbox']:checked::before {
+	content:"√";
+	color:#113bbe; 
+	width: 11px;
+	height: 9px;
+	position: absolute;
+	top: -1px;
+	left: 1px;
+	font-family:Tahoma, Geneva, sans-serif;
+	line-height: 14px;
+	text-align:center;
+	font-size:12px;
+}
+input[type='checkbox']:active:checked::before{
+	opacity: 0.8;
+}
+}
+
+
+/* Global Base CSS */
+html, body {font:12px "Lucida Grande",Geneva,Arial,Verdana,"Tahoma", "Arial", "微软雅黑", "黑体", "宋体";min-width:1000px}
+body {padding-bottom:55px;position:relative;background: url(../img/middle-bg.jpg) repeat;}
+.wrap {width:1000px;margin:0 auto;position:relative}
+a {text-decoration:none}
+input {font:12px "Lucida Grande",Geneva,Arial,Verdana,"Tahoma", "Arial", "微软雅黑", "黑体", "宋体"}
+.btmline {/*position:absolute;bottom:50px;left:0;z-index:50;*/width:100%}
+
+html, body, #wrapforfooter {height: 100%; margin:0; padding: 0;} 
+body > #wrapforfooter {height: auto; min-height: 100%;} 
+#main {padding-bottom: 75px;}  /* 必须使用和footer相同的高度 */ 
+
+.poploading {display:inline-block; vertical-align:middle;background:url(../img/loading.gif) no-repeat;width:19px;height:19px;margin-right:10px}
+
+.avatarBtn{display: inline-block;background: url(../img/topnav-cur.png) 0 -148px no-repeat; width: 104px; height: 40px; line-height: 40px;
+color: #191919; font-size: 14px;font: "Lucida Grande",Geneva,Arial,Verdana,"Tahoma", "Arial", "微软雅黑", "黑体", "宋体"; text-align: center;
+}
+
+/*img bg*/
+.btnbg, .loginout a.hmlogin {background:url(../img/topnav-cur.png) 0 -303px no-repeat}
+a.account_bg {background:url(../img/topnav-cur.png) 0 -992px no-repeat; }
+.ccnav li a b, .loginout span.hmlogin, .loginout a.hmregister, .loginout span.kfserver {background:url(../img/fonts.png) no-repeat}
+.ccnav li a:hover {background:url(../img/topnav-highlight.png) center bottom no-repeat;}
+.ccnav li a.cur {background:url(../img/topnav-cur.png) 0 -74px no-repeat}
+
+.fticon, .popclose, .popicon {background:url(../img/features.png) no-repeat}
+
+.footer {background:url(../img/footer-bg.jpg) repeat}
+.adricon, .gamericon {background:url(../img/addressicon.png) no-repeat}
+.ft-btm {background:url(../img/footer-bg.jpg) center top repeat-x;height:64px;padding-top:6px;position:absolute;left:0;bottom:0;z-index:50px;width:100%}
+.main, .popinner {background:url(../img/middle-bg.jpg) repeat}
+
+.sec-top {background:url(../img/home-sec-top-bg.png) no-repeat;height:32px}
+.sec-mid {background:url(../img/home-sec-mid-bg.png) left top repeat-y;min-height:200px}
+.sec-btm {background:url(../img/home-sec-btm-bg.png) no-repeat;height:30px}
+.charge-sec .sec-top {background:url(../img/charge-sec-top-bg.png) no-repeat;height:40px}
+.charge-sec .sec-mid {background:url(../img/charge-sec-mid-bg.png) repeat-y}
+.charge-sec .sec-btm {background:url(../img/charge-sec-btm-bg.png) no-repeat}
+
+
+
+.gmicon {background:url(../img/topnav-cur.png) 0 -188px no-repeat}
+.gmtopleft {background:url(../img/gmtopleft.png) no-repeat}
+.gmnone {background:url(../img/gmnone.png) no-repeat}
+.gmbtmleft {background:url(../img/gmbtmleft.png) no-repeat}
+
+.homeissue {background:url(../img/home-more-bg.png) no-repeat}
+.hilist li a {background:url(../img/addressicon.png) 0 -355px no-repeat}
+.hilist li a:hover{color: #479bf1;}
+
+.poplogo {background:url(../img/pop-logo.png) no-repeat;}
+.popregpro {background:url(../img/regbg.png) no-repeat;width:236px;height:33px;line-height:33px;padding-left:15px;margin-left:-14px}
+
+
+/*buttons*/
+.homebtn, .btnshome {background:url(../img/topnav-cur.png) 0 -148px no-repeat;display:inline-block; vertical-align:middle;width:104px;height:40px;color:#1164de;font-size:14px;text-align:center;line-height:40px}
+.homebtn:visited {background-position:-214px -148px;width:106px;color:#484849;margin-right:-2px}
+.homebtn:hover {background-position:-104px -148px;width:110px;margin-right:-3px}
+.btnshome {background-position:-117px -303px;width:134px}
+
+.btnsub {background-position:0 -382px;width:160px;height:52px;display:inline-block; vertical-align:middle;border:none;position:absolute;top:-2px;left:-18px;z-index:5;cursor:pointer;font-size:18px;color:#fff}
+.btnsubindex {background:url(../img/loginbtn.png) no-repeat;width:258px;height:44px;margin-left:-19px}
+.btnlink {display:inline-block; vertical-align:middle;width:106px;height:37px;background-position:0 -434px;font-size:14px;color:#1e69d2;text-align:center;line-height:35px;margin-top:-1px;margin-left:8px}
+.btnaccount {display:block; vertical-align:middle;width:176px;height:38px; font-size:14px;color:#1e69d2;text-align:center;line-height:38px; margin-top: 10px;}
+
+.popbox_btn{width:258px;height:44px;display:inline-block; vertical-align:middle;border:none;z-index:5;background:url(../img/loginbtn.png) no-repeat;cursor:pointer;font-size:18px;color:#fff;}
+
+/* input */
+.inputtxt, .inputtxt_short, .inputtxt_center {background:url(../img/inputs-bg.png?t=123) no-repeat;width:324px;height:25px; border:none;outline:none;padding:5px 0 5px 25px;font-size:14px;line-height:25px}
+.iptindex { width:214px;  background-position:-110px 0; /* line-height: 17px; */}
+.inputshort {width:209px;background-position:0 -35px}
+.inputshort.iptindex { width:95px; background-position:-114px -35px}
+.inputtxt.erroricon {background-position:right -70px;}
+i.erroricon {position:absolute;background:url(../img/poperrorbg.png) no-repeat;display:block;width:137px;height:32px;padding-top:8px;top:-20px;left:45px;z-index:1000;text-align:center;font-style:normal;color:#671515}
+i.correct {display:none; /*!important;*/}
+.inputshort.erroricon {background-position:right -70px}
+.inputtxt.valid {background-position:right -140px}
+.inputshort.valid {background-position:right -140px}
+.edit .inputtxt {background-position:right 0;width:304px; height: 25px;/* line-height: 17px; */}
+.edit .inputtxt_center {background-position:21px -209px;width:304px; height: 25px;/* line-height: 17px; */}
+.edit .inputtxt_short {background-position:0 -35px;width:210px;/* line-height: 17px; */}
+.edit .inputshort.iptindex {width:95px;background-position:-114px -35px}
+.inputspe {width:188px;background-position:-21px -35px;/* line-height: 17px; */}
+
+
+.arrow_head{position:relative; height: 30px;}
+a.arrow_head:hover{color: #FFF;}
+.header-out {background:url(../img/header-bg.jpg) center top repeat-x;padding-top:5px}
+.header-out-logout {background:url(../img/header-bg-logout.jpg) center top repeat-x;padding-top:5px}
+.header-inner {background:url(../img/header-img.jpg) center top no-repeat;height:76px}
+.header-inner .headerfloatDiv{ display:none; position:absolute; top:20px; right:-15px; border: 1px solid #d1d1d1; border-radius: 8px; background: #F2EEED; z-index: 10;}
+.header-inner .headerfloatDiv span{ display: block; padding: 10px 20px; text-align: center; color: #1E1E1E; font: 12px "Lucida Grande",Geneva,Arial,Verdana,"Tahoma", "Arial", "微软雅黑", "黑体", "宋体"; border-bottom: 1px solid #d1d1d1; border-top: 1px solid #ffffff; cursor: pointer; }
+.header-inner .headerfloatDiv span:first-child{border-top-left-radius: 8px; border-top-right-radius: 8px;}
+.header-inner .headerfloatDiv span:last-child{border-bottom-left-radius: 8px; border-bottom-right-radius: 8px; border-bottom: none;}
+
+/*logo & navigation*/
+.cclogo {display:block;background:url(../img/coco-logo.png) no-repeat;width:183px;height:61px;margin-top:7px;}
+.ccnav {margin-left:20px}
+.ccnav li {float:left}
+.ccnav li a {display:block;height:47px;width:117px;padding-top:27px}
+.ccnav li a b {display:block;height:19px;margin:0 auto;width:74px;text-indent:-9999px}
+.ccnav li a.nav1 {width:83px}
+.ccnav li a.nav1 b {width:36px}
+.ccnav li a.nav2 b {background-position:0 -19px}
+.ccnav li a.nav3 b {background-position:0 -38px}
+.ccnav li a.nav4 b {background-position:0 -57px}
+.ccnav li a.nav5 b {background-position:0 -153px;height:20px}
+.ccnav li a.nav6 b {background-position:0 -133px;height:20px}
+.ccnav li a.nav7 b {background-position:0 -173px;height:20px}
+.ccnav li a.nav1.cur {background-position:0 0}
+
+.loginout {width:168px;height:39px;position:absolute;top:-5px;right:0;z-index:5;padding-top:32px;padding-left:22px}
+.loginout a {display:block;width:36px;height:19px;text-align:center}
+.loginout a.hmregister {background-position:0 -95px;text-indent:-9999px}
+.loginout a.hmlogin {background-position:0 -303px;width:112px;height:33px;margin:-13px 0 0 20px;padding-top:13px;}
+.loginout a.hmlogin span {background-position:0 -114px;display:inline-block; width:36px;height:19px;text-align:center;font-size:0;line-height:0;cursor:pointer}
+
+/*custom server*/
+.loginout a.kfserver{width:112px;height:33px;margin:-13px 0 0 70px;padding-top:13px;}
+.loginout a.kfserver span {background-position:0 -173px;display:inline-block; width:73px;height:19px;text-align:center;font-size:0;line-height:0;cursor:pointer}
+/*home banner*/
+.banner {background:#eee url(../img/bannerbg.jpg) center top no-repeat;height:456px}
+.indexbanner {background:url(../img/newbanner.jpg) center top no-repeat;height:360px}
+.ibbg {background:#eee}
+
+.features {padding-top:45px}
+.features li {width:191px;float:left;padding:0 70px;margin-right:2px;height:185px}
+.fticon {display:block;width:62px;height:62px;margin:0 auto 15px}
+.fticon1 {background-position:0 0}
+.fticon2 {background-position:0 -62px}
+.fticon3 {background-position:0 -124px}
+.fticon4 {background-position:0 -186px}
+.fticon5 {background-position:0 -248px}
+.fticon6 {background-position:0 -310px}
+
+.features li h3 {text-align:center;font-size:18px;color:#191400}
+.features li p {font-size:14px;text-align:center;color:#56585b;line-height:20px;margin-top:8px}
+.features li.row {margin-top:40px;height:160px;*margin-top:0}
+
+
+/*footer*/
+.btmline img {width:100%;height:5px}
+.footer {height:173px}
+
+.address {padding-top:30px}
+.adricon {padding-left:35px;font-size:14px;color:#8a8a89;text-shadow:1px 1px 2px #000;min-height:25px;line-height:1.8;margin-bottom:8px}
+.adricon-mail {background-position:0 -125px}
+.adricon-local {background-position:0 -250px}
+.adricon a {color:#8a8a89;font-size:14px;line-height:1.6}
+
+.ft-logo {width:244px;height:118px;text-align:center;background:#121213;padding-top:55px}
+.ft-btm p {color:#929292;line-height:40px}
+.ft-btm center {color:#929292;}
+.ft-btm center a{ line-height: 15px; }
+.ft-btm a {color:#929292;line-height:40px;margin-left:18px}
+.ft-btm a:hover {color:#666}
+
+
+/*main*/
+.main {min-height:200px}
+.home-main {padding:9px 0 47px}
+
+.section {padding-top:40px;position:relative}
+.sec-nav {height:61px;position:absolute;top:0;left:0;z-index:5;padding-left:4px;width: 750px;}
+.sec-nav h4, .sec-nav a {background:url(../img/sec-nav-bg.png) no-repeat;width:205px;height:31px;font-size:16px;color:#191919;text-align:center;padding-top:30px}
+.sec-nav a {display:inline-block; vertical-align:middle;color:#191919}
+.sec-nav a.cur {background-position:0 -78px;color:#1e69d2}
+
+.navnext {position:relative;clear:both;background:url(../img/homemidsep.jpg) no-repeat;height:78px;padding-top:66px}
+
+.homegame {width:754px;padding-left:2px;min-height:200px}
+.homeside {width:242px;margin-left:1px}
+
+.gamecell {float:left;width:376px;height:155px;border-right:1px solid #f1f1f1;border-bottom:1px solid #f1f1f1}
+.gcright {width:376px;border-right:0}
+.gcbtm {border-bottom:0}
+.gctop {margin-top:-10px}
+
+.gamesingle {padding:20px 0 0 20px;overflow:hidden;height:135px}
+.gmicon {display:block;width:114px;height:108px;padding-top:7px;text-align:center}
+.gmicon img {width:100px;height:100px;-moz-border-radius:15px;-webkit-border-radius:15px;border-radius:15px;behavior:url(http://sx.coco.cn/modules/users/asset/js/PIE.htc);position:relative;}
+.gmdes {width:215px;margin-left:12px}
+.gmdes h6 {padding:8px 0 10px}
+.gmdes h6 a {color:#191400;font-size:18px}
+.gmdes p {color:#191400;line-height:1.6;height:38px}
+.gmdes div {color:#191400;line-height:38px}
+
+.ads-home {height:192px;border-bottom:1px solid #e0e0e0;text-align:center;padding-top:8px}
+.ads-home a {color:#56585b;line-height:1.8}
+.ads-home p {padding:5px 20px}
+
+.homeissue {height:47px;border-top:1px solid #f1f1f1;border-bottom:1px solid #e0e0e0;color:#191400;font-size:18px;line-height:47px;padding:0 20px}
+.homeissue .more {color:#57595c;font-size:14px;line-height:47px;text-decoration:underline}
+
+.hilist li {border-top:1px solid #f1f1f1;border-bottom:1px solid #e0e0e0;height:49px;overflow:hidden;padding:0 20px}
+.hilist li a {display:block;height:49px;padding-left:20px;color:#56585b;font-size:14px;line-height:49px}
+.hilist li.last {/*border-bottom:0*/}
+
+/* pop up for account */
+.popbox{ width: 641px; position: fixed; z-index:9999; background: url(../img/popbox_shadow.png) no-repeat; }
+.popbox .popdiv{ width: 543px; background: #FFF; border-top: 5px solid #1F69D2; margin: 0 48px;}
+.popbox .poptitle{ width: 543px; height: 48px; background: url(../img/popbox_title_bg.png) repeat-x; position: relative; font-size: 19px; text-align: center; line-height: 48px;}
+.popbox .popcont{ margin: 10px; min-height: 275px;}
+.popbox .popcont .alink{ font-size: 14px; float: right; color: #2068d4;}
+.popbox .popcont table{ margin-top: 0;}
+.popbox .sucText{ font-size: 20px; color: #191919; height: 80px; line-height: 80px;padding-bottom: 103px;}
+.popbox .sucText2{ font-size: 20px; color: #191919; height: 80px; line-height: 80px;padding-bottom: 30px;}
+.popbox .sucContent{ font-size:14px; color: #191919; line-height: 20px;padding: 10px 0 10px 150px;}
+.popbox .top_notice{ font-size:16px; color: #191919; line-height: 25px; padding: 0px 50px 10px; border-bottom: 1px solid #e0e0e0; }
+/* pop up for register */
+h1.title {color:#191919;font-size:24px;padding: 40px 0 36px; border-bottom: 1px solid #e0e0e0;}
+font.errortxt{ color: #EB263A; font-size: 14px; background: url(../img/form_ico.png) no-repeat 0 0; background-size: 16px 32px; padding: 0 0 0 20px; margin-left: 5px; display: inline-block;}
+.redstar{ font-size: 18px; color: #EB263A; margin-left: 5px;}
+.bottomCon{
+	position: relative; width: 100%; margin-top: -75px; /* footer高度的负值 */ height: 75px; clear:both;
+}
+.overlay {width:100%;height:100%;position:fixed;left:0;top:0;z-index:1000;background:#000;filter:alpha(opacity=30);
+      -moz-opacity:0.3;
+      -khtml-opacity: 0.3;
+      opacity: 0.3;display:none}
+.pop {width:243px;padding:20px 55px;background:#fff;position:fixed;top:100px;margin:0 auto;z-index:9999;-moz-border-radius:10px;-webkit-border-radius:10px;border-radius:10px;box-shadow:#666 0 0 30px;behavior:url(http://coco.cn/modules/users/asset/js/PIE.htc)}
+.popinner {min-height:100px;padding-top:109px}
+.popbg {padding-left:766px;height:414px;margin:0 auto;position:relative;z-index:5}
+#popcon .btmline {/*position:absolute;bottom:0;left:0;z-index:5*/}
+#popcon {display:none;padding-bottom:5px;position:relative;zoom:1}
+.pop .popbg {padding-left:0}
+
+.popclose {display:block;background-position:0 -372px;width:26px;height:26px;position:absolute;top:10px;right:10px;z-index:100;text-indent:-9999px}
+.poplogo {width:255px;height:108px;position:absolute;top:-100px;left:246px;z-index:100}
+
+.process1 {background-position:0 -34px}
+.process2 {background-position:0 -68px}
+.process3 {background-position:0 -102px}
+.poptop {padding:25px 0 15px}
+.popregpro span {display:inline-block; vertical-align:middle;height:33px}
+.popregpro span.cur {color:#1e69d2}
+.step-txt {width:85px;color:#191919;font-size:16px}
+.step1 {background-position:0 -398px;width:33px}
+.step2 {background-position:0 -431px;width:33px}
+.step3 {background-position:0 -497px;width:33px}
+.step2.cur1 {background-position:0 -464px}
+.step3.cur {background-position:0 -530px}
+.step1.cur, .step2.cur, .step3.cur {background-position:0 -530px}
+
+.popmid {}
+.popplace {background:url(../img/poperrorbg.png) no-repeat;width:137px;height:40px;position:absolute;top:-38px;left:38px;z-index:1000}
+.popplace p {text-align:center;color:#671515;font-size:12px;padding-top:7px}
+
+.dataform {background:url(../img/verline.png) left top repeat-y}
+.dataformnone {background:none}
+.lineinput, .lineinput_short {margin-bottom:18px;height:35px;padding:1px 0;position:relative}
+.lineinput_short label {position:relative;display:inline-block; vertical-align:middle;width:235px;z-index:1}
+.lineinput label {position:relative;display:inline-block; vertical-align:middle;width:349px;z-index:1}
+.popcircle {background-position:0 -695px;display:block;width:33px;height:33px;position:absolute;top:-1px;left:-18px;z-index:5;padding:2px 0 0 2px}
+.popuser, .poppassword, .poprepassword, .popphone, .popmessage, .popcode, .editname, .editsexboy, .editsexgirl, .editbirthday, .editaddress, .editqq, .editphoto, .editpassword, .editphone, .editsurepass, .editmessage, .guildname, .guildnum, .guildyq, .popcard, .popbank, .popid, .editquestion, .editanswer {display:block;width:33px;height:33px}
+.popuser {background-position:0 -871px}
+.poppassword {background-position:0 -1102px}
+.poprepassword {background-position: 0 -1135px}
+.popphone {background-position:0 -431px}
+.popmessage {background-position:0 -1168px}
+.popcode {background-position:0 -1234px}
+.popcard{background-position: 0 -1360px;}
+.popbank{background-position: 0 -1394px;}
+.popid{background-position: 0 -1426px;}
+.editname {background-position:0 -871px}
+.editsexboy {background-position:0 -904px}
+.editsexgirl {background-position:0 -937px}
+.editbirthday {background-position:0 -970px}
+.editaddress {background-position:0 -1003px}
+.editqq {background-position:0 -1036px}
+.editphoto {background-position:0 -1069px}
+.editpassword {background-position:0 -1102px}
+.editphone {background-position:0 -431px}
+.editsurepass {background-position:0 -1135px}
+.editmessage {background-position:0 -1168px}
+.editquestion{background-position:0 -1586px}
+.editanswer{background-position:0 -1616px}
+/*公会 start*/
+.guildname{ background-position: 0 -904px;}
+.guildnum{background-position: 0 -1295px;}
+.guildyy{background-position: 0;}
+.guildyq{background-position: 0 -1460px}
+h6.guildformtitle{color: #191919; font-size: 18px; margin-left: 140px;}
+.guildformtitle1{color: #191919; font-size: 26px; margin-left: 140px;}
+.rednotice{font-size: 14px; color: #ff5500;}
+.bear_bg{ width: 221px; padding: 42px 20px 10px 41px; height: 140px; background-image: url(../img/bear_bg.png); font-size: 22px; color:#454545;}
+#pic_1_div font, #pic_2_div font{float: right; font-size: 12px; line-height: 26px; color: #2068d4;text-decoration: underline; cursor: pointer;}
+/*公会 end*/
+.linedeal {padding-bottom:10px;margin-bottom:0;padding-left:28px;color:#57595c;font-size:12px}
+.linedeal a {color:#57595c;font-size:12px;text-decoration:underline}
+.linesubmit {width:349px;position:relative}
+.linesubmit p {color:#909090;font-size:14px;position:absolute;top:15px;right:0;z-index:5}
+.linesubmit p a {font-size:16px;color:#1e69d2;text-decoration:underline}
+
+/* pop up for login */
+.poptab {padding:30px 0 18px 20px}
+.poptab a {display:inline-block; vertical-align:middle;color:#191919;font-size:16px;margin-right:30px}
+.poptab a.cur {color:#1e69d2}
+
+.errortop {color:#ea2538;font-size:14px;padding-left:30px;background:url(../img/form_ico.png) 0 6px no-repeat; background-size: 16px 32px;line-height:35px;margin-top:8px}
+
+/* account page */
+.account h1{width: 195px; float: left;background: url(../img/abouticons.png) top left no-repeat;color: #191919; font-size: 24px;padding-left: 35px; }
+.account h1.xx{ background-position: 0px -177px; }
+.account h1.aq{ background-position: 0px -209px; }
+
+.account .info_div{ padding: 40px 0; border-bottom: 1px solid #e0e0e0; font-size: 14px; color: #57595c;}
+.account .avat{ width: 128px; height: 128px; border-radius: 10px; behavior:url(http://coco.cn/modules/users/asset/js/PIE.htc); }
+.account .info_div .userInfo{ margin-left: 40px; }
+.account .txtcon{ height: 36px; line-height: 36px; }
+.account .txtcon label{ color: #57595c; font-weight: bold; margin-right: 15px;}
+
+.account .safe_div{ padding: 40px 0;  font-size: 14px; color: #57595c;}
+.account .safe_div .listdiv{margin-top: -10px; float: left;}
+.account .safe_div li{ width: 770px; height: 60px; border-bottom: 1px solid #e0e0e0; padding: 10px 0;}
+.account .safe_div li font{ padding-left: 35px;}
+.account .listdiv .btndiv{ float: right; margin-top: 14px;}
+.account .safe_div label{ height: 32px; line-height: 32px; color: #414141; display: block; font-weight: bold;}
+
+.account .safe_div .icobg{background: url(../img/features.png) no-repeat; padding-left: 35px;}
+.account .safe_div .pwd{ background-position:0 -1102px;}
+.account .safe_div .phone{background-position:0 -431px}
+.account .safe_div .email{background-position:0 -1491px}
+.account .safe_div .quest{background-position: 0 -1556px}
+
+.account .showstatus{ margin: 70px 0 0 -43px; position: relative;}
+.account .showstatus a.icon{height: 35px;line-height: 35px;display: inline-block;background: url(../img/features.png) no-repeat; padding-left: 35px;color: #57595c;}
+.account .showstatus a.phone{background-position:0 -431px;}
+.account .showstatus a.phone_cur{background-position:0 -464px;color: #1e69d2;}
+.account .showstatus a.email{background-position:0 -1491px; margin-left: 50px;}
+.account .showstatus a.email_cur{background-position:0 -1521px; margin-left: 50px;color: #1e69d2;}
+
+.account .showstatus .phone_txt, .account .showstatus .email_txt{ display: inline-block; position: absolute; width: 340px;top: 29px;height: 40px; line-height: 45px; color: #57595c; display: none; background: url(../img/notice_bg.png) no-repeat; text-align: center;}
+.account .showstatus .phone_txt span, .account .showstatus .email_txt span{color: #1e69d2; margin-left: 10px; cursor: pointer;}
+.account .showstatus .phone_txt{ left: -114px;}
+.account .showstatus .email_txt{ left: 13px; }
+.popbox .colcon{font-size: 14px; margin-left: 138px;}
+.popbox .colcon label{ display: block; height: 25px;}
+.popbox .notice{ font-size: 14px; color: #9C9C9C; height: 20px; margin-bottom: 5px;}
+/*service_pwd*/
+.serv p{ font-size: 14px; color: #1E1E1E; line-height: 30px; margin-top: 40px; margin-left: 200px; }
+.serv span{ color: #57595c;}
+/* game informations */
+.gamewrap {background:url(../img/gameinfo-bg.jpg) repeat-x;height:215px}
+.gamedes {padding:40px 0 40px 265px;color:#57595c;line-height:1.8;position:relative}
+.gamedes h1 {color:#191919;font-size:24px}
+.gamedes p {font-size:14px}
+.gamedes p a {color:#57595c;font-size:16px}
+
+.btnrefurn {background-position:-83px 0;display:block;width:50px;height:32px;color:#57595c;font-size:14px;padding-left:40px;line-height:30px;position:absolute;top:25px;right:0;z-index:5}
+.gameicon {background-position:0 -587px;display:block;width:227px;height:228px;position:absolute;top:34px;left:0;z-index:10;padding:7px 0 0 7px}
+.gameicon img {width:220px;height:220px;-moz-border-radius:40px;-webkit-border-radius:40px;border-radius:40px;behavior:url(http://coco.cn/modules/users/asset/js/PIE.htc);position:relative}
+
+.gameline {background:url(../img/shadow.png) no-repeat;width:13px;height:1634px;position:absolute;top:0px;left:237px;z-index:5}
+.gameside {width:244px;padding-top:5px}
+.downsec {width:221px;padding-top:21px}
+.gamedown {background-position:0 -822px;display:block;width:221px;height:52px;margin:0 auto;font-size:18px;color:#fff;text-align:center;line-height:52px}
+
+.sidetop {background:url(../img/side-top-shadow.png) no-repeat;padding-top:29px}
+.sidebtm {background:url(../img/side-btm-shadow.png) left bottom no-repeat;padding-bottom:29px}
+.sidemid {border:1px solid #e0e0e0;-moz-border-radius:5px 0 0 5px;-webkit-border-radius:5px 0 0 5px;border-radius:5px 0 0 5px;behavior:url(http://coco.cn/modules/users/asset/js/PIE.htc);position:relative}
+
+.gamesall {}
+.gamesall li {border-top:1px solid #fff;border-bottom:1px solid #e0e0e0;height:104px;padding:15px 0 0 20px;overflow:hidden}
+.gamesall li.last {border-bottom:none;}
+.liicon {display:block;background-position:-114px -188px;width:77px;height:78px;padding:7px 0 0 7px}
+.liicon img {width:70px;height:70px;-moz-border-radius:12px;-webkit-border-radius:12px;border-radius:12px;behavior:url(http://coco.cn/modules/users/asset/js/PIE.htc);position:relative}
+.gamesall li div {padding:5px 20px 0 10px;width:108px}
+.gamesall li div h6 a, .gamesall li div h4 a {color:#191400;font-size:16px;line-height:1.8}
+.gamesall li div p {color:#57595c;font-size:14px;line-height:1.6;height:44px;overflow:hidden}
+.gamesall li div h4 {padding-top:0px}
+
+.gamecon {width:735px;margin-left:21px;padding-top:10px}
+.gconttl {color:#191919;font-size:18px;}
+.gcontt2 {color:#191919;font-size: 14px;}
+.gcontxt {margin:10px 0 30px;font-size:14px;color:#57595c;width:735px;line-height:1.6;overflow:auto}
+.bordertable table{ border-collapse: collapse; margin: 10px 0;}
+.bordertable table tr td{border: solid gray 1px; padding: 2px 4px;}
+.bordertable table a{color:#57595c; }
+.bordertable table a:hover{ color:#479bf1;}
+.bordertable .tc{ text-align: center; }
+.gmscreen, .gmscreenver {background:#fff;padding:3px;border:1px solid #eaeaea;box-shadow:0 0 3px #eaeaea;-moz-border-radius:3px;-webkit-border-radius:3px;border-radius:3px;behavior:url(http://coco.cn/modules/users/asset/js/PIE.htc);position:relative;text-align:center}
+.gmscreenver {width:295px;float:left;margin-right:10px;height:447px}
+.gmscreenver img {width:295px;height:447px}
+.gconimg {hegiht:455px}
+
+/* charge banner */
+.chargerepeat {background:url(../img/home-repeate-bg.jpg) repeat-x}
+.chargebanner {background:url(../img/charge-bg.jpg) center top no-repeat;height:204px}
+.gameraccount {padding-left:170px;padding-top:40px;height:164px}
+.gameraccount h5 {font-size:26px;color:#191919}
+.gameraccount p {font-family:Arial, Helvetica, sans-serif;color:#484849;font-size:16px;margin:10px 0}
+.gameraccount p b {}
+.gameraccount p.gamericon {background-position:0 -486px;padding-left:45px;min-height:37px;line-height:37px}
+.gameraccount p.gamephone {background-position:0 -623px}
+
+.gamerphoto {width:140px;height:140px;position:absolute;top:33px;left:0;z-index:5;padding:4px 0 0 4px}
+.gamerphoto b {display:block;width:144px;height:144px;background:url(../img/touxiangnew.png) no-repeat;position:absolute;top:0;left:0;z-index:10}
+.gamerphoto b.vip0 {background-position:0 0}
+.gamerphoto b.vip13 {background-position:0 -144px}
+.gamerphoto b.vip46 {background-position:0 -288px}
+.gamerphoto b.vip78 {background-position:0 -432px}
+.gamerphoto b.vip9 {background-position:0 -576px}
+.gamerphoto img {width:136px;height:136px;-moz-border-radius:10px;-webkit-border-radius:10px;border-radius:10px;behavior:url(http://coco.cn/modules/users/asset/js/PIE.htc);position:relative}
+
+/*VIP*/
+.gamervip {background:url(../img/vips.png) no-repeat;display:block;width:58px;height:59px;position:absolute;right:-20px;bottom:-12px;z-index:100;text-indent:-9999px}
+.gamervip1 {background-position:0 0}
+.gamervip2 {background-position:0 -60px}
+.gamervip3 {background-position:0 -120px}
+.gamervip4 {background-position:0 -180px}
+.gamervip5 {background-position:0 -240px}
+.gamervip6 {background-position:0 -300px}
+.gamervip7 {background-position:0 -360px}
+.gamervip8 {background-position:0 -420px}
+.gamervip9 {background-position:0 -480px}
+
+.odd {background:url(../img/lay.png) repeat}
+.chargerow {border-bottom:1px solid #efefef;}
+.chargerow .fl {height:28px;font-size:14px;line-height:28px;padding:23px 0}
+.chargerow .colttl {color:#636465;padding-left:28px;width:102px;border-right:1px solid #efefef;position:relative}
+.chargerow .colcon {color:#191919;padding-left:35px;width:588px}
+.chargerow .popicon {display:block;width:37px;height:37px;position:absolute;top:21px;right:-19px;z-index:10}
+.chargerow .popicon1 {background-position:0 -732px}
+.chargerow .popicon2 {background-position:0 -769px}
+.chargerow .popicon3 {background-position:0 -806px}
+
+.chargerow label {display:inline-block; vertical-align:middle;width:98px;}
+.chargerow label input {vertical-align:2px;margin-right:5px}
+.submitbox {border-right:1px solid #efefef;width:130px;height:15px;position:relative}
+.submitbox .btnsub {top:13px;left:111px;}
+
+.txt {width:62px;height:18px;padding:4px 2px;border:1px solid #d5d5d5;background:#f8f8f8;-moz-border-radius:6px;-webkit-border-radius:6px;border-radius:6px;line-height:18px}
+
+/*charge*/
+.inlinepop {padding-left:130px;clear:both}
+.inlinecon {border-left:1px solid #efefef;padding:0 0 25px;position:relative}
+.inlinearrow {background:url(../img/arrow.png) no-repeat;width:26px;height:13px;position:absolute;top:-12px;left:100px;z-index:5}
+.inlinetop, .inlinebtm, .inlinemid {background:url(../img/inlinebg.png) no-repeat}
+.inlinetop {padding-top:21px;width:622px;margin-left:-20px}
+.inlinebtm {background-position:-622px bottom;padding-bottom:21px}
+.inlinemid {background-repeat:repeat-y;background-position:-1244px top;min-height:50px;padding-left:20px}
+
+.banks .radio {width:197px;margin-bottom:15px; vertical-align:middle;float:left}
+.banks .radio img {display:inline-block;vertical-align:middle;border:1px solid #ddd}
+.banks .radio:hover img, .radio.checked img {border-color:#1e69d2}
+.link-bank {float:left;font-size:16px;color:#57595c;background:url(../img/arrow-down.png) right 7px no-repeat;padding-right:12px;margin-top:9px;text-decoration:underline}
+
+
+/*drop down*/
+.dropdown {display:inline-block; vertical-align:middle;width:272px;color:#6a5d4f;font-size:14px;position:relative;z-index:10;-webkit-border-radius:10px;-moz-border-radius:10px;border-radius:10px;
+-webkit-transition: border linear .2s,box-shadow linear .2s;
+-moz-transition: border linear .2s,box-shadow linear .2s;
+-o-transition: border linear .2s,box-shadow linear .2s;
+transition: border linear .2s,box-shadow linear .2s;*float:left
+}
+.dropdown.open, .dropdown.open ul.droplist {-webkit-box-shadow:0 0 10px #b2b7c1;
+-moz-box-shadow:0 0 10px #b2b7c1;
+box-shadow:0 0 10px #b2b7c1;
+}
+.dropdown b {display:inline-block; vertical-align:middle;width:257px;height:24px;background:url(../img/btns.png) 0 0 no-repeat;padding:8px 0 0 15px;cursor:pointer;position:relative;z-index:10;color:#1e69d2;white-space:nowrap;overflow:hidden}
+.dropdown ul.droplist {width:245px;padding-right:25px;position:absolute;top:25px;left:1px;z-index:2;background:#fff;-webkit-border-radius:0 0 10px 10px;-moz-border-radius:0 0 10px 10px;border-radius:0 0 10px 10px;background:#fff;padding-top:7px;max-height:200px;overflow:auto}
+.dropdown ul.droplist li {height:29px;position:relative}
+.dropdown ul.droplist li span {display:block;width:270px;height:30px;position:absolute;top:-7px;left:0;z-index:6;padding-left:15px;height:29px;cursor:pointer;padding-top:7px;line-height:30px; white-space:nowrap;overflow:hidden}
+.dropdown ul.droplist li.cur span em {display:block;height:30px;background:url(../img/icon-right.png) 227px 10px no-repeat}
+.dropdown ul.droplist li span:hover {background:url(../img/drophover.png) no-repeat}
+
+/*dropdown type*/
+.dropdown90 {width:75px}
+.dropdown90 b {width:75px;background-position:0 -32px}
+.dropdown90 ul.droplist {width:63px}
+.dropdown90 ul.droplist li span {width:63px}
+.dropdown90 ul.droplist li.cur span em {background-position:45px 10px}
+.dropdown90 ul.droplist li span:hover {background-position:0 -36px}
+
+/*.dropdown110 {width:110px}
+.dropdown110 b {width:95px;background-position:0 -64px}
+.dropdown110 ul.droplist {width:83px}
+.dropdown110 ul.droplist li span {width:75px}
+.dropdown110 ul.droplist li.cur span em {background-position:60px 10px}
+.dropdown110 ul.droplist li span:hover {background-position:0 -72px}
+*/
+.dropdown150 {width:150px}
+.dropdown150 b {width:144px;background-position:0 -132px}
+.dropdown150 ul.droplist {width:131px}
+.dropdown150 ul.droplist li span {width:118px}
+.dropdown150 ul.droplist li.cur span em {background-position:100px 10px}
+.dropdown150 ul.droplist li span:hover {background-position:0 -108px}
+
+.dropdown329 {width:329px}
+.dropdown329 b {width:304px;background-position:0 -96px;height:27px;padding-left:25px;line-height:1.2;font-weight:normal;color:#191919}
+.dropdown329 ul.droplist {width:302px}
+.dropdown329 ul.droplist li span {/* width:302px */ width: 295px;}
+.dropdown329 ul.droplist li.cur span em {background-position:280px 10px}
+.dropdown329 ul.droplist li span:hover {background-position:0 -108px}
+
+.dropdown159 {width:159px}
+.dropdown159 b {width:134px;background-position:0 -131px;height:27px;padding-left:25px;line-height:1.2;font-weight:normal;color:#191919}
+.dropdown159 ul.droplist {width:132px}
+.dropdown159 ul.droplist li span {width:125px}
+.dropdown159 ul.droplist li.cur span em {background-position:105px 10px}
+.dropdown159 ul.droplist li span:hover {background-position:0 -144px}
+
+.dropdown166 {width:166px}
+.dropdown166 b {width:141px;background-position:0 -166px;height:27px;padding-left:25px;line-height:1.2;font-weight:normal;color:#191919}
+.dropdown166 ul.droplist {width:139px}
+.dropdown166 ul.droplist li span {width:139px}
+.dropdown166 ul.droplist li.cur span em {background-position:116px 10px}
+.dropdown166 ul.droplist li span:hover {background-position:0 -180px}
+
+.dropdown81 {width:81px}
+.dropdown81 b {width:66px;background-position:0 -201px;height:27px;padding-left:15px;line-height:1.2;font-weight:normal;color:#191919}
+.dropdown81 ul.droplist {width:54px}
+.dropdown81 ul.droplist li span {width:54px}
+.dropdown81 ul.droplist li.cur span em {background-position:31px 10px}
+.dropdown81 ul.droplist li span:hover {background-position:0 -216px}
+
+
+.input {display:inline-block; vertical-align:middle;position:relative;width:auto!important}
+.input input[type="text"], .input input[type="password"] {display:inline-block; vertical-align:middle;width:50px;height:20px;padding:7px 10px;font-size:14px;line-height:20px;position:relative;
+border:1px solid #ccc5b2;
+background:#fff;
+-webkit-box-shadow:inset 0 0 5px #f3f1eb;
+-moz-box-shadow:inset 0 0 5px #f3f1eb;
+box-shadow:inset 0 0 5px #f3f1eb;
+-webkit-border-radius: 7px;
+-moz-border-radius: 7px;
+border-radius: 7px;
+-webkit-transition: border linear .2s,box-shadow linear .2s;
+-moz-transition: border linear .2s,box-shadow linear .2s;
+-o-transition: border linear .2s,box-shadow linear .2s;
+transition: border linear .2s,box-shadow linear .2s;
+}
+.input input[type="text"].long, .input input[type="password"].long {width:250px}
+.input input[type="text"].mid, .input input[type="password"].mid {width:128px}
+
+
+.pop-input {padding:6px 25px;font-size:14px;color:#57595c}
+.pop-input b {font-weight:normal}
+.pop-input label.input span {margin-left:10px}
+
+/*searchbar*/
+.searchbar {padding-top:8px}
+.searchbar .pop-input {padding:6px 10px}
+.datebox {display:inline-block; vertical-align:middle;position:relative}
+.datebox input.txt {width:120px;padding:4px 5px}
+.datebox img {position:absolute;top:0;right:0;z-index:10}
+
+.searchbtn {display:inline-block; vertical-align:middle;background-position:-83px -32px;border:0;width:72px;height:32px;text-align:center;font-size:14px;color:#1e69d2;line-height:32px;cursor:pointer;margin-left:20px}
+
+/*table*/
+.chargelists {margin-top:20px;width:100%; border-collapse:collapse}
+.chargelists th {color:#191919;font-size:14px;text-align:center;height:58px;border:1px solid #f8f8f8}
+.chargelists td {border:1px solid #f8f8f8;height:34px;text-align:center;color:#565550;font-size:12px}
+.chargelists .col1 {border-left:0;width:187px; vertical-align:center;line-height: 59px;}
+.chargelists .col2 {width:246px; vertical-align:center;line-height: 59px;}
+.chargelists .col3 {width:169px; vertical-align:center;line-height: 59px;}
+.chargelists .col4 {width:118px; vertical-align:center;line-height: 59px;}
+.chargelists .col5 {border-right:0;width:172px}
+.chargelists td b.plus {color:#1e69d2;font-size:14px;margin-right:5px}
+.chargelists td b.minus {color:#e44800;margin-right:5px}
+.chargelists td.nodata {color:#484849;font-size:18px;padding:20px 0;border:none}
+/*forgetpwd 忘记密码*/
+.forgetpwd p{font: 14px "Lucida Grande",Geneva,Arial,Verdana,"Tahoma", "Arial", "微软雅黑", "黑体", "宋体"; color: #57595c; line-height: 30px; }
+.forgetpwd .notice{ margin-left: 57px;}
+.forgetpwd .textCont{ padding: 17px 0 0 38px; }
+.forgetpwd .inputCont{ width: 700px; margin-top: 20px; border-right: 4px solid #E6E6E6;}
+
+.resetpwd .notice{ color: #A0A0A0; line-height: 40px; font-size: 14px;}
+.leftside {width:244px; position: relative; z-index: 2;}
+.leftside .sidetop {background:url(../img/left_top_shadow.png) no-repeat;padding-top:24px}
+.leftside .sidebtm {background:url(../img/left_btm_shadow.png) left bottom no-repeat;padding-bottom:24px}
+.leftside .sidemid {border:1px solid #e0e0e0; border-right: none; -moz-border-radius:5px 0 0 5px;-webkit-border-radius:5px 0 0 5px;border-radius:5px 0 0 5px;behavior:url(http://coco.cn/modules/users/asset/js/PIE.htc);position:relative}
+.leftside .findpwdtag li a {display:block;height:30px; text-align: right; padding-right:30px;color:#191400;font-size:18px;line-height:30px}
+.leftside .findpwdtag li a.cur{color:#1e69d2;}
+
+.findpwdtag li {height:44px;border-top:1px solid #fff;border-bottom:1px solid #e0e0e0;padding-top:13px;}
+.findpwdtag li.first {border-top:0}
+.findpwdtag li.last {border-bottom:0}
+.findpwdtag li.cur{ border-right: 1px solid #F5F5F5; }
+
+.resetpwd .rightbox{width: 753px; margin: 24px 0; border: 1px solid #e0e0e0; border-top-right-radius:5px; border-bottom-right-radius:5px; border-bottom-left-radius: 5px; position: relative; left: -1px;}
+.resetpwd table td.col1{padding-top: 20px;}
+.resetpwd .centertitle{font: 18px "Lucida Grande",Geneva,Arial,Verdana,"Tahoma", "Arial", "微软雅黑", "黑体", "宋体"; height: 50px; line-height: 86px; }
+
+/*公会 table*/
+.guildlists {margin-top:20px;width:100%; border-collapse:collapse}
+.guildlists th {color:#191919;font-size:14px;text-align:center;height:58px;border:1px solid #f8f8f8;}
+.guildlists td {border:1px solid #f8f8f8;height:50px;text-align:left;color:#565550;font-size:14px;padding-left: 25px;}
+.guildlists .nrb{ border-right: none;}
+.guildlists .nlb{ border-left: none;}
+.guildlists .w90{ width: 90px;}
+.guildlists .w223{ width: 223px;}
+.guildlists .w_17{ width: 17%;}
+.income td{ text-align: center;padding-left: 0;}
+.home-sec-top .title_notice{ display: block; color: #565550; font-size: 14px; height: 20px; line-height: 29px;}
+.home-sec-top .notices{ padding: 25px; line-height: 25px; color: #565550; font-size: 14px; }
+.wrap .flashText{position: absolute; right: 0; top: 10px; border: 1px solid red; border-radius: 3px; behavior:url(http://coco.cn/modules/users/asset/js/PIE.htc); padding: 5px 15px 5px 10px; font-size: 14px; display: none; cursor: pointer; color: #484849;}
+.wrap .flashText em{ position: absolute; right: 3px; top: 0; color: red;}
+.wrap .bohui{ color: #EB263A; font-size: 18px; line-height: 25px; margin: 20px 125px 0;}
+/*pagination*/
+.pagination {padding:15px 0 10px;text-align:center}
+.pagination .cicon {display:inline-block;width:22px;height:24px; vertical-align:middle}
+.pagination .page-left2 {background:url(../img/pagbtns.png) no-repeat}
+.pagination .page-left1 {background:url(../img/pagbtns.png) 0 -24px no-repeat}
+.pagination .page-right1 {background:url(../img/pagbtns.png) 0 -48px no-repeat}
+.pagination .page-right2 {background:url(../img/pagbtns.png) 0 -72px no-repeat}
+.pagination .page-num {display:inline-block; vertical-align:middle;padding:0 6px;height:20px;border:1px solid #b8b9b9;color:#57595c;text-align:center;line-height:20px;text-decoration:none;-webkit-border-radius: 4px;
+-moz-border-radius: 4px;
+border-radius: 4px;}
+.pagination .page-num.cur, .pagination .page-num:hover {background:#fff;color:#226bd6;-webkit-border-radius: 4px;
+-moz-border-radius: 4px;
+border-radius: 4px;}
+.pagination a {margin:0 2px}
+
+
+/* home page */
+.homemain {width:726px}
+.home-sec {padding-top:61px}
+.home-sec-top {background:url(../img/home-bg.jpg) no-repeat}
+.home-sec-mid {background:url(../img/home-bg.jpg) -726px top repeat-y}
+.home-sec-btm {background:url(../img/home-bg.jpg) -1452px bottom no-repeat}
+.home-sec .gamecell {width:362px;height:128px}
+.home-sec .gamecell .gamesingle {height:108px}
+.home-sec .gamecell .gamesingle .gmicon {width:84px;height:78px;background-position:-114px -188px}
+.home-sec .gamecell .gamesingle .gmicon img {width:70px;height:70px}
+.home-sec .gamecell h6 {padding-top:16px}
+.home-sec .gamecell .gametime {color:#57595c}
+.home-sec h3{ font-size: 18px; color: #1e69d2; padding: 25px 25px 5px;}
+
+.homecharge {width:273px;margin-left:1px}
+.hc-ttl {background:url(../img/home-side-ttl-bg.png) no-repeat;height:50px;padding-top:22px;margin-top:-22px;padding-left:20px;font-size:16px;color:#191400;line-height:48px}
+
+.speedcharge {margin-top:2px;border-bottom:1px solid #e0e0e0}
+.speedcharge .sec {background:url(../img/homesideline.png) center bottom no-repeat;padding:10px 0 12px 20px}
+.speedcharge .sec p {padding:8px 0;color:#191400;font-size:14px}
+.speedcharge .sec p label {display:inline-block; vertical-align:middle;width:83px}
+.speedcharge .sec p label input {margin-right:5px}
+.speedcharge .sec p .txt {width:115px;margin-right:5px}
+
+.chargebtn {background-position:-117px -74px;display:inline-block; vertical-align:middle;width:118px;height:50px;color:#fff;font-size:14px;text-align:center;line-height:50px;border:0;cursor:pointer}
+.hc-con {background:url(../img/home-side-mid-bg.png) repeat-y}
+
+.othercharge {background:url(../img/homeotherbg.jpg) repeat-y;padding:10px 20px;font-size:14px}
+.othercharge p {padding:4px 0;color:#57595c}
+.hc-ttl2 {background:url(../img/home-side-ttl-bg-2.jpg) no-repeat;height:50px;padding-left:20px;font-size:16px;color:#191400;line-height:50px}
+.kefutel {background:url(../img/features.png) 0px -843px no-repeat;height:28px;color:#191400;font-size:14px;line-height:28px;padding:0 0 0 30px!important;margin-top:5px}
+.kefumail {background:url(../img/features.png) 0px -1267px no-repeat;height:28px;color:#191400;font-size:14px;line-height:28px;padding:0 0 0 34px!important;margin-top:5px}
+.hc-btm {background:url(../img/home-side-btm.png) no-repeat;height:32px}
+.hc-con .hilist li a {background:none;padding-left:0}
+
+.gameraccount p.nobinding b {color:#e44800;font-size:20px}
+.gameraccount p.nobinding a.bindbtn {display:inline-block; vertical-align:middle;background:url(../img/topnav-cur.png) 0 -874px no-repeat;width:106px;height:34px;font-size:14px;color:#b6ff00;text-align:center;font-weight:bold;line-height:30px;margin-left:5px}
+.editinfo {background:url(../img/topnav-cur.png) 0 -908px no-repeat;display:block;width:106px;height:40px;color:#fff;font-size:14px;padding-left:50px;line-height:37px;margin-top:35px}
+
+/*about page*/
+.aboutside li {height:44px;border-top:1px solid #fff;border-bottom:1px solid #e0e0e0;padding-top:13px;}
+.aboutside li.first {border-top:0}
+.aboutside li.last {border-bottom:0}
+.aboutside li a {display:block;height:30px;background:url(../img/abouticons.png) 61px top no-repeat;padding-left:111px;color:#191400;font-size:18px;line-height:30px}
+.aboutside li a.row1 {background-position:61px 0}
+.aboutside li a.row2 {background-position:61px -30px}
+.aboutside li a.row3 {background-position:61px -60px}
+.aboutside li a.row4 {background-position:61px -180px}
+.aboutside li a.row5 {background-position:61px -210px}
+.aboutside li a.row6 {background-position:61px -240px}
+.aboutside li a.row7 {background-position:61px -360px}
+.aboutside li a.row8 {background-position:61px -420px}
+.aboutside li a.row1:hover, .aboutside li a.row1.cur {background-position:61px -90px;color:#226bd6}
+.aboutside li a.row2:hover, .aboutside li a.row2.cur {background-position:61px -120px;color:#226bd6}
+.aboutside li a.row3:hover, .aboutside li a.row3.cur {background-position:61px -150px;color:#226bd6}
+.aboutside li a.row4:hover, .aboutside li a.row4.cur {background-position:61px -270px;color:#226bd6}
+.aboutside li a.row5:hover, .aboutside li a.row5.cur {background-position:61px -300px;color:#226bd6}
+.aboutside li a.row6:hover, .aboutside li a.row6.cur {background-position:61px -330px;color:#226bd6}
+.aboutside li a.row7:hover, .aboutside li a.row7.cur {background-position:61px -390px;color:#226bd6}
+.aboutside li a.row8:hover, .aboutside li a.row8.cur {background-position:61px -451px;color:#226bd6}
+
+.aboutgames li {padding:10px;float:left;text-align:center;font-size:14px}
+.aboutgames li img {width:100px;height:100px;-moz-border-radius:15px;-webkit-border-radius:15px;border-radius:15px;behavior:url(http://coco.cn/modules/users/asset/js/PIE.htc);position:relative}
+.aboutgames li p {margin-top:10px}
+.aboutgames li p a {color:#57595c}
+
+.contactbtn {background:url(../img/topnav-cur.png) 0 -948px no-repeat;display:inline-block; vertical-align:middle;width:140px;height:44px;color:#fff;line-height:44px;text-align:center;line-height:44px;border:0;cursor:pointer}
+
+.editforms {margin-top:50px}
+.editforms td {padding:10px 0}
+.editforms td.col1 {width:222px;text-align:right;color:#57595c;font-size:14px}
+.editforms td.col2 {padding-left:32px}
+.editforms td.col3 { font-size: 14px; color: #57595c;}
+.editforms td.col3 em{ color: red; font-size: 18px; display: inline-block; height: 12px; width: 14px;}
+.editforms td.col4{width: 115px;text-align:right;color:#57595c;font-size:14px; padding-top: 19px;}
+.editforms td.col5{ width: 44px;text-align:right;color:#57595c;font-size:14px;}
+.editforms .lineinput {margin-bottom:0;width:331px}
+.editforms .lineinput_short{margin-bottom:0;width:245px}
+.editforms .lineinput .erroricon, .editforms .lineinput_short .erroricon {right:-10px;display:none}
+.editforms .inputtxt.erroricon, .editforms .lineinput_short.erroricon {background-position:right -70px}
+.editforms .lineinput i.erroricon, .editforms .lineinput_short i.erroricon {left:70px}
+.editforms a.blue{color: #2068d4; font-size: 12px; text-decoration: underline;}
+.blue{color: #2068d4; cursor: pointer;}
+.editforms .onlyread{font-size: 14px; line-height: 33px; padding-left: 25px;}
+font.star{background: url(../img/form_ico.png) -7px -27px no-repeat; padding-left: 15px;}
+
+.filephoto {padding-top:15px;color:#909090;font-size:14px}
+.filephoto .gmphoto {background:url(../img/photobg.png) no-repeat;width:263px;height:261px;text-align:center;padding-top:3px;margin-top:10px}
+.filephoto .gmphoto img {width:256px;height:256px;-moz-border-radius:10px;-webkit-border-radius:10px;border-radius:10px;behavior:url(http://coco.cn/modules/users/asset/js/PIE.htc);position:relative}
+
+.passbg {background:url(../img/line-bg.png) no-repeat;width:304px;height:35px;padding-left:25px}
+.passbg a {display:inline-block;width:303px;height:33px;color:#191919;line-height:33px}
+.lineinput .bindtxt {background:url(../img/line-bg1.png) no-repeat;width:174px;height:33px;padding-left:25px;color:#191919;line-height:33px}
+.lineinput select {font-size:14px;}
+
+.homeset {position:absolute;top:0;right:0;z-index:5;width:43px}
+.sets {background:url(../img/topsettings.png) center 28px no-repeat;display:block;width:43px;height:74px}
+.homeset p {height:26px;padding-top:20px;text-align:center;display:none}
+.homeset p a {color:#a0a0a0;font-size:14px}
+.homeset:hover {background:url(../img/settingbg.png) no-repeat}
+.homeset:hover p {display:block}
+
+.ftspe {color:#8a8a89;font-size:14px;line-height:1.6;text-align:left;padding:25px 0 0 30px;width:214px;height:148px}
+.ftspe b {font-weight:normal;color:#bcbcbc}
+
+.gcttl {font-size:18px;color:#191919;margin-bottom:10px}
+.gccon {color:#57595c;font-size:14px;line-height:1.4;margin-bottom:35px}
+
+.feedbackstatus {color:#484849;padding:40px 0 0;width:735px;font-size:18px;text-align:center;background:url(../img/right.png) center top no-repeat;position:absolute;top:100px;left:0;z-index:10}
+.feedbackstatusred {color:red;background:url(../img/errorbg.png) no-repeat;height:23px;font-size:18px;color:#484849;position:absolute;top:392px;left:220px;z-index:5;padding-left:32px;line-height:23px}
+
+.chalistkefu {background:url(../img/smallfooter.png) left 4px no-repeat;padding-left:33px;color:#191919;position:absolute;top:15px;right:0}
+.chalistkefu .p1 {font-size:14px;margin-bottom:4px}
+.chalistkefu .p2 {color:#57595c;font-size:11px}
+.chalistkefu .p2 span {margin-left:20px}
+.chalistkefu .p2 a {color:#57595c}
+
+.charlistinfo {background:url(../img/chalistinfo.jpg) repeat-x;height:64px;color:#191919;font-size:18px;line-height:60px;font-weight:bold}
+.charlistinfo span {margin-left:50px}
+.charlistinfo span b {color:#1164de;margin:0 10px}
+
+.basicsuc {background:url(../img/right.png) no-repeat;height:33px;padding-left:45px;color:green;font-size:18px;line-height:33px;position:absolute;top:10px;left:350px;z-index:10}
+input:-webkit-autofill {-webkit-box-shadow:none}
+.nomygames {text-align:center;font-size:20px;line-height:128px}
+
+.logout {color:#909090;text-decoration:underline;margin-top:30px}
+.loginname {color:#e9e9e9;margin:30px 20px 0 0}
+.logout:hover, .loginname:hover {color:#1e69d2}
+
+.sec-nav font.notice{ font-size: 14px; float: right; margin: 22px 10px 0; color: red;}

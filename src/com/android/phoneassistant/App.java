@@ -11,7 +11,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         CrashHandler crashHandler = CrashHandler.getInstance(this);
-        // Thread.setDefaultUncaughtExceptionHandler(crashHandler);
+        Thread.setDefaultUncaughtExceptionHandler(crashHandler);
     }
 
     public String getLogFile() {

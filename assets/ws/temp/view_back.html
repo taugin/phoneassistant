@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}coco合作游戏{% endblock %}
+
+{% block style %}
+    <link rel="stylesheet" href="{{ SERV_ROOT_DIR }}css/wsf.view.css">
+	<link rel="stylesheet" href="{{ SERV_ROOT_DIR }}css/colorbox.css">
+	<link rel="stylesheet" href="{{ SERV_ROOT_DIR }}css/style.css">
+    <script>
+        var MSG = {
+            'tip': '{% rstr v_tip %}',
+            'del_msg': '{% rstr v_del_msg %}',
+            'del_fail': '{% rstr v_del_fail %}',
+            'up_fail': '{% rstr v_up_fail %}',
+            'not_allow': '{% rstr v_not_allow %}',
+        }
+    </script>
+{% endblock %}
+
+{% block body %}
+    {% include "confirm.html" %}
+    <p>&nbsp;</p>
+        <div >
+            <h4>coco合作游戏</h4>
+        </div>
+        <!--div class="fl homegame"-->
+		<div class="fl homegame">
+        {% if twoColumns %}
+            {% for col in twoColumns %}
+				{% if col.fileRow1 %}
+				<!--div class="gamecell gctop"--><!-- 取消两列显示 -->
+					<div class="gctop">
+						<div class="gamesingle gmtopleft">
+							<!--img src="http://img.ucenter.appget.cn/download?v=1&f=MyGroup/M00/00/14/CgoMRlN_78OAY39WAAGX80jzarA7028538" alt="" class="gmicon fl"/-->
+							{% if col.fileRow2.icon %}<a class="gmicon fl"><img src="data:image/png;base64,{{col.fileRow1.icon}}" alt="" /></a>{% endif%}
+							<div class="gmdes fl">
+								<h6><a href="{{ col.fileRow1.link }}">{{ col.fileRow1.name }}</a></h6>
+								<p>集合众多日系手游要素的经典RPG手游</p>
+								<div><a href="{{ col.fileRow1.link }}" class="homebtn fr">{% rstr v_download %}</a>{% rstr v_size %} : {{ col.fileRow1.size }}</div>
+							</div>
+						</div>
+					</div>
+				{% endif %}
+				{% if col.fileRow2 %}
+					<div class="gctop">
+						<div class="gamesingle gmtopleft">
+							{% if col.fileRow2.icon %}<a class="gmicon fl"><img src="data:image/png;base64,{{col.fileRow2.icon}}" alt="" /></a>{% endif%}
+							<div class="gmdes fl">
+								<h6><a href={{ col.fileRow2.link }}>{{ col.fileRow2.name }}</a></h6>
+								<p>集合众多日系手游要素的经典RPG手游</p>
+								<div><a href="{{col.fileRow2.link}}" class="homebtn fr">{% rstr v_download %}</a>{% rstr v_size %} : {{ col.fileRow2.size }}</div>
+							</div>
+						</div>
+					</div>
+				{% endif %}
+
+            {% endfor %}
+        {% endif %}
+		</div>
+{% endblock %}
+
+{% block script %}
+    <script src="{{ SERV_ROOT_DIR }}js/jquery-1.9.1.min.js"></script>
+    <script src="{{ SERV_ROOT_DIR }}js/ajaxfileupload.min.js"></script>
+    <script src="{{ SERV_ROOT_DIR }}js/wsf.confirm.js"></script>
+    <script src="{{ SERV_ROOT_DIR }}js/wsf.view.js"></script>
+{% endblock %}
