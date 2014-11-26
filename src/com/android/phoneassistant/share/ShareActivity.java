@@ -20,7 +20,7 @@ public class ShareActivity extends Activity {
     public void onClick(View view) {
         ShareDialog dialog = new ShareDialog(this);
         Bitmap bmp = BitmapFactory.decodeResource(getResources(),
-                R.drawable.ic_launcher);
+                R.drawable.ic_callassistant);
         dialog.setLogoBmp(bmp);
         dialog.show();
     }
