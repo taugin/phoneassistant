@@ -7,31 +7,47 @@
         android:id="@+id/content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/new_version_tipcontent"/>
+        android:text="@string/new_version_tipcontent" />
 
-    <ProgressBar
-        android:id="@+id/progress_bar"
+    <LinearLayout
+        android:id="@+id/progress_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:indeterminate="false"
-        android:indeterminateOnly="false"/>
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminate="false"
+            android:indeterminateOnly="false" />
+        <TextView
+            android:id="@+id/download_size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/btn_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:gravity="center" >
 
         <Button
             android:id="@+id/download"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" 
-            android:text="@string/btn_download"/>
+            android:layout_height="wrap_content"
+            android:text="@string/btn_download" />
 
         <Button
             android:id="@+id/cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/cancel"/>
+            android:text="@string/cancel" />
     </LinearLayout>
 
 </LinearLayout>

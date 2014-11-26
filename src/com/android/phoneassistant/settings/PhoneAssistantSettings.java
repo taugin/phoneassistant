@@ -6,7 +6,7 @@ import android.view.MenuItem;
 
 import com.android.phoneassistant.R;
 
-public class CallAssistantSettings extends Activity {
+public class PhoneAssistantSettings extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -45,7 +45,7 @@ import com.android.phoneassistant.info.ContactInfo;
 import com.android.phoneassistant.manager.BlackNameManager;
 import com.android.phoneassistant.manager.RecordFileManager;
 import com.android.phoneassistant.provider.DBConstant;
-import com.android.phoneassistant.settings.CallAssistantSettings;
+import com.android.phoneassistant.settings.PhoneAssistantSettings;
 import com.android.phoneassistant.util.FragmentListener;
 import com.android.phoneassistant.util.Log;
 
@@ -132,7 +132,8 @@ public class RecordListFragment extends ListFragment implements OnCheckedChangeL
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()) {
         case R.id.action_settings: {
-            Intent intent = new Intent(getActivity(), CallAssistantSettings.class);
+            Intent intent = new Intent(getActivity(),
+                    PhoneAssistantSettings.class);
             getActivity().startActivity(intent);;
         }
             break;

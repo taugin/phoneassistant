@@ -2,6 +2,9 @@ package com.android.phoneassistant.settings;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.ListPreference;
@@ -48,6 +51,9 @@ public class SettingsFragment extends PreferenceFragment implements
         if (index != -1) {
             preference.setSummary(preference.getEntries()[index]);
         }
+        String versionLabel = getResources().getString(R.string.version);
+        findPreference(Constant.KEY_CHECK_UPGRADE).setSummary(
+                versionLabel + getAppVerName());
     }
 
     @Override
@@ -123,7 +129,8 @@ public class SettingsFragment extends PreferenceFragment implements
             }
             return true;
         } else if (preference.getKey().equals(Constant.KEY_CHECK_UPGRADE)) {
-            UpgradeManager.get(getActivity()).checkUpgrade();
+            UpgradeManager manager = new UpgradeManager(getActivity());
+            manager.checkUpgrade();
             return true;
         }
         return false;
@@ -135,5 +142,32 @@ public class SettingsFragment extends PreferenceFragment implements
         } catch (ActivityNotFoundException e) {
             Log.d(Log.TAG, "error : " + e);
         }
+    }
+
+    private String getAppVerName() {
+        try {
+            PackageManager pm = getActivity().getPackageManager();
+            PackageInfo pi = pm.getPackageInfo(getActivity().getPackageName(), 0);
+            return pi.versionName;
+        } catch (NameNotFoundException e) {
+            Log.e(Log.TAG, "error : " + e);
+        } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e);
+        }
+        return "";
+    }
+
+    private int getAppVerCode() {
+        try {
+            PackageManager pm = getActivity().getPackageManager();
+            PackageInfo pi = pm.getPackageInfo(getActivity().getPackageName(),
+                    0);
+            return pi.versionCode;
+        } catch (NameNotFoundException e) {
+            Log.e(Log.TAG, "error : " + e);
+        } catch (Exception e) {
+            Log.e(Log.TAG, "error : " + e);
+        }
+        return -1;
     }
 }
