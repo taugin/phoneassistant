@@ -16,7 +16,6 @@
 
 package android.os;
 
-import android.os.Message;
 
 /** @hide */
 public class AsyncResult

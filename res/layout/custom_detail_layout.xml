@@ -107,7 +107,7 @@
 
         <View style="@style/vertical_line" />
 
-        <com.android.callassistant.view.CustomLinearLayout
+        <com.android.phoneassistant.view.CustomLinearLayout
             android:layout_width="@dimen/listview_item_height"
             android:layout_height="@dimen/listview_item_height"
             android:layout_weight="0"
@@ -121,6 +121,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:button="@drawable/calllog_control_selector" />
-        </com.android.callassistant.view.CustomLinearLayout>
+        </com.android.phoneassistant.view.CustomLinearLayout>
     </LinearLayout>
 </LinearLayout>

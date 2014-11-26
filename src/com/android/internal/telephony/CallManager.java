@@ -2,7 +2,7 @@ package com.android.internal.telephony;
 
 import android.os.Handler;
 
-import com.android.callassistant.util.Log;
+import com.android.phoneassistant.util.Log;
 
 public class CallManager {
     

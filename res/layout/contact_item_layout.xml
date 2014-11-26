@@ -93,7 +93,7 @@
         android:layout_weight="0"
         android:clickable="true" >
 
-        <com.android.callassistant.view.CustomLinearLayout
+        <com.android.phoneassistant.view.CustomLinearLayout
             android:id="@+id/check_box_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -108,7 +108,7 @@
                 android:layout_gravity="center"
                 android:tag="CustomLinearLayoutTag"
                 android:visibility="invisible" />
-        </com.android.callassistant.view.CustomLinearLayout>
+        </com.android.phoneassistant.view.CustomLinearLayout>
 
         <LinearLayout
             android:id="@+id/function_menu"

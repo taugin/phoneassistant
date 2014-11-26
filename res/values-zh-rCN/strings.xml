@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">通话助手</string>
+    <string name="app_name">手机助手</string>
     <string name="action_settings">设置</string>
     <string name="action_delete">删除</string>
     <string name="hello_world">Hello world!</string>
