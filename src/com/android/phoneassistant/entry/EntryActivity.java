@@ -2,7 +2,6 @@ package com.android.phoneassistant.entry;
 
 import java.text.Collator;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import android.app.Activity;
@@ -52,7 +51,7 @@ public class EntryActivity extends Activity implements
         ArrayList<EntryInfo> activitiesList = new ArrayList<EntryInfo>();
         if (mPm != null) {
             queryActivities(activitiesList);
-            Collections.sort(activitiesList);
+            // Collections.sort(activitiesList);
             mActivityAdapter = new ActivityAdapter(this, activitiesList);
             gridView.setAdapter(mActivityAdapter);
         }
