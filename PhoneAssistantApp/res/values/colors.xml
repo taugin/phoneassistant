@@ -15,4 +15,9 @@
     <color name="transparent">#00000000</color>
     <color name="gold">#b89766</color>
     <color name="light_blue">#59BDFF</color>
+    
+    <color name="possible_result_points">#c0ffbd21</color>
+    <color name="result_view">#b0000000</color>
+    <color name="viewfinder_laser">#ffcc0000</color>
+    <color name="viewfinder_mask">#60000000</color>
 </resources>

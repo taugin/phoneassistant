@@ -156,17 +156,39 @@
         <activity
             android:name="com.android.phoneassistant.webserver.activity.PreferActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:label="@string/app_name"
+            android:label="@string/websettings"
             android:screenOrientation="portrait"
+            android:icon="@drawable/websettings"
             android:launchMode="singleTop" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.PREFERENCE" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="com.android.phoneassistant.intent.action.PHONEASSISTANT" />
+                <category android:name="com.android.phoneassistant.intent.category.PHONEASSISTANT" />
+            </intent-filter>
         </activity>
         <activity
-            android:name="org.join.zxing.CaptureActivity"
+            android:name="com.android.phoneassistant.zxing.activity.BarCodeScanActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="portrait"
+            android:icon="@drawable/barcodescan"
+            android:label="@string/barcode_scan"
+            android:windowSoftInputMode="stateAlwaysHidden" >
+            <intent-filter>
+                <action android:name="com.google.zxing.client.android.SCAN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.android.phoneassistant.intent.action.PHONEASSISTANT" />
+                <category android:name="com.android.phoneassistant.intent.category.PHONEASSISTANT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.android.phoneassistant.zxing.activity.CaptureActivity"
             android:clearTaskOnLaunch="true"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"

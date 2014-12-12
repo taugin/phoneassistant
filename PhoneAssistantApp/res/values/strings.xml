@@ -4,6 +4,9 @@
     <string name="app_name">PhoneAssistant</string>
     <string name="callassistant">CallAssistant</string>
     <string name="phoneshare">PhoneShare</string>
+    <string name="websettings">WebSettings</string>
+    <string name="barcode_scan">BarcodeScan</string>
+
     <string name="action_settings">Settings</string>
     <string name="action_delete">Delete</string>
     <string name="hello_world">Hello world!</string>
