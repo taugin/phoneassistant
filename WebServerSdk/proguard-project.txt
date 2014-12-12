@@ -1,0 +1,43 @@
+# To enable ProGuard in your project, edit project.properties
+# to define the proguard.config property as described in that file.
+#
+# Add project specific ProGuard rules here.
+# By default, the flags in this file are appended to flags specified
+# in ${sdk.dir}/tools/proguard/proguard-android.txt
+# You can edit the include path and order by changing the ProGuard
+# include property in project.properties.
+#
+# For more details, see
+#   http://developer.android.com/guide/developing/tools/proguard.html
+
+# Add any project specific keep options here:
+
+# If your project uses WebView with JS, uncomment the following
+# and specify the fully qualified class name to the JavaScript interface
+# class:
+#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
+#   public *;
+#}
+-keepclassmembers class org.join.ws.serv.req.obj.** { *; }
+-dontwarn sun.net.spi.nameservice.NameServiceDescriptor
+-dontwarn javax.swing.filechooser.FileFilter
+-dontwarn sun.net.spi.nameservice.NameService
+-dontwarn sun.net.spi.nameservice.NameServiceDescriptor
+-dontwarn org.apache.log4j.Logger
+-dontwarn org.apache.log4j.xml.DOMConfigurator
+-dontwarn java.awt.image.BufferedImage
+-dontwarn java.awt.geom.AffineTransform
+-dontwarn java.awt.image.BufferedImage
+-dontwarn java.awt.geom.AffineTransform
+-dontwarn java.awt.image.BufferedImage
+-dontwarn javax.swing.filechooser.FileFilter
+-dontwarn java.rmi.Remote
+-dontwarn java.rmi.server.RMISocketFactory
+-dontwarn java.rmi.RemoteException
+-dontwarn java.rmi.*.*
+-dontwarn java.rmi.registry.**
+-dontwarn java.rmi.server.**
+-dontwarn java.awt.**
+-dontwarn javax.imageio.**
+-dontwarn javax.naming.**
+-dontwarn java.rmi.**
