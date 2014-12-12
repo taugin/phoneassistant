@@ -31,6 +31,7 @@ import com.android.phoneassistant.util.Log;
 public class EntryActivity extends Activity implements
         OnItemClickListener {
     /** Called when the activity is first created. */
+    private static final int ITEM_WIDTH_HEIGHT = 270;
     private final String TAG = "EntryActivity";
     private final String ACTION = "com.android.phoneassistant.intent.action.PHONEASSISTANT";
     private final String CATEGORY = "com.android.phoneassistant.intent.category.PHONEASSISTANT";
@@ -41,12 +42,14 @@ public class EntryActivity extends Activity implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        long start = System.currentTimeMillis();
-        Log.d(Log.TAG, "start time ");
         setContentView(R.layout.entry_layout);
         mWidth = getResources().getDisplayMetrics().widthPixels;
+        int itemCount = mWidth / ITEM_WIDTH_HEIGHT;
+        Log.d(Log.TAG, "itemCount = " + itemCount);
         // setTitle(getLocalClassName());
         GridView gridView = (GridView) findViewById(R.id.gridview);
+        gridView.setGravity(Gravity.CENTER_HORIZONTAL);
+        gridView.setNumColumns(itemCount);
         gridView.setOnItemClickListener(this);
         mPm = getPackageManager();
         ArrayList<EntryInfo> activitiesList = new ArrayList<EntryInfo>();
@@ -56,7 +59,6 @@ public class EntryActivity extends Activity implements
             mActivityAdapter = new ActivityAdapter(this, activitiesList);
             gridView.setAdapter(mActivityAdapter);
         }
-        Log.d(Log.TAG, "time : " + (System.currentTimeMillis() - start));
     }
 
     private void queryActivities(List<EntryInfo> list) {
@@ -132,14 +134,14 @@ public class EntryActivity extends Activity implements
                 view = (TextView) mInflater.inflate(
                         android.R.layout.simple_list_item_1, null);
                 AbsListView.LayoutParams params = new AbsListView.LayoutParams(
-                        mWidth / 2, mWidth / 2);
+                        ITEM_WIDTH_HEIGHT, ITEM_WIDTH_HEIGHT);
                 view.setLayoutParams(params);
             } else {
                 view = (TextView) convertView;
             }
             view.setGravity(Gravity.CENTER);
             view.setBackgroundResource(R.drawable.griditem_background);
-            view.setPadding(20, 20, 20, 20);
+            view.setPadding(0, 20, 0, 20);
             view.setCompoundDrawablePadding(40);
             view.setSingleLine();
             view.setEllipsize(TruncateAt.END);
