@@ -93,10 +93,10 @@ public class UpgradeManager implements Runnable, OnClickListener {
         return null;
     }
 
-    private String download() {
+    private String download(String apkUrl, String fileName) {
         Message msg = null;
         try {
-            URL url = new URL(mUpgradeInfo.app_url);
+            URL url = new URL(apkUrl);
             HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
             conn.setDoInput(true);
             conn.setDoOutput(true);
@@ -126,7 +126,7 @@ public class UpgradeManager implements Runnable, OnClickListener {
             InputStream inStream = conn.getInputStream();
             byte buf[] = new byte[1024];
             int read = 0;
-            String apkPath = generateDetFile(mUpgradeInfo.app_name);
+            String apkPath = generateDetFile(fileName);
             if (TextUtils.isEmpty(apkPath)) {
                 return null;
             }
@@ -246,7 +246,8 @@ public class UpgradeManager implements Runnable, OnClickListener {
         if (ACTION_FETCH_CONFIG == mAction) {
             upgradeCheck();
         } else {
-            String apkPath = download();
+            String apkPath = download(mUpgradeInfo.app_url,
+                    mUpgradeInfo.app_name);
             mHandler.sendEmptyMessage(MSG_DISMISS_ALERTDIALOG);
             if (!TextUtils.isEmpty(apkPath)) {
                 openFile(new File(apkPath));

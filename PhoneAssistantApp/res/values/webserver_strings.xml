@@ -107,4 +107,5 @@
     <string name="stoping_server">Stoping Server&#8230;</string>
     <string name="webserver_no_hotpot">Start WebServer No Hotpot</string>
     <string name="webserver_with_hotpot">Start WebServer With Hotpot</string>
+    <string name="miss_root">Miss Root permission</string>
 </resources>

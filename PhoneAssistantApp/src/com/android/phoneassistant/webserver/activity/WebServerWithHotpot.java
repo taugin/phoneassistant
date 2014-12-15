@@ -416,7 +416,8 @@ public class WebServerWithHotpot extends WebServActivity implements OnClickListe
         boolean preState = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Constants.REDIRECT_STATUS, false);
         toggleBtnRedirect.setChecked(result ? redirect : preState);
         if (!result) {
-            missRootPermissions();
+            // missRootPermissions();
+            Toast.makeText(this, R.string.miss_root, Toast.LENGTH_SHORT).show();
         }
     }
 
