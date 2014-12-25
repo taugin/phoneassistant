@@ -4,10 +4,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import android.app.AlertDialog;
 import android.app.ListFragment;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.ContentObserver;
 import android.net.Uri;
@@ -129,15 +131,7 @@ public class CustomerDetailFragment extends ListFragment implements OnClickListe
             getActivity().startActivity(intent);
         } else if (v.getId() == R.id.delete_file) {
             int position = (Integer) v.getTag();
-            Log.d(Log.TAG, "position = " + position);
-            RecordInfo info = mCallLogList.get(position);
-            ArrayList<RecordInfo> list = new ArrayList<RecordInfo>();
-            list.add(info);
-            int ret = RecordFileManager.getInstance(getActivity()).deleteRecordFiles(list);
-            if (ret > 0) {
-                mCallLogList.remove(info);
-                mDetailAdapter.notifyDataSetChanged();
-            }
+            deleteFileConfirm(position);
         } else if (v.getId() == R.id.media_control) {
             int position = (Integer) v.getTag();
             Log.d(Log.TAG, "position = " + position);
@@ -146,6 +140,33 @@ public class CustomerDetailFragment extends ListFragment implements OnClickListe
         }
     }
 
+    private void deleteFileConfirm(final int position) {
+        if (position < 0) {
+            return;
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(R.string.title_warning);
+        builder.setMessage(R.string.confirm_message);
+        builder.setPositiveButton(R.string.ok,
+                new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Log.d(Log.TAG, "position = " + position);
+                RecordInfo info = mCallLogList.get(position);
+                ArrayList<RecordInfo> list = new ArrayList<RecordInfo>();
+                list.add(info);
+                int ret = RecordFileManager.getInstance(getActivity())
+                        .deleteRecordFiles(list);
+                if (ret > 0) {
+                    mCallLogList.remove(info);
+                    mDetailAdapter.notifyDataSetChanged();
+                }
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, null);
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count,
             int after) {

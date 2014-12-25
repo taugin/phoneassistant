@@ -53,4 +53,5 @@
     <string name="loading">加载中...</string>
     <string name="version">版本 : </string>
     <string name="share_zero_flow">零流量分享</string>
+    <string name="title_warning">警告</string>
 </resources>
