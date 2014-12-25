@@ -11,6 +11,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentSender.SendIntentException;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -47,6 +48,7 @@ import com.android.phoneassistant.manager.BlackNameManager;
 import com.android.phoneassistant.manager.RecordFileManager;
 import com.android.phoneassistant.provider.DBConstant;
 import com.android.phoneassistant.settings.PhoneAssistantSettings;
+import com.android.phoneassistant.util.Constant;
 import com.android.phoneassistant.util.FragmentListener;
 import com.android.phoneassistant.util.Log;
 
@@ -372,15 +374,20 @@ public class RecordListFragment extends ListFragment implements OnCheckedChangeL
 
     @Override
     public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+        Log.d(Log.TAG, "mode : " + mode);
         mActionMode = mode;
         mode.setTitle(R.string.action_delete);
         mode.getMenuInflater().inflate(R.menu.action_mode_menu, menu);
         mMenuItem = menu.findItem(R.id.action_selectall);
+        Intent intent = new Intent(Constant.ACTION_RADIOGROUP_ENABLE);
+        intent.putExtra("radiogroup_enable", false);
+        getActivity().sendBroadcast(intent);
         return true;
     }
 
     @Override
     public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+        Log.d(Log.TAG, "mode : " + mode);
         mViewState = VIEW_STATE_DELETE;
         mListAdapter.notifyDataSetChanged();
         return true;
@@ -412,10 +419,14 @@ public class RecordListFragment extends ListFragment implements OnCheckedChangeL
 
     @Override
     public void onDestroyActionMode(ActionMode mode) {
+        Log.d(Log.TAG, "mode : " + mode);
         selectAll(false);
         mViewState = VIEW_STATE_NORMAL;
         mListAdapter.notifyDataSetChanged();
         mActionMode = null;
+        Intent intent = new Intent(Constant.ACTION_RADIOGROUP_ENABLE);
+        intent.putExtra("radiogroup_enable", true);
+        getActivity().sendBroadcast(intent);
     }
     
     public void finishActionModeIfNeed() {

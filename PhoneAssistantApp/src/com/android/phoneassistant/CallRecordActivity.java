@@ -7,14 +7,24 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
+import android.view.animation.AnimationUtils;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
 import com.android.phoneassistant.black.BlackListFragment;
 import com.android.phoneassistant.customer.RecordListFragment;
+import com.android.phoneassistant.util.Constant;
 import com.android.phoneassistant.util.FragmentListener;
+import com.android.phoneassistant.util.Log;
 
 public class CallRecordActivity extends Activity implements
         OnCheckedChangeListener {
@@ -47,6 +57,15 @@ public class CallRecordActivity extends Activity implements
         mRadioGroup = (RadioGroup) findViewById(R.id.tab_group);
         mRadioGroup.setOnCheckedChangeListener(this);
         mRadioGroup.check(R.id.call_log_radio);
+        IntentFilter filter = new IntentFilter(
+                Constant.ACTION_RADIOGROUP_ENABLE);
+        registerReceiver(mBroadcastReceiver, filter);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mBroadcastReceiver);
     }
 
     @Override
@@ -76,4 +95,47 @@ public class CallRecordActivity extends Activity implements
         super.onBackPressed();
     }
 
+    private void setRadioGroupEnable(final boolean enabled) {
+        Log.d(Log.TAG, "enabled : " + enabled);
+        Animation animation = null;
+        if (enabled) {
+            animation = AnimationUtils.loadAnimation(this,
+                    R.anim.slidefrombottom);
+        } else {
+            animation = AnimationUtils
+                    .loadAnimation(this, R.anim.slidetobottom);
+        }
+        if (animation == null) {
+            return;
+        }
+        animation.setAnimationListener(new AnimationListener() {
+            
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+            
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+            
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                mRadioGroup.setVisibility(enabled ? View.VISIBLE : View.GONE);
+            }
+        });
+        mRadioGroup.startAnimation(animation);
+    }
+
+    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.d(Log.TAG, "intent : " + intent);
+            if (intent == null) {
+                return;
+            }
+            boolean enabled = intent
+                    .getBooleanExtra("radiogroup_enable", false);
+            setRadioGroupEnable(enabled);
+        }
+    };
 }

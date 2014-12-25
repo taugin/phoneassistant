@@ -9,27 +9,23 @@
         android:layout_height="match_parent"
         android:layout_weight="1" />
 
-    <View
-        style="@style/horizontal_line"
-        />
-
     <RadioGroup
         android:id="@+id/tab_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/radiogroup_background"
+        android:padding="2dp"
         android:layout_weight="0"
         android:orientation="horizontal" >
 
         <RadioButton
             android:id="@+id/call_log_radio"
-            android:layout_marginLeft="2dp"
             style="@style/tab_radio_button"
             android:text="@string/call_log"
             />
 
         <RadioButton
             android:id="@+id/black_radio"
-            android:layout_marginRight="2dp"
             style="@style/tab_radio_button"
             android:text="@string/black_name"
             />
