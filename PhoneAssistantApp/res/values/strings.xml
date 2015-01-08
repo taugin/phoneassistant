@@ -50,8 +50,13 @@
     <string name="new_version_tiptitle">New Version</string>
     <string name="new_version_tipcontent">New Version ,upgrade ?</string>
     <string name="btn_download">Download</string>
-    <string name="loading">Loading...</string>
+    <string name="loading">Loading &#8230;</string>
     <string name="version">Version : </string>
     <string name="share_zero_flow">ZeroFlowShare</string>
     <string name="title_warning">Warning</string>
+    <string name="backup">Backup</string>
+    <string name="restore">Restore</string>
+    <string name="backup_restore">Backup and Restore</string>
+    <string name="backuping">Backuping &#8230;</string>
+    <string name="restoring">Restoring &#8230;</string>
 </resources> 
