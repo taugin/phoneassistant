@@ -50,13 +50,7 @@ public class BackupHelper {
                     true);
             serializer.startDocument("utf-8", true);
             serializer.startTag(NAMESPACE, "phoneassistant");
-            serializer.startTag(NAMESPACE, "total_count");
-            serializer.text(String.valueOf(totalCount));
-            serializer.endTag(NAMESPACE, "total_count");
-
             backupContacts(serializer);
-            backupRecord(serializer);
-
             serializer.endTag(NAMESPACE, "phoneassistant");
             serializer.endDocument();
             serializer.flush();
@@ -94,7 +88,6 @@ public class BackupHelper {
                         serializer.text(String.valueOf(columnValue));
                         serializer.endTag(NAMESPACE, columnName);
                     }
-                    serializer.endTag(NAMESPACE, "contact");
                     try {
                         Thread.sleep(50);
                     } catch (InterruptedException e) {
@@ -103,6 +96,9 @@ public class BackupHelper {
                     if (mOnBackupListener != null) {
                         mOnBackupListener.onBackupProcessing();
                     }
+                    int id = c.getInt(c.getColumnIndex(DBConstant._ID));
+                    backupRecord(serializer, id);
+                    serializer.endTag(NAMESPACE, "contact");
                 } while (c.moveToNext());
             }
             serializer.endTag(NAMESPACE, "contacts");
@@ -115,13 +111,14 @@ public class BackupHelper {
         }
     }
 
-    private void backupRecord(XmlSerializer serializer) {
+    private void backupRecord(XmlSerializer serializer, int id) {
         Cursor c = null;
         int count = 0;
+        String selection = DBConstant.RECORD_CONTACT_ID + "=" + id;
         try {
             serializer.startTag(NAMESPACE, "records");
             c = mContext.getContentResolver().query(DBConstant.RECORD_URI,
-                    null, null, null, DBConstant.RECORD_START + " DESC");
+                    null, selection, null, DBConstant.RECORD_START + " DESC");
             if (c != null && c.moveToFirst()) {
                 count = c.getCount();
                 serializer.startTag(NAMESPACE, "count");
@@ -144,9 +141,6 @@ public class BackupHelper {
                         Thread.sleep(50);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
-                    }
-                    if (mOnBackupListener != null) {
-                        mOnBackupListener.onBackupProcessing();
                     }
                 } while (c.moveToNext());
             }
@@ -206,7 +200,7 @@ public class BackupHelper {
                 c2.close();
             }
         }
-        return count1 + count2;
+        return count1;
     }
 
     public interface OnBackupListener {
