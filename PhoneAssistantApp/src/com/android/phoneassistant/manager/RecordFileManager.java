@@ -178,7 +178,6 @@ public class RecordFileManager {
                         info.contactLogCount = c.getInt(c.getColumnIndex(DBConstant.CONTACT_CALL_LOG_COUNT));
                         info.contactUpdate = c.getLong(c.getColumnIndex(DBConstant.CONTACT_UPDATE));
                         info.blocked = BlackNameManager.getInstance(mContext).isBlackInDB(info.contactNumber);
-                        Log.d(Log.TAG, "info.blocked = " + info.blocked);
                         list.add(info);
                     } while(c.moveToNext());
                 }
@@ -193,6 +192,7 @@ public class RecordFileManager {
         //Collections.sort(list);
         return list;
     }
+
     public ArrayList<RecordInfo> getRecordsFromDB(ArrayList<RecordInfo> list, int id) {
         File recordDir = new File(Environment.getExternalStorageDirectory() + "/" + Constant.FILE_RECORD_FOLDER);
         if (!recordDir.exists()) {

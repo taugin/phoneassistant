@@ -26,16 +26,17 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.android.phoneassistant.R;
+import com.android.phoneassistant.backup.BackupHelper.OnBackupListener;
 import com.android.phoneassistant.provider.DBConstant;
 import com.android.phoneassistant.util.Constant;
 import com.android.phoneassistant.util.Log;
 
 public class BackupRestoreActivity extends Activity implements OnClickListener,
-        OnShowListener, Runnable {
+        OnShowListener, Runnable, OnBackupListener {
 
-    private static final String NAMESPACE = "";
     private BackupRestoreDialog mBackupRestoreDialog;
     private boolean mBackup;
+    private BackupHelper mBackupHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,34 +64,6 @@ public class BackupRestoreActivity extends Activity implements OnClickListener,
         }
     }
 
-    private int getTotalCount() {
-        Cursor c1 = null;
-        Cursor c2 = null;
-        int count1 = 0;
-        int count2 = 0;
-        try {
-            c1 = getContentResolver().query(DBConstant.CONTACT_URI, null, null,
-                    null, null);
-            if (c1 != null) {
-                count1 = c1.getCount();
-            }
-            c2 = getContentResolver().query(DBConstant.RECORD_URI, null, null,
-                    null, null);
-            if (c2 != null) {
-                count2 = c2.getCount();
-            }
-        } catch (Exception e) {
-            Log.d(Log.TAG, "error : " + e);
-        } finally {
-            if (c1 != null) {
-                c1.close();
-            }
-            if (c2 != null) {
-                c2.close();
-            }
-        }
-        return count1 + count2;
-    }
 
     @Override
     public void onShow(DialogInterface dialog) {
@@ -100,155 +73,29 @@ public class BackupRestoreActivity extends Activity implements OnClickListener,
     @Override
     public void run() {
         if (mBackup) {
-            backup();
+            mBackupHelper = new BackupHelper(this);
+            mBackupHelper.setOnBackupListener(this);
+            mBackupHelper.backup();
         }
     }
 
-    private void backup() {
-        int totalCount = getTotalCount();
+    @Override
+    public void onBackupStart(int totalCount) {
         mBackupRestoreDialog.setMax(totalCount);
         mBackupRestoreDialog.setProgress(0);
-        String fileName = getBackupFileName();
-        XmlSerializer serializer = Xml.newSerializer();
-        try {
-            Log.d(Log.TAG, "fileName : " + fileName);
-            File file = new File(fileName);
-            if (!file.exists()) {
-                file.createNewFile();
-            }
-            FileOutputStream fos = new FileOutputStream(fileName);
-            serializer.setOutput(fos, "utf-8");
-            serializer.setFeature(
-                    "http://xmlpull.org/v1/doc/features.html#indent-output",
-                    true);
-            serializer.startDocument("utf-8", true);
-            serializer.startTag(NAMESPACE, "phoneassistant");
-            serializer.startTag(NAMESPACE, "total_count");
-            serializer.text(String.valueOf(totalCount));
-            serializer.endTag(NAMESPACE, "total_count");
-
-            backupContacts(serializer);
-            backupRecord(serializer);
-
-            serializer.endTag(NAMESPACE, "phoneassistant");
-            serializer.endDocument();
-            serializer.flush();
-            mBackupRestoreDialog.dismiss();
-        } catch (Exception e) {
-            Log.d(Log.TAG, "error : " + e.getLocalizedMessage());
-        }
     }
 
-    private void backupContacts(XmlSerializer serializer) {
-        Cursor c = null;
-        int count = 0;
-        try {
-            serializer.startTag(NAMESPACE, "contacts");
-
-            c = getContentResolver().query(DBConstant.CONTACT_URI, null, null,
-                    null, DBConstant.CONTACT_UPDATE + " DESC");
-            if (c != null && c.moveToFirst()) {
-                count = c.getCount();
-                serializer.startTag(NAMESPACE, "count");
-                serializer.text(String.valueOf(count));
-                serializer.endTag(NAMESPACE, "count");
-                do {
-                    serializer.startTag(NAMESPACE, "contact");
-                    int columnCount = c.getColumnCount();
-                    String columnName = null;
-                    String columnValue = null;
-                    for (int index = 0; index < columnCount; index++) {
-                        columnName = c.getColumnName(index);
-                        columnValue = c.getString(index);
-                        serializer.startTag(NAMESPACE, columnName);
-                        serializer.text(String.valueOf(columnValue));
-                        serializer.endTag(NAMESPACE, columnName);
-                    }
-                    serializer.endTag(NAMESPACE, "contact");
-                    try {
-                        Thread.sleep(50);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    mBackupRestoreDialog.incrementProgress();
-                } while (c.moveToNext());
-            }
-            serializer.endTag(NAMESPACE, "contacts");
-        } catch(Exception e) {
-            Log.d(Log.TAG, "error : " + e);
-        } finally {
-            if (c != null) {
-                c.close();
-            }
-        }
-    }
-    
-    private void backupRecord(XmlSerializer serializer) {
-        Cursor c = null;
-        int count = 0;
-        try {
-            serializer.startTag(NAMESPACE, "records");
-            c = getContentResolver().query(DBConstant.RECORD_URI, null, null,
-                    null, DBConstant.RECORD_START + " DESC");
-            Log.d(Log.TAG, "c = " + c);
-            if (c != null && c.moveToFirst()) {
-                count = c.getCount();
-                serializer.startTag(NAMESPACE, "count");
-                serializer.text(String.valueOf(count));
-                serializer.endTag(NAMESPACE, "count");
-                do {
-                    serializer.startTag(NAMESPACE, "record");
-                    int columnCount = c.getColumnCount();
-                    String columnName = null;
-                    String columnValue = null;
-                    for (int index = 0; index < columnCount; index++) {
-                        columnName = c.getColumnName(index);
-                        columnValue = c.getString(index);
-                        serializer.startTag(NAMESPACE, columnName);
-                        serializer.text(String.valueOf(columnValue));
-                        serializer.endTag(NAMESPACE, columnName);
-                    }
-                    serializer.endTag(NAMESPACE, "record");
-                    try {
-                        Thread.sleep(50);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    mBackupRestoreDialog.incrementProgress();
-                } while (c.moveToNext());
-            }
-            serializer.endTag(NAMESPACE, "records");
-        } catch (Exception e) {
-            Log.d(Log.TAG, "error : " + e);
-        } finally {
-            if (c != null) {
-                c.close();
-            }
-        }
+    @Override
+    public void onBackupProcessing() {
+        mBackupRestoreDialog.incrementProgress();
     }
 
-    @SuppressLint("SimpleDateFormat")
-    private String getBackupFileName() {
-        String prefix = "phoneassistant_";
-        String suffix = ".ptbk";
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy_MM_dd_hh_mm_ss");
-        String time = sdf.format(new Date());
-        File recordDir = new File(Environment.getExternalStorageDirectory()
-                + "/" + Constant.FILE_RECORD_FOLDER);
-        if (!recordDir.exists()) {
-            recordDir.mkdirs();
-            File noMedia = new File(recordDir + "/.nomedia");
-            try {
-                noMedia.createNewFile();
-            } catch (IOException e) {
-                Log.d(Log.TAG, "create .nomedia file failure");
-            }
-        }
-        return recordDir.getAbsolutePath() + File.separator + prefix + time
-                + suffix;
+    @Override
+    public void onBackupEnd() {
+        mBackupRestoreDialog.dismiss();
     }
+
     private void restore() {
-
     }
     
     class BackupRestoreDialog extends Dialog {
