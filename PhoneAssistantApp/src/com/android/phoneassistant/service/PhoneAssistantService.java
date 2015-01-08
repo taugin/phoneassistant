@@ -15,6 +15,7 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
+import android.telephony.PhoneNumberUtils;
 import android.telephony.TelephonyManager;
 
 import com.android.phoneassistant.R;
@@ -92,6 +93,8 @@ public class PhoneAssistantService extends Service {
                 Log.getLog(getBaseContext()).recordOperation("a MMI Number : " + phoneNumber);
                 return START_STICKY;
             }
+            String tmpNumber = PhoneNumberUtils.formatNumber(phoneNumber);
+            Log.d(Log.TAG, "tmpNumber : " + tmpNumber);
             TmpStorageManager.outCallOffHook(this, phoneNumber, DBConstant.FLAG_OUTGOING, System.currentTimeMillis());
             logv("onStartCommand Outgoing PhoneNumber" + " : " + phoneNumber);
             startRecord();
