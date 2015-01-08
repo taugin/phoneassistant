@@ -17,6 +17,7 @@ import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.telephony.PhoneNumberUtils;
 import android.telephony.TelephonyManager;
+import android.text.TextUtils;
 
 import com.android.phoneassistant.R;
 import com.android.phoneassistant.manager.BlackNameManager;
@@ -93,8 +94,13 @@ public class PhoneAssistantService extends Service {
                 Log.getLog(getBaseContext()).recordOperation("a MMI Number : " + phoneNumber);
                 return START_STICKY;
             }
-            String tmpNumber = PhoneNumberUtils.formatNumber(phoneNumber);
-            Log.d(Log.TAG, "tmpNumber : " + tmpNumber);
+
+            if (!TextUtils.isEmpty(phoneNumber)) {
+                if (phoneNumber.startsWith("+86")) {
+                    phoneNumber = phoneNumber.substring("+86".length());
+                }
+            }
+
             TmpStorageManager.outCallOffHook(this, phoneNumber, DBConstant.FLAG_OUTGOING, System.currentTimeMillis());
             logv("onStartCommand Outgoing PhoneNumber" + " : " + phoneNumber);
             startRecord();
