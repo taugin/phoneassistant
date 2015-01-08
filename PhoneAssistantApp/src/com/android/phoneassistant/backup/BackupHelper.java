@@ -16,6 +16,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.Environment;
+import android.text.TextUtils;
 import android.util.Xml;
 
 public class BackupHelper {
@@ -93,10 +94,16 @@ public class BackupHelper {
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    if (mOnBackupListener != null) {
-                        mOnBackupListener.onBackupProcessing();
-                    }
                     int id = c.getInt(c.getColumnIndex(DBConstant._ID));
+                    String contactName = c.getString(c.getColumnIndex(DBConstant.CONTACT_NAME));
+                    String contactNumber = c.getString(c.getColumnIndex(DBConstant.CONTACT_NUMBER));
+                    String showInfo = contactName;
+                    if (TextUtils.isEmpty(showInfo)) {
+                        showInfo = contactNumber;
+                    }
+                    if (mOnBackupListener != null) {
+                        mOnBackupListener.onBackupProcessing(showInfo);
+                    }
                     backupRecord(serializer, id);
                     serializer.endTag(NAMESPACE, "contact");
                 } while (c.moveToNext());
@@ -205,7 +212,7 @@ public class BackupHelper {
 
     public interface OnBackupListener {
         public void onBackupStart(int totalCount);
-        public void onBackupProcessing();
+        public void onBackupProcessing(String statusText);
         public void onBackupEnd();
     }
 }

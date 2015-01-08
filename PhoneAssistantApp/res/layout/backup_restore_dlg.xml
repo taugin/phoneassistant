@@ -7,6 +7,7 @@
         android:id="@+id/status_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/app_name"/>
 
         <ProgressBar
@@ -21,5 +22,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/app_name"/>
 </LinearLayout>

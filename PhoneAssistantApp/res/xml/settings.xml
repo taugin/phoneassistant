@@ -28,6 +28,9 @@
         android:entryValues="@array/record_content_value"
         android:defaultValue="all"/>
     <Preference
+        android:key="key_backup_restore"
+        android:title="@string/backup_restore"/>
+    <Preference
         android:key="key_check_log"
         android:title="@string/check_log"/>
     <Preference

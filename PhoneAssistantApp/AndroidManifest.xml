@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.android.phoneassistant"
-    android:versionCode="108"
-    android:versionName="1.0.8" >
+    android:versionCode="110"
+    android:versionName="1.1.0" >
 
     <uses-sdk
         android:minSdkVersion="11"
-        android:targetSdkVersion="18" />
+        android:targetSdkVersion="21" />
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -83,12 +83,8 @@
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
             android:label="@string/backup_restore"
-            android:icon="@drawable/ic_backup_restore">
-            <intent-filter>
-                <action android:name="com.android.phoneassistant.intent.action.PHONEASSISTANT" />
-                <category android:name="com.android.phoneassistant.intent.category.PHONEASSISTANT" />
-            </intent-filter>
-        </activity>
+            android:icon="@drawable/ic_backup_restore"/>
+
         <service
             android:name="com.android.phoneassistant.service.PhoneAssistantService"
             android:exported="false" >

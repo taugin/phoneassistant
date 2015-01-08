@@ -57,6 +57,6 @@
     <string name="backup">Backup</string>
     <string name="restore">Restore</string>
     <string name="backup_restore">Backup and Restore</string>
-    <string name="backuping">Backuping &#8230;</string>
-    <string name="restoring">Restoring &#8230;</string>
+    <string name="backuping">Backuping %1$s</string>
+    <string name="restoring">Restoring %1$s</string>
 </resources> 

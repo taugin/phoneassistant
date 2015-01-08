@@ -1,24 +1,11 @@
 package com.android.phoneassistant.backup;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.StringWriter;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import org.xmlpull.v1.XmlSerializer;
-
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnShowListener;
-import android.database.Cursor;
 import android.os.Bundle;
-import android.os.Environment;
-import android.util.Xml;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -27,9 +14,6 @@ import android.widget.TextView;
 
 import com.android.phoneassistant.R;
 import com.android.phoneassistant.backup.BackupHelper.OnBackupListener;
-import com.android.phoneassistant.provider.DBConstant;
-import com.android.phoneassistant.util.Constant;
-import com.android.phoneassistant.util.Log;
 
 public class BackupRestoreActivity extends Activity implements OnClickListener,
         OnShowListener, Runnable, OnBackupListener {
@@ -86,8 +70,8 @@ public class BackupRestoreActivity extends Activity implements OnClickListener,
     }
 
     @Override
-    public void onBackupProcessing() {
-        mBackupRestoreDialog.incrementProgress();
+    public void onBackupProcessing(String statusText) {
+        mBackupRestoreDialog.incrementProgress(statusText);
     }
 
     @Override
@@ -140,7 +124,7 @@ public class BackupRestoreActivity extends Activity implements OnClickListener,
             });
         }
 
-        public void incrementProgress() {
+        public void incrementProgress(final String text) {
             runOnUiThread(new Runnable() {
 
                 @Override
@@ -149,7 +133,8 @@ public class BackupRestoreActivity extends Activity implements OnClickListener,
                     int max = mProgressBar.getMax();
                     int cur = mProgressBar.getProgress();
                     String statusText = getResources().getString(
-                            mBackup ? R.string.backuping : R.string.restoring);
+                            mBackup ? R.string.backuping : R.string.restoring,
+                            text);
                     mStatusText.setText(statusText);
                     mIndexState.setText(String.valueOf(cur + "/" + max));
                 }

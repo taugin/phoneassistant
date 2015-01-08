@@ -58,6 +58,6 @@
     <string name="backup">备份</string>
     <string name="restore">还原</string>
     <string name="backup_restore">备份和还原</string>
-    <string name="backuping">正在备份 &#8230;</string>
-    <string name="restoring">正在还原 &#8230;</string>
+    <string name="backuping">正在备份 %1$s</string>
+    <string name="restoring">正在还原 %1$s</string>
 </resources>
