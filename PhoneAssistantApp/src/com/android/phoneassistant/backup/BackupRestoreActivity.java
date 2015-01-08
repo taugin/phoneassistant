@@ -11,6 +11,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.phoneassistant.R;
 import com.android.phoneassistant.backup.BackupHelper.OnBackupListener;
@@ -80,6 +81,7 @@ public class BackupRestoreActivity extends Activity implements OnClickListener,
     }
 
     private void restore() {
+        Toast.makeText(this, "暂未实现", Toast.LENGTH_SHORT).show();
     }
     
     class BackupRestoreDialog extends Dialog {
