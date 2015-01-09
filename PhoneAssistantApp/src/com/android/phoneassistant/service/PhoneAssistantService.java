@@ -141,7 +141,7 @@ public class PhoneAssistantService extends Service {
                  operation = "Outgoing phoneNumber : " + phoneNumber + " idle";
             }
 
-            Log.getLog(getBaseContext()).recordOperation(operation);
+            Log.d(Log.TAG, operation);
             TmpStorageManager.toString(this);
             if (lastState == TelephonyManager.CALL_STATE_OFFHOOK || lastState == TelephonyManager.CALL_STATE_RINGING) {
                 ServiceUtil.moveTmpInfoToDB(this);

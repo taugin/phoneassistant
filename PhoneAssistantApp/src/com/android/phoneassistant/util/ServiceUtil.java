@@ -37,6 +37,9 @@ public class ServiceUtil {
         }
         Log.d(Log.TAG, "addOrThrowContact = id = " + _id);
         String name = getNameFromContact(context, phoneNumber);
+        if (TextUtils.isEmpty(name)) {
+            name = getNameFromContact(context, "+86" + phoneNumber);
+        }
         Log.d(Log.TAG, "name = " + name);
         if (_id != -1) {
             ContentValues values = new ContentValues();
@@ -104,6 +107,7 @@ public class ServiceUtil {
     }
     
     private static String getNameFromContact(Context context, String phoneNumber) {
+        Log.d(Log.TAG, "phoneNumber : " + phoneNumber);
         Uri uri = Uri.withAppendedPath(ContactsContract.CommonDataKinds.Phone.CONTENT_FILTER_URI, phoneNumber);
         Cursor c = null;
         try {
