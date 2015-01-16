@@ -54,9 +54,9 @@
     <string name="version">Version : </string>
     <string name="share_zero_flow">ZeroFlowShare</string>
     <string name="title_warning">Warning</string>
-    <string name="backup">Backup</string>
-    <string name="restore">Restore</string>
-    <string name="backup_restore">Backup and Restore</string>
-    <string name="backuping">Backuping %1$s</string>
-    <string name="restoring">Restoring %1$s</string>
+    <string name="export">Export</string>
+    <string name="import_">Import</string>
+    <string name="import_export">Import and Export</string>
+    <string name="exporting">Exporting %1$s</string>
+    <string name="importing">Importing %1$s</string>
 </resources> 

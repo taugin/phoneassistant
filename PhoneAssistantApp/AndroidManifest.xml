@@ -79,10 +79,10 @@
         </activity>
 
         <activity
-            android:name="com.android.phoneassistant.backup.BackupRestoreActivity"
+            android:name="com.android.phoneassistant.backup.ImportExportActivity"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
-            android:label="@string/backup_restore"
+            android:label="@string/import_export"
             android:icon="@drawable/ic_backup_restore"/>
 
         <service

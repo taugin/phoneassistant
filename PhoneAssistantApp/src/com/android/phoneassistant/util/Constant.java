@@ -27,5 +27,5 @@ public class Constant {
     public static final String KEY_RECORD_CONTENT = "key_record_content";
     public static final String KEY_CHECK_LOG = "key_check_log";
     public static final String KEY_CHECK_UPGRADE = "key_check_upgrade";
-    public static final String KEY_BACKUP_RESTORE = "key_backup_restore";
+    public static final String KEY_IMPORT_EXPORT = "key_import_export";
 }

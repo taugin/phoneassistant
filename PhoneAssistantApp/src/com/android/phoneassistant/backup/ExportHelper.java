@@ -19,23 +19,23 @@ import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Xml;
 
-public class BackupHelper {
+public class ExportHelper {
 
     private static final String NAMESPACE = "";
     private Context mContext;
-    private OnBackupListener mOnBackupListener;
+    private OnExportListener mOnExportListener;
 
-    public BackupHelper(Context context) {
+    public ExportHelper(Context context) {
         mContext = context;
     }
 
-    public void setOnBackupListener(OnBackupListener l) {
-        mOnBackupListener = l;
+    public void setOnExportListener(OnExportListener l) {
+        mOnExportListener = l;
     }
-    public void backup() {
+    public void exportCallInfo() {
         int totalCount = getTotalCount();
-        if (mOnBackupListener != null) {
-            mOnBackupListener.onBackupStart(totalCount);
+        if (mOnExportListener != null) {
+            mOnExportListener.onExportStart(totalCount);
         }
         String fileName = getBackupFileName();
         XmlSerializer serializer = Xml.newSerializer();
@@ -55,8 +55,8 @@ public class BackupHelper {
             serializer.endTag(NAMESPACE, "phoneassistant");
             serializer.endDocument();
             serializer.flush();
-            if (mOnBackupListener != null) {
-                mOnBackupListener.onBackupEnd();
+            if (mOnExportListener != null) {
+                mOnExportListener.onExportEnd();
             }
         } catch (Exception e) {
             Log.d(Log.TAG, "error : " + e.getLocalizedMessage());
@@ -79,6 +79,7 @@ public class BackupHelper {
                 serializer.endTag(NAMESPACE, "count");
                 do {
                     serializer.startTag(NAMESPACE, "contact");
+                    serializer.startTag(NAMESPACE, "baseinfo");
                     int columnCount = c.getColumnCount();
                     String columnName = null;
                     String columnValue = null;
@@ -89,6 +90,7 @@ public class BackupHelper {
                         serializer.text(String.valueOf(columnValue));
                         serializer.endTag(NAMESPACE, columnName);
                     }
+                    serializer.endTag(NAMESPACE, "baseinfo");
                     try {
                         Thread.sleep(50);
                     } catch (InterruptedException e) {
@@ -101,8 +103,8 @@ public class BackupHelper {
                     if (TextUtils.isEmpty(showInfo)) {
                         showInfo = contactNumber;
                     }
-                    if (mOnBackupListener != null) {
-                        mOnBackupListener.onBackupProcessing(showInfo);
+                    if (mOnExportListener != null) {
+                        mOnExportListener.onExportProcessing(showInfo);
                     }
                     backupRecord(serializer, id);
                     serializer.endTag(NAMESPACE, "contact");
@@ -163,9 +165,9 @@ public class BackupHelper {
 
     @SuppressLint("SimpleDateFormat")
     private String getBackupFileName() {
-        String prefix = "phoneassistant_backup";
+        String prefix = "phoneassistant_backup_";
         String suffix = ".xml";
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy_MM_dd_hh_mm_ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
         String time = sdf.format(new Date());
         File recordDir = new File(Environment.getExternalStorageDirectory()
                 + "/" + Constant.FILE_RECORD_FOLDER);
@@ -178,7 +180,8 @@ public class BackupHelper {
                 Log.d(Log.TAG, "create .nomedia file failure");
             }
         }
-        return recordDir.getAbsolutePath() + File.separator + prefix + suffix;
+        return recordDir.getAbsolutePath() + File.separator + prefix + time
+                + suffix;
     }
 
     private int getTotalCount() {
@@ -210,9 +213,9 @@ public class BackupHelper {
         return count1;
     }
 
-    public interface OnBackupListener {
-        public void onBackupStart(int totalCount);
-        public void onBackupProcessing(String statusText);
-        public void onBackupEnd();
+    public interface OnExportListener {
+        public void onExportStart(int totalCount);
+        public void onExportProcessing(String statusText);
+        public void onExportEnd();
     }
 }

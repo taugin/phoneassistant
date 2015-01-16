@@ -55,9 +55,12 @@
     <string name="share_zero_flow">零流量分享</string>
     <string name="title_warning">警告</string>
     
-    <string name="backup">备份</string>
-    <string name="restore">还原</string>
-    <string name="backup_restore">备份和还原</string>
-    <string name="backuping">正在备份 %1$s</string>
-    <string name="restoring">正在还原 %1$s</string>
+    <string name="export">导出</string>
+    <string name="import_">导入</string>
+    <string name="import_export">导入和导出</string>
+    <string name="exporting">正在导出 %1$s</string>
+    <string name="importing">正在导入 %1$s</string>
+    
+    <string name="no_import_file">无要导入的文件</string>
+    <string name="imported_file">选择要导入的文件</string>
 </resources>

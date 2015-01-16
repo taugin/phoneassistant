@@ -17,7 +17,7 @@ import android.preference.PreferenceFragment;
 
 import com.android.phoneassistant.App;
 import com.android.phoneassistant.R;
-import com.android.phoneassistant.backup.BackupRestoreActivity;
+import com.android.phoneassistant.backup.ImportExportActivity;
 import com.android.phoneassistant.upgrade.UpgradeManager;
 import com.android.phoneassistant.util.Constant;
 import com.android.phoneassistant.util.Log;
@@ -38,7 +38,7 @@ public class SettingsFragment extends PreferenceFragment implements
                 this);
         findPreference(Constant.KEY_CHECK_UPGRADE).setOnPreferenceClickListener(
                 this);
-        findPreference(Constant.KEY_BACKUP_RESTORE)
+        findPreference(Constant.KEY_IMPORT_EXPORT)
                 .setOnPreferenceClickListener(this);
     }
 
@@ -137,9 +137,9 @@ public class SettingsFragment extends PreferenceFragment implements
             UpgradeManager manager = new UpgradeManager(getActivity());
             manager.checkUpgrade();
             return true;
-        } else if (preference.getKey().equals(Constant.KEY_BACKUP_RESTORE)) {
+        } else if (preference.getKey().equals(Constant.KEY_IMPORT_EXPORT)) {
             Intent intent = new Intent(getActivity(),
-                    BackupRestoreActivity.class);
+                    ImportExportActivity.class);
             startActivityCatchException(intent);
             return true;
         }

@@ -1,6 +1,7 @@
 package com.android.phoneassistant.backup;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -14,36 +15,42 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.phoneassistant.R;
-import com.android.phoneassistant.backup.BackupHelper.OnBackupListener;
+import com.android.phoneassistant.backup.ExportHelper.OnExportListener;
 
-public class BackupRestoreActivity extends Activity implements OnClickListener,
-        OnShowListener, Runnable, OnBackupListener {
+public class ImportExportActivity extends Activity implements OnClickListener,
+        OnShowListener, Runnable, OnExportListener {
 
-    private BackupRestoreDialog mBackupRestoreDialog;
-    private boolean mBackup;
-    private BackupHelper mBackupHelper;
+    private ImportExportDialog mImportExportDialog;
+    private boolean mExport;
+    private ExportHelper mExportHelper;
+    private ImportHelper mImportHelper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.backup_restore);
+        setContentView(R.layout.import_export);
         Button button = null;
-        button = (Button) findViewById(R.id.backup);
+        button = (Button) findViewById(R.id.export);
         button.setOnClickListener(this);
-        button = (Button) findViewById(R.id.restore);
+        button = (Button) findViewById(R.id.import_);
         button.setOnClickListener(this);
+        mImportHelper = new ImportHelper(this);
+
+        mExportHelper = new ExportHelper(this);
+        mExportHelper.setOnExportListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-        case R.id.backup: {
-            mBackup = true;
-            mBackupRestoreDialog = new BackupRestoreDialog(this, true);
-            mBackupRestoreDialog.setOnShowListener(this);
-            mBackupRestoreDialog.show();
+        case R.id.export: {
+            mExport = true;
+            mImportExportDialog = new ImportExportDialog(this, true);
+            mImportExportDialog.setOnShowListener(this);
+            mImportExportDialog.show();
         }
             break;
-        case R.id.restore:
+        case R.id.import_:
+            mExport = false;
             restore();
             break;
         }
@@ -57,41 +64,54 @@ public class BackupRestoreActivity extends Activity implements OnClickListener,
 
     @Override
     public void run() {
-        if (mBackup) {
-            mBackupHelper = new BackupHelper(this);
-            mBackupHelper.setOnBackupListener(this);
-            mBackupHelper.backup();
+        if (mExport) {
+            mExportHelper.exportCallInfo();
         }
     }
 
     @Override
-    public void onBackupStart(int totalCount) {
-        mBackupRestoreDialog.setMax(totalCount);
-        mBackupRestoreDialog.setProgress(0);
+    public void onExportStart(int totalCount) {
+        mImportExportDialog.setMax(totalCount);
+        mImportExportDialog.setProgress(0);
     }
 
     @Override
-    public void onBackupProcessing(String statusText) {
-        mBackupRestoreDialog.incrementProgress(statusText);
+    public void onExportProcessing(String statusText) {
+        mImportExportDialog.incrementProgress(statusText);
     }
 
     @Override
-    public void onBackupEnd() {
-        mBackupRestoreDialog.dismiss();
+    public void onExportEnd() {
+        mImportExportDialog.dismiss();
     }
 
     private void restore() {
-        Toast.makeText(this, "暂未实现", Toast.LENGTH_SHORT).show();
+        final String importFiles[] = mImportHelper.queryImportFiles();
+        if (importFiles == null || importFiles.length == 0) {
+            Toast.makeText(this, R.string.no_import_file, Toast.LENGTH_SHORT).show();
+            return ;
+        }
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.imported_file);
+        builder.setItems(importFiles, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Toast.makeText(ImportExportActivity.this, importFiles[which],
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
     
-    class BackupRestoreDialog extends Dialog {
+    class ImportExportDialog extends Dialog {
 
         private TextView mIndexState;
         private TextView mStatusText;
         private ProgressBar mProgressBar;
         private boolean mBackup;
 
-        public BackupRestoreDialog(Context context, boolean backup) {
+        public ImportExportDialog(Context context, boolean backup) {
             super(context);
             setCancelable(false);
             setCanceledOnTouchOutside(false);
@@ -101,11 +121,11 @@ public class BackupRestoreActivity extends Activity implements OnClickListener,
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            setContentView(R.layout.backup_restore_dlg);
+            setContentView(R.layout.import_export_dlg);
             mIndexState = (TextView) findViewById(R.id.index_state);
             mStatusText = (TextView) findViewById(R.id.status_text);
             mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
-            setTitle(mBackup ? R.string.backup : R.string.restore);
+            setTitle(mBackup ? R.string.export : R.string.import_);
         }
         
         public void setMax(final int max) {
@@ -135,7 +155,7 @@ public class BackupRestoreActivity extends Activity implements OnClickListener,
                     int max = mProgressBar.getMax();
                     int cur = mProgressBar.getProgress();
                     String statusText = getResources().getString(
-                            mBackup ? R.string.backuping : R.string.restoring,
+                            mBackup ? R.string.exporting : R.string.importing,
                             text);
                     mStatusText.setText(statusText);
                     mIndexState.setText(String.valueOf(cur + "/" + max));
