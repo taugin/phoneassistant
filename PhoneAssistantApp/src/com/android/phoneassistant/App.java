@@ -6,6 +6,8 @@ import android.app.Application;
 import android.os.AsyncTask;
 import android.os.Environment;
 
+import com.android.phoneassistant.util.GlobalConfig;
+import com.android.phoneassistant.util.Log;
 import com.chukong.sdk.GlobalInit;
 
 public class App extends Application {
@@ -14,6 +16,8 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         GlobalInit init = new GlobalInit(App.this);
+        GlobalConfig.initGlobalConfig(this);
+        Log.getLog(getApplicationContext()).initDebug();
         CrashHandler crashHandler = CrashHandler.getInstance(this);
         Thread.setDefaultUncaughtExceptionHandler(crashHandler);
     }
