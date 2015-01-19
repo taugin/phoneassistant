@@ -13,6 +13,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
+import android.text.TextUtils;
 
 import com.android.phoneassistant.util.Log;
 
@@ -24,7 +25,7 @@ public class PhoneAssistantProvider extends ContentProvider {
 
     private static final int TABLE_RECORD = 0;
     private static final int TABLE_RECORD_ID = 1;
-    private static final int TABLE_BASEINFO = 2;
+    private static final int TABLE_CONTACT = 2;
     private static final int TABLE_BASEINFO_ID = 3;
     private static final int TABLE_BLOCK = 4;
     private static final int TABLE_BLOCK_ID = 5;
@@ -36,7 +37,7 @@ public class PhoneAssistantProvider extends ContentProvider {
         sUriMatcher.addURI(DBConstant.AUTHORITIES, DBConstant.TABLE_RECORD, TABLE_RECORD);
         sUriMatcher.addURI(DBConstant.AUTHORITIES, DBConstant.TABLE_RECORD + "/#", TABLE_RECORD_ID);
 
-        sUriMatcher.addURI(DBConstant.AUTHORITIES, DBConstant.TABLE_CONTACTS, TABLE_BASEINFO);
+        sUriMatcher.addURI(DBConstant.AUTHORITIES, DBConstant.TABLE_CONTACTS, TABLE_CONTACT);
         sUriMatcher.addURI(DBConstant.AUTHORITIES, DBConstant.TABLE_CONTACTS + "/#", TABLE_BASEINFO_ID);
 
         sUriMatcher.addURI(DBConstant.AUTHORITIES, DBConstant.TABLE_BLOCK, TABLE_BLOCK);
@@ -59,7 +60,7 @@ public class PhoneAssistantProvider extends ContentProvider {
             return DBConstant.RECORD_CONTENT_TYPE;
         case TABLE_RECORD_ID:
             return DBConstant.RECORD_CONTENT_ITEM_TYPE;
-        case TABLE_BASEINFO:
+        case TABLE_CONTACT:
             return DBConstant.CONTACT_CONTENT_TYPE;
         case TABLE_BASEINFO_ID:
             return DBConstant.CONTACT_CONTENT_ITEM_TYPE;
@@ -87,7 +88,7 @@ public class PhoneAssistantProvider extends ContentProvider {
                 id = ContentUris.parseId(uri);
                 c = db.query(DBConstant.TABLE_RECORD, projection, DBConstant._ID + "=" + id, selectionArgs, null, null, sortOrder);
                 break;
-            case TABLE_BASEINFO:
+            case TABLE_CONTACT:
                 c = db.query(DBConstant.TABLE_CONTACTS, projection, selection, selectionArgs, null, null, sortOrder);
                 break;
             case TABLE_BASEINFO_ID:
@@ -115,25 +116,38 @@ public class PhoneAssistantProvider extends ContentProvider {
     public Uri insert(Uri uri, ContentValues values) {
         SQLiteDatabase db = mDBHelper.getReadableDatabase();
         Log.d(Log.TAG, "insert uri = " + uri);
+        String existItem = "";
         long id = -1;
         try{
             switch(sUriMatcher.match(uri)){
             case TABLE_RECORD:
-                id = db.insert(DBConstant.TABLE_RECORD, DBConstant.FOO, values);
+                existItem = values.getAsString(DBConstant.RECORD_NAME);
+                if (TextUtils.isEmpty(existItem)) {
+                    existItem = values.getAsString(DBConstant.RECORD_NUMBER);
+                }
+                id = db.insertOrThrow(DBConstant.TABLE_RECORD, DBConstant.FOO, values);
             break;
-            case TABLE_BASEINFO:
-                id = db.insert(DBConstant.TABLE_CONTACTS, DBConstant.FOO, values);
+            case TABLE_CONTACT:
+                existItem = values.getAsString(DBConstant.CONTACT_NAME);
+                if (TextUtils.isEmpty(existItem)) {
+                    existItem = values.getAsString(DBConstant.CONTACT_NUMBER);
+                }
+                id = db.insertOrThrow(DBConstant.TABLE_CONTACTS, DBConstant.FOO, values);
             break;
             case TABLE_BLOCK:
-                id = db.insert(DBConstant.TABLE_BLOCK, DBConstant.FOO, values);
+                existItem = values.getAsString(DBConstant.BLOCK_NAME);
+                if (TextUtils.isEmpty(existItem)) {
+                    existItem = values.getAsString(DBConstant.BLOCK_NUMBER);
+                }
+                id = db.insertOrThrow(DBConstant.TABLE_BLOCK, DBConstant.FOO, values);
                 notifyChange(uri);
             break;
             default:
                 throw new IllegalArgumentException("Unknown URI " + uri);
             }
         }catch(SQLException e){
-            Log.e(Log.TAG, "The item has inserted into the database ! : " + "error : " + e);
-            Uri resultUri = ContentUris.withAppendedId(uri, 0);
+            Log.e(Log.TAG, existItem + " is exist ! : " + "error : " + e);
+            Uri resultUri = ContentUris.withAppendedId(uri, -1);
             return resultUri;
         }
         Uri resultUri = ContentUris.withAppendedId(uri, id);
@@ -155,7 +169,7 @@ public class PhoneAssistantProvider extends ContentProvider {
                 id = ContentUris.parseId(uri);
                 ret = db.delete(DBConstant.TABLE_RECORD, DBConstant._ID + "=" + id, selectionArgs);
                 break;
-            case TABLE_BASEINFO:
+            case TABLE_CONTACT:
                 ret = db.delete(DBConstant.TABLE_CONTACTS, selection, selectionArgs);
                 break;
             case TABLE_BASEINFO_ID:
@@ -196,7 +210,7 @@ public class PhoneAssistantProvider extends ContentProvider {
                 id = ContentUris.parseId(uri);
                 ret = db.update(DBConstant.TABLE_RECORD, values, DBConstant._ID + "=" + id, selectionArgs);
                 break;
-            case TABLE_BASEINFO:
+            case TABLE_CONTACT:
                 ret = db.update(DBConstant.TABLE_CONTACTS, values, selection, selectionArgs);
                 break;
             case TABLE_BASEINFO_ID:

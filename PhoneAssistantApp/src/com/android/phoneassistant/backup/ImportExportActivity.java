@@ -1,5 +1,7 @@
 package com.android.phoneassistant.backup;
 
+import java.io.File;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -7,6 +9,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnShowListener;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -15,15 +18,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.phoneassistant.R;
-import com.android.phoneassistant.backup.ExportHelper.OnExportListener;
+import com.android.phoneassistant.util.Constant;
+import com.android.phoneassistant.util.Log;
 
 public class ImportExportActivity extends Activity implements OnClickListener,
-        OnShowListener, Runnable, OnExportListener {
+        OnShowListener, Runnable, OnImportExportListener {
 
     private ImportExportDialog mImportExportDialog;
     private boolean mExport;
     private ExportHelper mExportHelper;
     private ImportHelper mImportHelper;
+    private String mImportingFile;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,9 +39,10 @@ public class ImportExportActivity extends Activity implements OnClickListener,
         button = (Button) findViewById(R.id.import_);
         button.setOnClickListener(this);
         mImportHelper = new ImportHelper(this);
+        mImportHelper.setOnImportExportListener(this);
 
         mExportHelper = new ExportHelper(this);
-        mExportHelper.setOnExportListener(this);
+        mExportHelper.setOnImportExportListener(this);
     }
 
     @Override
@@ -51,7 +57,7 @@ public class ImportExportActivity extends Activity implements OnClickListener,
             break;
         case R.id.import_:
             mExport = false;
-            restore();
+            importCallFile();
             break;
         }
     }
@@ -66,26 +72,35 @@ public class ImportExportActivity extends Activity implements OnClickListener,
     public void run() {
         if (mExport) {
             mExportHelper.exportCallInfo();
+        } else {
+            Log.d(Log.TAG, "mImportingFile : " + mImportingFile);
+            if (mImportingFile == null) {
+                return;
+            }
+            File file = new File(mImportingFile);
+            if (file.exists()) {
+                mImportHelper.importCallInfo(mImportingFile);
+            }
         }
     }
 
     @Override
-    public void onExportStart(int totalCount) {
+    public void onStart(int totalCount) {
         mImportExportDialog.setMax(totalCount);
         mImportExportDialog.setProgress(0);
     }
 
     @Override
-    public void onExportProcessing(String statusText) {
+    public void onProcessing(String statusText) {
         mImportExportDialog.incrementProgress(statusText);
     }
 
     @Override
-    public void onExportEnd() {
+    public void onEnd() {
         mImportExportDialog.dismiss();
     }
 
-    private void restore() {
+    private void importCallFile() {
         final String importFiles[] = mImportHelper.queryImportFiles();
         if (importFiles == null || importFiles.length == 0) {
             Toast.makeText(this, R.string.no_import_file, Toast.LENGTH_SHORT).show();
@@ -98,6 +113,17 @@ public class ImportExportActivity extends Activity implements OnClickListener,
             public void onClick(DialogInterface dialog, int which) {
                 Toast.makeText(ImportExportActivity.this, importFiles[which],
                         Toast.LENGTH_SHORT).show();
+                File recordDir = new File(Environment.getExternalStorageDirectory()
+                        + "/" + Constant.FILE_RECORD_FOLDER);
+                if (!recordDir.exists()) {
+                    return;
+                }
+                mImportingFile = recordDir + "/" + importFiles[which];
+                mImportExportDialog = new ImportExportDialog(
+                        ImportExportActivity.this, false);
+                mImportExportDialog
+                        .setOnShowListener(ImportExportActivity.this);
+                mImportExportDialog.show();
             }
         });
         AlertDialog dialog = builder.create();

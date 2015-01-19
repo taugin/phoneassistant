@@ -23,19 +23,19 @@ public class ExportHelper {
 
     private static final String NAMESPACE = "";
     private Context mContext;
-    private OnExportListener mOnExportListener;
+    private OnImportExportListener mOnImportExportListener;
 
     public ExportHelper(Context context) {
         mContext = context;
     }
 
-    public void setOnExportListener(OnExportListener l) {
-        mOnExportListener = l;
+    public void setOnImportExportListener(OnImportExportListener l) {
+        mOnImportExportListener = l;
     }
     public void exportCallInfo() {
         int totalCount = getTotalCount();
-        if (mOnExportListener != null) {
-            mOnExportListener.onExportStart(totalCount);
+        if (mOnImportExportListener != null) {
+            mOnImportExportListener.onStart(totalCount);
         }
         String fileName = getBackupFileName();
         XmlSerializer serializer = Xml.newSerializer();
@@ -55,8 +55,8 @@ public class ExportHelper {
             serializer.endTag(NAMESPACE, "phoneassistant");
             serializer.endDocument();
             serializer.flush();
-            if (mOnExportListener != null) {
-                mOnExportListener.onExportEnd();
+            if (mOnImportExportListener != null) {
+                mOnImportExportListener.onEnd();
             }
         } catch (Exception e) {
             Log.d(Log.TAG, "error : " + e.getLocalizedMessage());
@@ -79,18 +79,19 @@ public class ExportHelper {
                 serializer.endTag(NAMESPACE, "count");
                 do {
                     serializer.startTag(NAMESPACE, "contact");
-                    serializer.startTag(NAMESPACE, "baseinfo");
                     int columnCount = c.getColumnCount();
                     String columnName = null;
                     String columnValue = null;
+                    String text = null;
                     for (int index = 0; index < columnCount; index++) {
                         columnName = c.getColumnName(index);
                         columnValue = c.getString(index);
                         serializer.startTag(NAMESPACE, columnName);
-                        serializer.text(String.valueOf(columnValue));
+                        text = TextUtils.isEmpty(columnValue) ? ""
+                                : columnValue;
+                        serializer.text(text);
                         serializer.endTag(NAMESPACE, columnName);
                     }
-                    serializer.endTag(NAMESPACE, "baseinfo");
                     try {
                         Thread.sleep(50);
                     } catch (InterruptedException e) {
@@ -103,8 +104,8 @@ public class ExportHelper {
                     if (TextUtils.isEmpty(showInfo)) {
                         showInfo = contactNumber;
                     }
-                    if (mOnExportListener != null) {
-                        mOnExportListener.onExportProcessing(showInfo);
+                    if (mOnImportExportListener != null) {
+                        mOnImportExportListener.onProcessing(showInfo);
                     }
                     backupRecord(serializer, id);
                     serializer.endTag(NAMESPACE, "contact");
@@ -125,24 +126,28 @@ public class ExportHelper {
         int count = 0;
         String selection = DBConstant.RECORD_CONTACT_ID + "=" + id;
         try {
-            serializer.startTag(NAMESPACE, "records");
             c = mContext.getContentResolver().query(DBConstant.RECORD_URI,
                     null, selection, null, DBConstant.RECORD_START + " DESC");
             if (c != null && c.moveToFirst()) {
+                /*
                 count = c.getCount();
                 serializer.startTag(NAMESPACE, "count");
                 serializer.text(String.valueOf(count));
                 serializer.endTag(NAMESPACE, "count");
+                */
                 do {
                     serializer.startTag(NAMESPACE, "record");
                     int columnCount = c.getColumnCount();
                     String columnName = null;
                     String columnValue = null;
+                    String text = null;
                     for (int index = 0; index < columnCount; index++) {
                         columnName = c.getColumnName(index);
                         columnValue = c.getString(index);
                         serializer.startTag(NAMESPACE, columnName);
-                        serializer.text(String.valueOf(columnValue));
+                        text = TextUtils.isEmpty(columnValue) ? ""
+                                : columnValue;
+                        serializer.text(text);
                         serializer.endTag(NAMESPACE, columnName);
                     }
                     serializer.endTag(NAMESPACE, "record");
@@ -153,7 +158,6 @@ public class ExportHelper {
                     }
                 } while (c.moveToNext());
             }
-            serializer.endTag(NAMESPACE, "records");
         } catch (Exception e) {
             Log.d(Log.TAG, "error : " + e);
         } finally {
@@ -211,11 +215,5 @@ public class ExportHelper {
             }
         }
         return count1;
-    }
-
-    public interface OnExportListener {
-        public void onExportStart(int totalCount);
-        public void onExportProcessing(String statusText);
-        public void onExportEnd();
     }
 }
