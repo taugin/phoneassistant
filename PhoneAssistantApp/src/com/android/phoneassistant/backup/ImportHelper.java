@@ -107,7 +107,7 @@ public class ImportHelper {
                     } else if ("contact_state".equalsIgnoreCase(tagName)) {
                         info.callstate = text;
                     } else if ("contact_update".equalsIgnoreCase(tagName)) {
-                        info.update = parseInt(text);
+                        info.update = parseLong(text);
                     } else if ("contact_allow_modify".equalsIgnoreCase(tagName)) {
                         info.allowmodify = parseInt(text);
                     } else if ("foo".equalsIgnoreCase(tagName)) {
