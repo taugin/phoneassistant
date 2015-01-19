@@ -1,9 +1,16 @@
 package com.android.phoneassistant.backup;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -11,22 +18,20 @@ import org.xmlpull.v1.XmlPullParserFactory;
 
 import android.annotation.SuppressLint;
 import android.content.ContentProviderOperation;
+import android.content.ContentProviderOperation.Builder;
 import android.content.ContentProviderResult;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.OperationApplicationException;
-import android.content.ContentProviderOperation.Builder;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Environment;
 import android.os.RemoteException;
 import android.text.TextUtils;
 
-import com.android.phoneassistant.info.RecordInfo;
 import com.android.phoneassistant.provider.DBConstant;
-import com.android.phoneassistant.util.Constant;
 import com.android.phoneassistant.util.Log;
+import com.android.phoneassistant.util.Utils;
 
 public class ImportHelper {
 
@@ -43,15 +48,15 @@ public class ImportHelper {
 
     @SuppressLint("SimpleDateFormat")
     public String[] queryImportFiles() {
-        File recordDir = new File(Environment.getExternalStorageDirectory()
-                + "/" + Constant.FILE_RECORD_FOLDER);
-        if (!recordDir.exists()) {
+        String recordDir = Utils.getRecorderFolder();
+        File recorderFile = new File(recordDir);
+        if (!recorderFile.exists()) {
             return null;
         }
-        String backupFiles[] = recordDir.list(new FilenameFilter() {
+        String backupFiles[] = recorderFile.list(new FilenameFilter() {
             @Override
             public boolean accept(File dir, String filename) {
-                if (filename.endsWith(".xml")) {
+                if (filename.endsWith(".zip")) {
                     return true;
                 }
                 return false;
@@ -60,9 +65,54 @@ public class ImportHelper {
         return backupFiles;
     }
 
-    public void importCallInfo(String file) {
+    public void unzipFile(String file) {
+        FileInputStream fis = null;
+        ZipInputStream zis = null;
+        ZipEntry ze = null;
+        FileOutputStream fos = null;
+        File outFile = null;
+        String recordDir = Utils.getRecorderFolder();
+        File recorderFile = new File(recordDir);
+        if (!recorderFile.exists()) {
+            recorderFile.mkdirs();
+        }
         try {
-            FileInputStream fis = new FileInputStream(file);
+            Log.d(Log.TAG, "file : " + file);
+            fis = new FileInputStream(file);
+            zis = new ZipInputStream(new BufferedInputStream(fis));
+            while ((ze = zis.getNextEntry()) != null) {
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                byte[] buffer = new byte[1024];
+                int count;
+                while ((count = zis.read(buffer)) != -1) {
+                    baos.write(buffer, 0, count);
+                }
+                String filename = ze.getName();
+                Log.d(Log.TAG, "filename : " + filename);
+                byte[] bytes = baos.toByteArray();
+                outFile = new File(recordDir + File.separator + filename);
+                if (!outFile.exists()) {
+                    outFile.createNewFile();
+                }
+                fos = new FileOutputStream(outFile);
+                fos.write(bytes);
+            }
+        } catch (FileNotFoundException e) {
+            Log.d(Log.TAG, "error : " + e);
+        } catch (IOException e) {
+            Log.d(Log.TAG, "error : " + e);
+        }
+    }
+
+    public void importCallInfo() {
+        String recorderFolder = Utils.getRecorderFolder();
+        File recorderFile = new File(recorderFolder);
+        if (!recorderFile.exists()) {
+            return;
+        }
+        try {
+            FileInputStream fis = new FileInputStream(recorderFolder
+                    + File.separator + "datebase_backup.xml");
             XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
             XmlPullParser parser = factory.newPullParser();
             parser.setInput(fis, "utf-8");
@@ -163,6 +213,12 @@ public class ImportHelper {
             }
         } catch (XmlPullParserException e) {
         } catch (Exception e) {
+        }
+        String databaseBack = recorderFolder + File.separator
+                + "datebase_backup.xml";
+        File databaseBackFile = new File(databaseBack);
+        if (databaseBackFile.exists()) {
+            databaseBackFile.delete();
         }
     }
 

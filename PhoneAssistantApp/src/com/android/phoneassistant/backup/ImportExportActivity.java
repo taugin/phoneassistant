@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.android.phoneassistant.R;
 import com.android.phoneassistant.util.Constant;
 import com.android.phoneassistant.util.Log;
+import com.android.phoneassistant.util.Utils;
 
 public class ImportExportActivity extends Activity implements OnClickListener,
         OnShowListener, Runnable, OnImportExportListener {
@@ -79,7 +80,8 @@ public class ImportExportActivity extends Activity implements OnClickListener,
             }
             File file = new File(mImportingFile);
             if (file.exists()) {
-                mImportHelper.importCallInfo(mImportingFile);
+                mImportHelper.unzipFile(mImportingFile);
+                mImportHelper.importCallInfo();
             }
         }
     }
@@ -113,9 +115,9 @@ public class ImportExportActivity extends Activity implements OnClickListener,
             public void onClick(DialogInterface dialog, int which) {
                 Toast.makeText(ImportExportActivity.this, importFiles[which],
                         Toast.LENGTH_SHORT).show();
-                File recordDir = new File(Environment.getExternalStorageDirectory()
-                        + "/" + Constant.FILE_RECORD_FOLDER);
-                if (!recordDir.exists()) {
+                String recordDir = Utils.getRecorderFolder();
+                File recorderFile = new File(recordDir);
+                if (!recorderFile.exists()) {
                     return;
                 }
                 mImportingFile = recordDir + "/" + importFiles[which];

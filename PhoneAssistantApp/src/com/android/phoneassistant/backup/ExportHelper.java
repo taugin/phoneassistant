@@ -1,23 +1,28 @@
 package com.android.phoneassistant.backup;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import org.xmlpull.v1.XmlSerializer;
-
-import com.android.phoneassistant.provider.DBConstant;
-import com.android.phoneassistant.util.Constant;
-import com.android.phoneassistant.util.Log;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
-import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Xml;
+
+import com.android.phoneassistant.provider.DBConstant;
+import com.android.phoneassistant.util.Log;
+import com.android.phoneassistant.util.Utils;
 
 public class ExportHelper {
 
@@ -35,7 +40,7 @@ public class ExportHelper {
     public void exportCallInfo() {
         int totalCount = getTotalCount();
         if (mOnImportExportListener != null) {
-            mOnImportExportListener.onStart(totalCount);
+            mOnImportExportListener.onStart(totalCount + 1);
         }
         String fileName = getBackupFileName();
         XmlSerializer serializer = Xml.newSerializer();
@@ -55,6 +60,10 @@ public class ExportHelper {
             serializer.endTag(NAMESPACE, "phoneassistant");
             serializer.endDocument();
             serializer.flush();
+            if (mOnImportExportListener != null) {
+                mOnImportExportListener.onProcessing("Zipping ... ");
+            }
+            generateZipFile();
             if (mOnImportExportListener != null) {
                 mOnImportExportListener.onEnd();
             }
@@ -169,23 +178,90 @@ public class ExportHelper {
 
     @SuppressLint("SimpleDateFormat")
     private String getBackupFileName() {
-        String prefix = "phoneassistant_backup_";
+        String prefix = "datebase_backup";
         String suffix = ".xml";
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
         String time = sdf.format(new Date());
-        File recordDir = new File(Environment.getExternalStorageDirectory()
-                + "/" + Constant.FILE_RECORD_FOLDER);
-        if (!recordDir.exists()) {
-            recordDir.mkdirs();
-            File noMedia = new File(recordDir + "/.nomedia");
-            try {
-                noMedia.createNewFile();
-            } catch (IOException e) {
-                Log.d(Log.TAG, "create .nomedia file failure");
+        String recordDir = Utils.getRecorderFolder();
+        File recorderFile = new File(recordDir);
+        if (!recorderFile.exists()) {
+            recorderFile.mkdirs();
+        }
+        return recorderFile + File.separator + prefix + suffix;
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    private String getBackupZipFileName() {
+        String prefix = "phoneassistant_backup_";
+        String suffix = ".zip";
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+        String time = sdf.format(new Date());
+        String recordDir = Utils.getRecorderFolder();
+        File recorderFile = new File(recordDir);
+        if (!recorderFile.exists()) {
+            recorderFile.mkdirs();
+        }
+        return recorderFile + File.separator + prefix + time + suffix;
+    }
+
+    private String[] queryZippedFile() {
+        String recordDir = Utils.getRecorderFolder();
+        File recorderFile = new File(recordDir);
+        if (!recorderFile.exists()) {
+            return null;
+        }
+        String zippedFile[] = recorderFile.list(new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String filename) {
+                if (filename.endsWith(".xml") || filename.endsWith("amr")) {
+                    return true;
+                }
+                return false;
+            }
+        });
+        return zippedFile;
+    }
+    private void generateZipFile() {
+        String zipfile = getBackupZipFileName();
+        String zippedFile[] = queryZippedFile();
+        String recordDir = Utils.getRecorderFolder();
+        File recorderFile = new File(recordDir);
+        if (!recorderFile.exists()) {
+            return;
+        }
+        ZipOutputStream zos = null;
+        FileInputStream fis = null;
+        if (zippedFile == null || zippedFile.length <= 0) {
+            return;
+        }
+        try {
+            FileOutputStream fos = new FileOutputStream(zipfile);
+            zos = new ZipOutputStream(new BufferedOutputStream(fos));
+            for (String file : zippedFile) {
+                fis = new FileInputStream(recordDir + File.separator + file);
+                byte[] bytes = new byte[1024];
+                int len = 0;
+                ZipEntry entry = new ZipEntry(file);
+                zos.putNextEntry(entry);
+                while ((len = fis.read(bytes)) > 0) {
+                    zos.write(bytes, 0, len);
+                }
+                fis.close();
+                zos.closeEntry();
+            }
+        } catch (FileNotFoundException e) {
+            Log.d(Log.TAG, "error : " + e);
+        } catch (IOException e) {
+            Log.d(Log.TAG, "error : " + e);
+        } finally {
+            if (zos != null) {
+                try {
+                    zos.close();
+                } catch (IOException e) {
+                    Log.d(Log.TAG, "error : " + e);
+                }
             }
         }
-        return recordDir.getAbsolutePath() + File.separator + prefix + time
-                + suffix;
     }
 
     private int getTotalCount() {
