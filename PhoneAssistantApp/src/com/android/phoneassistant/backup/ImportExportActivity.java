@@ -9,10 +9,14 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnShowListener;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.SparseBooleanArray;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckedTextView;
@@ -26,7 +30,8 @@ import com.android.phoneassistant.util.Log;
 import com.android.phoneassistant.util.Utils;
 
 public class ImportExportActivity extends Activity implements OnClickListener,
-        OnShowListener, Runnable, OnImportExportListener {
+        OnShowListener, Runnable, OnImportExportListener,
+        OnItemLongClickListener {
 
     private ImportExportDialog mImportExportDialog;
     private boolean mExport;
@@ -44,6 +49,7 @@ public class ImportExportActivity extends Activity implements OnClickListener,
         mCheckedTextView.setText(R.string.export_file_tip);
         mCheckedTextView.setOnClickListener(this);
         mListView = (ListView) findViewById(R.id.export_file_list);
+        mListView.setOnItemLongClickListener(this);
         mListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         listExportFiles();
         Button button = null;
@@ -211,17 +217,6 @@ public class ImportExportActivity extends Activity implements OnClickListener,
         AlertDialog dialog = builder.create();
         dialog.show();
     }
-    
-    private int getCheckedItemPosition() {
-        SparseBooleanArray array = mListView.getCheckedItemPositions();
-        int count = mListView.getCount();
-        for (int index = 0; index < count; index++) {
-            if (array.get(index)) {
-                return index;
-            }
-        }
-        return -1;
-    }
 
     class ImportExportDialog extends Dialog {
 
@@ -281,5 +276,35 @@ public class ImportExportActivity extends Activity implements OnClickListener,
                 }
             });
         }
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2,
+            long arg3) {
+        Intent intent = getShareIntent(mExportZipFiles[arg2]);
+        if (intent != null) {
+            startActivity(intent);
+            return true;
+        }
+        return false;
+    }
+
+    private Intent getShareIntent(String zipFile) {
+        String recordDir = Utils.getRecorderFolder();
+        File recorderFile = new File(recordDir);
+        if (!recorderFile.exists()) {
+            return null;
+        }
+
+        File file = new File(recordDir + File.separator + zipFile);
+        if (!file.exists()) {
+            return null;
+        }
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("application/zip");
+        intent.putExtra(Intent.EXTRA_SUBJECT, "分享");
+        intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(file));
+        Intent shareIntent = Intent.createChooser(intent, "分享");
+        return shareIntent;
     }
 }
