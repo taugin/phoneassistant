@@ -59,4 +59,5 @@
     <string name="import_export">Import and Export</string>
     <string name="exporting">Exporting %1$s</string>
     <string name="importing">Importing %1$s</string>
+    <string name="export_file_tip">Export Files</string>
 </resources> 

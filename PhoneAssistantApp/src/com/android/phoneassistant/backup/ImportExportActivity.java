@@ -1,6 +1,7 @@
 package com.android.phoneassistant.backup;
 
 import java.io.File;
+import java.io.FilenameFilter;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -9,16 +10,18 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnShowListener;
 import android.os.Bundle;
-import android.os.Environment;
+import android.util.SparseBooleanArray;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckedTextView;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.phoneassistant.R;
-import com.android.phoneassistant.util.Constant;
 import com.android.phoneassistant.util.Log;
 import com.android.phoneassistant.util.Utils;
 
@@ -30,14 +33,25 @@ public class ImportExportActivity extends Activity implements OnClickListener,
     private ExportHelper mExportHelper;
     private ImportHelper mImportHelper;
     private String mImportingFile;
+    private ListView mListView;
+    private String[] mExportZipFiles;
+    private CheckedTextView mCheckedTextView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.import_export);
+        mCheckedTextView = (CheckedTextView) findViewById(android.R.id.text1);
+        mCheckedTextView.setText(R.string.export_file_tip);
+        mCheckedTextView.setOnClickListener(this);
+        mListView = (ListView) findViewById(R.id.export_file_list);
+        mListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        listExportFiles();
         Button button = null;
         button = (Button) findViewById(R.id.export);
         button.setOnClickListener(this);
         button = (Button) findViewById(R.id.import_);
+        button.setOnClickListener(this);
+        button = (Button) findViewById(R.id.delete_file);
         button.setOnClickListener(this);
         mImportHelper = new ImportHelper(this);
         mImportHelper.setOnImportExportListener(this);
@@ -60,9 +74,69 @@ public class ImportExportActivity extends Activity implements OnClickListener,
             mExport = false;
             importCallFile();
             break;
+        case R.id.delete_file:
+            deleteExportFile();
+            break;
+        case android.R.id.text1:
+            mCheckedTextView.setChecked(!mCheckedTextView.isChecked());
+            selectUnselectAll(mCheckedTextView.isChecked());
+            break;
         }
     }
 
+    private void selectUnselectAll(boolean select) {
+        int count = mListView.getCount();
+        for (int index = 0; index < count; index++) {
+            mListView.setItemChecked(index, select);
+        }
+    }
+    private void listExportFiles() {
+        mExportZipFiles = queryImportFiles();
+        mListView.setAdapter(new ArrayAdapter<String>(this,
+                android.R.layout.simple_list_item_multiple_choice,
+                mExportZipFiles));
+    }
+    private void deleteExportFile() {
+        SparseBooleanArray array = mListView.getCheckedItemPositions();
+        int count = mListView.getCount();
+        for (int index = 0; index < count; index++) {
+            if (array.get(index)) {
+                deleteFile(index);
+            }
+        }
+        listExportFiles();
+    }
+
+    private void deleteFile(int position) {
+        String recordDir = Utils.getRecorderFolder();
+        File recorderFile = new File(recordDir);
+        if (!recorderFile.exists()) {
+            return;
+        }
+        File exportFile = new File(recordDir + File.separator
+                + mExportZipFiles[position]);
+        if (exportFile.exists()) {
+            exportFile.delete();
+        }
+    }
+
+    public String[] queryImportFiles() {
+        String recordDir = Utils.getRecorderFolder();
+        File recorderFile = new File(recordDir);
+        if (!recorderFile.exists()) {
+            return null;
+        }
+        String backupFiles[] = recorderFile.list(new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String filename) {
+                if (filename.endsWith(".zip")) {
+                    return true;
+                }
+                return false;
+            }
+        });
+        return backupFiles;
+    }
 
     @Override
     public void onShow(DialogInterface dialog) {
@@ -100,6 +174,12 @@ public class ImportExportActivity extends Activity implements OnClickListener,
     @Override
     public void onEnd() {
         mImportExportDialog.dismiss();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                listExportFiles();
+            }
+        });
     }
 
     private void importCallFile() {
@@ -132,6 +212,17 @@ public class ImportExportActivity extends Activity implements OnClickListener,
         dialog.show();
     }
     
+    private int getCheckedItemPosition() {
+        SparseBooleanArray array = mListView.getCheckedItemPositions();
+        int count = mListView.getCount();
+        for (int index = 0; index < count; index++) {
+            if (array.get(index)) {
+                return index;
+            }
+        }
+        return -1;
+    }
+
     class ImportExportDialog extends Dialog {
 
         private TextView mIndexState;

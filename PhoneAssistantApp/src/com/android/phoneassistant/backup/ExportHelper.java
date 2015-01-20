@@ -261,6 +261,12 @@ public class ExportHelper {
                     Log.d(Log.TAG, "error : " + e);
                 }
             }
+            String databaseBack = recordDir + File.separator
+                    + "datebase_backup.xml";
+            File databaseBackFile = new File(databaseBack);
+            if (databaseBackFile.exists()) {
+                databaseBackFile.delete();
+            }
         }
     }
 

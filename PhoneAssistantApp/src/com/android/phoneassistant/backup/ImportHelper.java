@@ -46,7 +46,6 @@ public class ImportHelper {
         mOnImportExportListener = l;
     }
 
-    @SuppressLint("SimpleDateFormat")
     public String[] queryImportFiles() {
         String recordDir = Utils.getRecorderFolder();
         File recorderFile = new File(recordDir);

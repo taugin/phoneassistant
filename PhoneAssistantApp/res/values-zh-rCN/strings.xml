@@ -63,4 +63,5 @@
     
     <string name="no_import_file">无要导入的文件</string>
     <string name="imported_file">选择要导入的文件</string>
+    <string name="export_file_tip">导出文件列表：</string>
 </resources>
