@@ -8,11 +8,11 @@
     <property name="version_code" value="${mymanifest.manifest.android:versionCode}" />
     <property name="apkname" value="${ant.project.name}_${mymanifest.manifest.android:versionName}.apk" />
     <target name="deploy">
-        <mkdir dir="${release_dir}"/>
         <property name="out.final.file" location="${release_dir}/${apkname}" />
+        <delete dir="${release_dir}" />
+        <mkdir dir="${release_dir}"/>
         <antcall target="create_json" />
         <antcall target="release" />
-        <antcall target="install" />
     </target>
     <target name="create_json">
         <echo file="${release_dir}/${config_file}">{${line.separator}</echo>
