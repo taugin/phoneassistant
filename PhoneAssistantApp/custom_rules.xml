@@ -2,7 +2,7 @@
 <project name="custom_ruls" default="help">
     <property name="release_dir" location="../versionrelease" />
     <property name="config_file" value="config.json" />
-    <property name="url_prefix" value="https://raw.githubusercontent.com/taugin/versionrelease/master/phoneassistant" />
+    <property name="url_prefix" value="https://raw.githubusercontent.com/taugin/phoneassistant/master/versionrelease" />
     <xmlproperty file="AndroidManifest.xml" prefix="mymanifest" collapseAttributes="true" />
     <property name="version_name" value="${mymanifest.manifest.android:versionName}" />
     <property name="version_code" value="${mymanifest.manifest.android:versionCode}" />
