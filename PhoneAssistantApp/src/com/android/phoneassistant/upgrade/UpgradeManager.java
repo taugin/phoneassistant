@@ -36,7 +36,7 @@ import com.google.gson.Gson;
 
 public class UpgradeManager implements Runnable, OnClickListener {
 
-    private static final String CONFIG_PATH = "https://raw.githubusercontent.com/taugin/versionrelease/master/phoneassistant/config.json";
+    private static final String CONFIG_PATH = "https://raw.githubusercontent.com/taugin/phoneassistant/master/versionrelease/config.json";
 
     private static final int ACTION_FETCH_CONFIG = 0;
     private static final int ACTION_DOWNLOAD = 1;
