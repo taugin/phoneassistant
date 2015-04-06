@@ -6,9 +6,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.ToggleButton;
 
 import com.android.phoneassistant.R;
 import com.android.phoneassistant.util.Log;
@@ -18,7 +18,7 @@ import com.chukong.sdk.GlobalInit;
 
 public class ShareEntryActivity extends Activity implements OnClickListener, OnCheckedChangeListener, OnHotpotStateListener {
 
-    private CheckBox mShareType;
+    private ToggleButton mShareType;
     private Button mAppSelfShare;
     private Button mAllAppsShare;
     private Button mServerSettings;
@@ -32,7 +32,7 @@ public class ShareEntryActivity extends Activity implements OnClickListener, OnC
         WSService.startWsService(this);
         mHotpotHelper = new HotpotHelper(this);
         mHotpotHelper.setOnHotpotStateListener(this);
-        mShareType = (CheckBox) findViewById(R.id.share_type);
+        mShareType = (ToggleButton) findViewById(R.id.share_type);
         mShareType.setOnCheckedChangeListener(this);
         mShareType.setOnClickListener(this);
         mShareType.setChecked(false);
