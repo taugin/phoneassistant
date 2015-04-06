@@ -7,9 +7,8 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpRequest;
 import org.apache.http.entity.FileEntity;
 
-import com.chukong.sdk.common.Log;
-
 import com.chukong.sdk.Constants.Config;
+import com.chukong.sdk.common.Log;
 import com.chukong.sdk.serv.GzipFilter;
 import com.chukong.sdk.serv.entity.GzipFileEntity;
 import com.chukong.sdk.serv.support.GzipUtil;

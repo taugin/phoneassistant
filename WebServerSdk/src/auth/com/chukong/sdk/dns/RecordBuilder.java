@@ -1,9 +1,7 @@
 package com.chukong.sdk.dns;
 
-import java.net.Inet6Address;
 import java.net.UnknownHostException;
 
-import org.apache.http.conn.util.InetAddressUtils;
 import org.xbill.DNS.AAAARecord;
 import org.xbill.DNS.ARecord;
 import org.xbill.DNS.Address;

@@ -52,6 +52,7 @@
     <string name="btn_download">Download</string>
     <string name="loading">Loading &#8230;</string>
     <string name="version">Version : </string>
+    <string name="app_share">AppShare</string>
     <string name="share_zero_flow">ZeroFlowShare</string>
     <string name="title_warning">Warning</string>
     <string name="export">Export</string>
@@ -60,4 +61,8 @@
     <string name="exporting">Exporting %1$s</string>
     <string name="importing">Importing %1$s</string>
     <string name="export_file_tip">Export Files</string>
+    <string name="app_self_share">ShareSelf</string>
+    <string name="all_apps_share">ShareApps</string>
+    <string name="wlan_type">Wlan</string>
+    <string name="hotpot_type">Hotpot</string>
 </resources> 

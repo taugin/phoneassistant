@@ -1,6 +1,5 @@
 package com.chukong.sdk.service;
 
-import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -79,6 +78,12 @@ public class WebService extends Service implements OnWebServListener {
             mWebServer.setDaemon(true);
             mWebServer.start();
         }
+    }
+
+    
+    @Override
+    public void onRebind(Intent intent) {
+        super.onRebind(intent);
     }
 
     @Override

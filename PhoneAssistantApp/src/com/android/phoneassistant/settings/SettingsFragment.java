@@ -1,7 +1,5 @@
 package com.android.phoneassistant.settings;
 
-import java.io.File;
-
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageInfo;

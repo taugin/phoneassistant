@@ -3,7 +3,6 @@ package com.android.phoneassistant;
 import java.io.File;
 
 import android.app.Application;
-import android.os.AsyncTask;
 import android.os.Environment;
 
 import com.android.phoneassistant.util.GlobalConfig;

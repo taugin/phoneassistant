@@ -126,28 +126,15 @@
 
         <service android:name="com.chukong.sdk.service.WebService" />
         <activity
-            android:name="com.android.phoneassistant.webserver.activity.WebServerEnter"
-            android:configChanges="keyboardHidden|orientation|screenLayout|screenSize"
-            android:label="@string/phoneshare"
+            android:name="com.android.phoneassistant.webserver.activity.ShareEntryActivity"
+            android:icon="@drawable/ic_share"
             android:screenOrientation="portrait"
-            android:icon="@drawable/ic_phoneshare"
-            >
+            android:label="@string/app_share" >
             <intent-filter>
                 <action android:name="com.android.phoneassistant.intent.action.PHONEASSISTANT" />
                 <category android:name="com.android.phoneassistant.intent.category.PHONEASSISTANT" />
             </intent-filter>
         </activity>
-        <activity-alias
-            android:name="com.android.phoneassistant.activity.ShareActivity"
-            android:targetActivity="com.android.phoneassistant.webserver.activity.WebServerEnter"
-            android:icon="@drawable/ic_share"
-            android:screenOrientation="portrait"
-            android:label="@string/share_zero_flow" >
-            <intent-filter>
-                <action android:name="com.android.phoneassistant.intent.action.PHONEASSISTANT" />
-                <category android:name="com.android.phoneassistant.intent.category.PHONEASSISTANT" />
-            </intent-filter>
-        </activity-alias>
         <activity
             android:name="com.android.phoneassistant.webserver.activity.WebServerWithHotpot"
             android:configChanges="keyboardHidden|orientation|screenLayout|screenSize"
@@ -169,12 +156,7 @@
             android:launchMode="singleTop" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.PREFERENCE" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="com.android.phoneassistant.intent.action.PHONEASSISTANT" />
-                <category android:name="com.android.phoneassistant.intent.category.PHONEASSISTANT" />
             </intent-filter>
         </activity>
         <activity

@@ -13,9 +13,8 @@ import org.apache.http.HttpRequest;
 import org.apache.http.entity.FileEntity;
 import org.apache.http.entity.StringEntity;
 
-import com.chukong.sdk.common.Log;
-
 import com.chukong.sdk.Constants.Config;
+import com.chukong.sdk.common.Log;
 import com.chukong.sdk.serv.TempCacheFilter;
 import com.chukong.sdk.serv.entity.GzipByteArrayEntity;
 import com.chukong.sdk.serv.entity.GzipFileEntity;

@@ -12,6 +12,7 @@
         <mkdir dir="${release_dir}"/>
         <antcall target="create_json" />
         <antcall target="release" />
+        <antcall target="install" />
     </target>
     <target name="create_json">
         <echo file="${release_dir}/${config_file}">{${line.separator}</echo>

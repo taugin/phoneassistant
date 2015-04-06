@@ -5,12 +5,10 @@ import java.lang.reflect.Method;
 
 import android.content.Context;
 import android.net.wifi.WifiConfiguration;
-import android.net.wifi.WifiManager;
 import android.net.wifi.WifiConfiguration.AuthAlgorithm;
 import android.net.wifi.WifiConfiguration.KeyMgmt;
+import android.net.wifi.WifiManager;
 import android.preference.PreferenceManager;
-import android.provider.Settings;
-
 
 import com.chukong.sdk.common.Log;
 import com.chukong.sdk.receiver.WifiApStateReceiver;

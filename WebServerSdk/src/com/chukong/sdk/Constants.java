@@ -2,8 +2,6 @@ package com.chukong.sdk;
 
 import com.chukong.sdk.util.CommonUtil;
 
-import android.os.Environment;
-
 /**
  * @brief 应用设置常量
  * @author join

@@ -1,7 +1,5 @@
 package com.chukong.sdk.dns;
 
-import java.net.Inet6Address;
-import java.net.UnknownHostException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

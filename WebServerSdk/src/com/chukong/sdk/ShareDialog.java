@@ -19,7 +19,6 @@ import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.Paint.Style;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
@@ -41,14 +40,14 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.chukong.sdk.Constants.Config;
 import com.chukong.sdk.common.Log;
 import com.chukong.sdk.receiver.OnWifiApStateChangeListener;
 import com.chukong.sdk.receiver.WifiApStateReceiver;
-import com.chukong.sdk.wifiap.WifiApManager;
-import com.chukong.sdk.Constants.Config;
 import com.chukong.sdk.serv.WebServer.OnWebServListener;
 import com.chukong.sdk.service.WebService;
 import com.chukong.sdk.util.CommonUtil;
+import com.chukong.sdk.wifiap.WifiApManager;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
 
