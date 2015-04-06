@@ -46,6 +46,7 @@ public abstract class WebServActivity extends Activity implements OnWebServListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         webServIntent = new Intent(this, WebService.class);
+        doBindService();
     }
 
     protected boolean isBound() {

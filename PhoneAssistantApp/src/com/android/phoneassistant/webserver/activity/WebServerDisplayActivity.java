@@ -10,7 +10,6 @@ import org.join.zxing.encode.QRCodeEncoder;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -33,24 +32,20 @@ import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
 import com.android.phoneassistant.R;
 import com.android.phoneassistant.webserver.listener.OnWsListener;
 import com.android.phoneassistant.webserver.recevier.WSReceiver;
-import com.android.phoneassistant.webserver.service.WSService;
 import com.chukong.sdk.Constants;
 import com.chukong.sdk.Constants.Config;
 import com.chukong.sdk.GlobalInit;
 import com.chukong.sdk.common.CmdExecutor;
 import com.chukong.sdk.common.Log;
-import com.chukong.sdk.receiver.OnWifiApStateChangeListener;
 import com.chukong.sdk.receiver.WifiApStateReceiver;
-import com.chukong.sdk.redirect.RedirectSwitch;
 import com.chukong.sdk.serv.WebServer;
 import com.chukong.sdk.util.CommonUtil;
 import com.chukong.sdk.util.CopyUtil;
@@ -64,21 +59,19 @@ import com.google.zxing.WriterException;
  * @author join
  */
 @SuppressWarnings("deprecation")
-public class WebServerWithHotpot extends WebServActivity implements OnClickListener, OnWsListener, OnWifiApStateChangeListener {
+public class WebServerDisplayActivity extends WebServActivity implements OnWsListener {
 
     static final String TAG = "WSActivity";
     static final boolean DEBUG = false || Config.DEV_MODE;
 
     private CommonUtil mCommonUtil;
 
-    private ToggleButton toggleBtnRedirect;
+    private TextView urlText;
 	private ImageView qrCodeView;
 
     private String ipAddr;
 
-    private boolean needResumeServer = false;
-
-    private ProgressDialog mProgressDialog = null;
+    private boolean needResumeServer = true;
 
     private static final int W_START = 0x0101;
     private static final int W_STOP = 0x0102;
@@ -89,9 +82,6 @@ public class WebServerWithHotpot extends WebServActivity implements OnClickListe
     private static final int DLG_TEMP_NOT_FOUND = 0x0203;
     private static final int DLG_SCAN_RESULT = 0x0204;
 
-    private static final int DISMISS_PROGRESS_DLG = 0x0205;
-    private static final int DLG_PROGRESS_TIMEOUT = 30 * 1000;
-
     private String lastResult;
 
     private Handler mHandler = new Handler() {
@@ -100,12 +90,18 @@ public class WebServerWithHotpot extends WebServActivity implements OnClickListe
         public void handleMessage(Message msg) {
             switch (msg.what) {
             case W_START: {
-                setUrlTextAndGenerateQRImage();
+                setUrlText(ipAddr);
                 qrCodeView.setVisibility(View.VISIBLE);
                 break;
             }
             case W_STOP: {
-                //qrCodeView.setImageResource(0);
+                ipAddr = mCommonUtil.getLocalIpAddress();
+                if (ipAddr == null) {
+                    urlText.setText(R.string.info_net_off);
+                } else {
+                    urlText.setText("");
+                }
+                qrCodeView.setImageResource(0);
                 qrCodeView.setVisibility(View.GONE);
                 break;
             }
@@ -124,10 +120,8 @@ public class WebServerWithHotpot extends WebServActivity implements OnClickListe
                     Log.e(TAG, "ERR_UNEXPECT");
                     break;
                 }
+                doStopClick();
                 return;
-            case DISMISS_PROGRESS_DLG:
-                dismissProgressDlg();
-                break;
             }
         }
 
@@ -136,16 +130,24 @@ public class WebServerWithHotpot extends WebServActivity implements OnClickListe
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.webserver_with_hotpot);
+        Intent intent = getIntent();
+        boolean hotpot = false;
+        if (intent != null) {
+            hotpot = intent.getBooleanExtra("hotpot", false);
+        }
+        if (hotpot) {
+            setContentView(R.layout.webserver_with_hotpot);
+        } else {
+            setContentView(R.layout.webserver_no_hotpot);
+        }
+
         initObjs(savedInstanceState);
         initViews(savedInstanceState);
-        WSService.startWsService(this);
         WSReceiver.register(this, this);
-        WifiApStateReceiver.register(this, this);
-        // setWifiApEnabled(true);
+
         GlobalInit globalInit = GlobalInit.getInstance();
         new GlobalThread().execute(globalInit);
-        showProgressDlg(true);
+        doStartClick();
     }
 
     private void initObjs(Bundle state) {
@@ -153,27 +155,22 @@ public class WebServerWithHotpot extends WebServActivity implements OnClickListe
     }
 
     private void initViews(Bundle state) {
+        urlText = (TextView) findViewById(R.id.urlText);
         qrCodeView = (ImageView) findViewById(R.id.qrCodeView);
-
-        toggleBtnRedirect = (ToggleButton) findViewById(R.id.toggleBtnRedirect);
-        boolean redirect = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Constants.REDIRECT_STATUS, false);
-        toggleBtnRedirect.setChecked(redirect);
-        toggleBtnRedirect.setOnClickListener(this);
         if (state != null) {
             ipAddr = state.getString("ipAddr");
             needResumeServer = state.getBoolean("needResumeServer", false);
             boolean isRunning = state.getBoolean("isRunning", false);
             if (isRunning) {
-                setUrlTextAndGenerateQRImage();
+                setUrlText(ipAddr);
                 doBindService();
             }
         }
     }
 
-    private void setUrlTextAndGenerateQRImage() {
-        ipAddr = mCommonUtil.getLocalIpAddress();
+    private void setUrlText(String ipAddr) {
         String url = "http://" + ipAddr + ":" + Config.PORT + "/";
-        Log.d(Log.TAG, "url = " + url);
+        urlText.setText(url);
         generateQRCode(url);
     }
 
@@ -198,23 +195,9 @@ public class WebServerWithHotpot extends WebServActivity implements OnClickListe
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        doUnbindService();
         WifiApStateReceiver.unregister(this);
         WSReceiver.unregister(this);
-        WSService.stopWsService(this);
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    
-    @Override
-    public void onBackPressed() {
-        //super.onBackPressed();
-        setWifiApEnabled(false);
-        showProgressDlg(false);
+        doStopClick();
     }
 
     @Override
@@ -236,16 +219,25 @@ public class WebServerWithHotpot extends WebServActivity implements OnClickListe
         return super.onMenuItemSelected(featureId, item);
     }
 
-    @Override
-    public void onClick(View v) {
-        setRedirect(toggleBtnRedirect.isChecked());
-        needResumeServer = false;
+
+    private void doStartClick() {
+        ipAddr = mCommonUtil.getLocalIpAddress();
+        if (ipAddr == null) {
+            urlText.setText(R.string.info_net_off);
+            //toast(getString(R.string.info_net_off));
+            return;
+        }
+        doBindService();
+    }
+
+    private void doStopClick() {
+        doUnbindService();
+        ipAddr = null;
     }
 
     @Override
     public void onStarted() {
         Log.d(Log.TAG, "W_START");
-        mHandler.sendEmptyMessage(DISMISS_PROGRESS_DLG);
         mHandler.sendEmptyMessage(W_START);
     }
 
@@ -253,8 +245,6 @@ public class WebServerWithHotpot extends WebServActivity implements OnClickListe
     public void onStopped() {
         Log.d(Log.TAG, "W_STOP");
         mHandler.sendEmptyMessage(W_STOP);
-        mHandler.sendEmptyMessage(DISMISS_PROGRESS_DLG);
-        finish();
     }
 
     @Override
@@ -270,6 +260,7 @@ public class WebServerWithHotpot extends WebServActivity implements OnClickListe
     @Override
     public void onServAvailable() {
         if (needResumeServer) {
+            doStartClick();
             needResumeServer = false;
         }
     }
@@ -277,6 +268,7 @@ public class WebServerWithHotpot extends WebServActivity implements OnClickListe
     @Override
     public void onServUnavailable() {
         if (webService != null && webService.isRunning()) {
+            doStopClick();
             needResumeServer = true;
         }
     }
@@ -363,11 +355,6 @@ public class WebServerWithHotpot extends WebServActivity implements OnClickListe
 
     @SuppressLint("NewApi")
     private void setWifiApEnabled(boolean enabled) {
-        boolean apEnable = WifiApManager.getInstance(this).isWifiApEnabled();
-        Log.d(Log.TAG, "apEnable = " + apEnable);
-        if (apEnable == enabled) {
-            return ;
-        }
         if (enabled) {
             WifiConfiguration oldConfig = WifiApManager.getInstance(this).getWifiApConfiguration();
             Editor editor = PreferenceManager.getDefaultSharedPreferences(this).edit();
@@ -393,34 +380,6 @@ public class WebServerWithHotpot extends WebServActivity implements OnClickListe
         }
     }
 
-    @Override
-    public void onWifiApStateChanged(int state) {
-        if (state == WifiApStateReceiver.WIFI_AP_STATE_ENABLED) {
-            WifiConfiguration config = WifiApManager.getInstance(this).getWifiApConfiguration();
-            if (config != null) {
-                doBindService();
-            }
-        } else if (state == WifiApStateReceiver.WIFI_AP_STATE_DISABLED) {
-            doUnbindService();
-        }
-    }
-    private void setRedirect(boolean redirect) {
-        Log.d(Log.TAG, "CommonUtil.isRooted() = " + CommonUtil.isRooted());
-        boolean wifiApEnabled = WifiApManager.getInstance(this).isWifiApEnabled();
-        if (redirect && !wifiApEnabled) {
-            Toast.makeText(this, "建议先开启WifiAp", Toast.LENGTH_SHORT).show();
-            toggleBtnRedirect.setChecked(false);
-            return ;
-        }
-        boolean result = RedirectSwitch.getInstance(this).setRedirectState(redirect);
-        boolean preState = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Constants.REDIRECT_STATUS, false);
-        toggleBtnRedirect.setChecked(result ? redirect : preState);
-        if (!result) {
-            // missRootPermissions();
-            Toast.makeText(this, R.string.miss_root, Toast.LENGTH_SHORT).show();
-        }
-    }
-
     private void generateQRCode(String text) {
         Intent intent = new Intent(Intents.Encode.ACTION);
         intent.putExtra(Intents.Encode.FORMAT, BarcodeFormat.QR_CODE.toString());
@@ -429,7 +388,7 @@ public class WebServerWithHotpot extends WebServActivity implements OnClickListe
         try {
             int dimension = getDimension();
             QRCodeEncoder qrCodeEncoder = new QRCodeEncoder(this, intent, dimension, false);
-            Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.icon);
+            Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
             qrCodeEncoder.setLogoBmp(bmp);
             Bitmap bitmap = qrCodeEncoder.encodeAsBitmap();
             if (bitmap == null) {
@@ -475,7 +434,7 @@ public class WebServerWithHotpot extends WebServActivity implements OnClickListe
     }
 
     private void installRootTool() {
-        CopyUtil copyUtil = new CopyUtil(WebServerWithHotpot.this);
+        CopyUtil copyUtil = new CopyUtil(WebServerDisplayActivity.this);
         try {
             copyUtil.assetsCopy("tools", getFilesDir().getAbsolutePath(), true);
         } catch (IOException e) {
@@ -503,24 +462,6 @@ public class WebServerWithHotpot extends WebServActivity implements OnClickListe
         registerReceiver(receiver, filter);
     }
 
-    private void showProgressDlg(boolean start) {
-        String message = getResources().getString(start ? R.string.starting_server : R.string.stoping_server);
-        if (mProgressDialog == null) {
-            mProgressDialog = new ProgressDialog(this);
-            mProgressDialog.setCanceledOnTouchOutside(false);
-            mProgressDialog.setCancelable(false);
-            mProgressDialog.setMessage(message);
-        }
-        mProgressDialog.show();
-        mHandler.sendEmptyMessageDelayed(DISMISS_PROGRESS_DLG, DLG_PROGRESS_TIMEOUT);
-    }
-    private void dismissProgressDlg() {
-        if (mProgressDialog != null && mProgressDialog.isShowing()) {
-            mProgressDialog.dismiss();
-            mProgressDialog = null;
-        }
-    }
-
     private class GlobalThread extends AsyncTask<GlobalInit, Void, Void> {
         @Override
         protected Void doInBackground(GlobalInit... params) {
@@ -531,7 +472,7 @@ public class WebServerWithHotpot extends WebServActivity implements OnClickListe
 
         @Override
         protected void onPostExecute(Void result) {
-            setWifiApEnabled(true);
+            doStartClick();
         }
     }
 }

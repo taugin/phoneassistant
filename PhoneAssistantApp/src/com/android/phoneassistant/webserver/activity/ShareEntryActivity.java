@@ -12,22 +12,29 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 
 import com.android.phoneassistant.R;
 import com.android.phoneassistant.util.Log;
+import com.android.phoneassistant.webserver.activity.HotpotHelper.OnHotpotStateListener;
 import com.android.phoneassistant.webserver.service.WSService;
 import com.chukong.sdk.GlobalInit;
 
-public class ShareEntryActivity extends Activity implements OnClickListener, OnCheckedChangeListener {
+public class ShareEntryActivity extends Activity implements OnClickListener, OnCheckedChangeListener, OnHotpotStateListener {
 
     private CheckBox mShareType;
     private Button mAppSelfShare;
     private Button mAllAppsShare;
     private Button mServerSettings;
+    private HotpotHelper mHotpotHelper;
+    private boolean mBackPressed;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mBackPressed = false;
         setContentView(R.layout.appshare_entrylayout);
         WSService.startWsService(this);
+        mHotpotHelper = new HotpotHelper(this);
+        mHotpotHelper.setOnHotpotStateListener(this);
         mShareType = (CheckBox) findViewById(R.id.share_type);
         mShareType.setOnCheckedChangeListener(this);
+        mShareType.setOnClickListener(this);
         mShareType.setChecked(false);
         mAppSelfShare = (Button) findViewById(R.id.app_self_share);
         mAppSelfShare.setOnClickListener(this);
@@ -52,6 +59,10 @@ public class ShareEntryActivity extends Activity implements OnClickListener, OnC
             intent = new Intent(this, PreferActivity.class);
             startActivity(intent);
             break;
+        case R.id.share_type:
+            boolean checked = mShareType.isChecked();
+            mHotpotHelper.setWifiApEnabled(checked);
+            break;
         default:
             break;
         }
@@ -59,11 +70,23 @@ public class ShareEntryActivity extends Activity implements OnClickListener, OnC
 
     public void startShare(boolean selfShare) {
         Log.d(Log.TAG, "selfShare : " + selfShare);
-        boolean checked = mShareType.isChecked();
         GlobalInit globalInit = GlobalInit.getInstance();
         globalInit.setLocalShare(selfShare);
-        Intent intent = new Intent(this, checked ? WebServerWithHotpot.class : WebServerNoHotpot.class);
+        Intent intent = new Intent(this, WebServerDisplayActivity.class);
+        intent.putExtra("hotpot", mHotpotHelper.hotpotEnabled());
         startActivity(intent);
+    }
+
+    
+    @Override
+    public void onBackPressed() {
+        mBackPressed = false;
+        if (mHotpotHelper.hotpotEnabled()) {
+            mBackPressed = true;
+            mHotpotHelper.setWifiApEnabled(false);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     @Override
@@ -76,5 +99,12 @@ public class ShareEntryActivity extends Activity implements OnClickListener, OnC
     public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
         int resId = checked ? R.string.hotpot_type : R.string.wlan_type;
         mShareType.setText(resId);
+    }
+
+    @Override
+    public void onHotpotState(boolean enable) {
+        if (mBackPressed) {
+            finish();
+        }
     }
 }
