@@ -134,6 +134,8 @@ public class WebServerDisplayActivity extends WebServActivity implements OnWsLis
         boolean hotpot = false;
         if (intent != null) {
             hotpot = intent.getBooleanExtra("hotpot", false);
+            String title = intent.getStringExtra("title");
+            setTitle(title);
         }
         if (hotpot) {
             setContentView(R.layout.webserver_with_hotpot);

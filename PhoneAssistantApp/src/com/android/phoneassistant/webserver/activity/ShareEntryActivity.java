@@ -48,12 +48,15 @@ public class ShareEntryActivity extends Activity implements OnClickListener, OnC
     @Override
     public void onClick(View v) {
         Intent intent = null;
+        String title = null;
         switch(v.getId()) {
         case R.id.app_self_share:
-            startShare(true);
+            title = getResources().getString(R.string.app_self_share);
+            startShare(true, title);
             break;
         case R.id.all_apps_share:
-            startShare(false);
+            title = getResources().getString(R.string.all_apps_share);
+            startShare(false, title);
             break;
         case R.id.web_settings:
             intent = new Intent(this, PreferActivity.class);
@@ -68,12 +71,13 @@ public class ShareEntryActivity extends Activity implements OnClickListener, OnC
         }
     }
 
-    public void startShare(boolean selfShare) {
+    public void startShare(boolean selfShare, String title) {
         Log.d(Log.TAG, "selfShare : " + selfShare);
         GlobalInit globalInit = GlobalInit.getInstance();
         globalInit.setLocalShare(selfShare);
         Intent intent = new Intent(this, WebServerDisplayActivity.class);
         intent.putExtra("hotpot", mHotpotHelper.hotpotEnabled());
+        intent.putExtra("title", title);
         startActivity(intent);
     }
 
