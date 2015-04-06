@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="custom_ruls" default="help">
+    <property name="release_dir" location="../release_dir" />
+    <property name="config_file" value="config.json" />
+    <property name="url_prefix" value="https://raw.githubusercontent.com/taugin/versionrelease/master/phoneassistant" />
+    <xmlproperty file="AndroidManifest.xml" prefix="mymanifest" collapseAttributes="true" />
+    <property name="version_name" value="${mymanifest.manifest.android:versionName}" />
+    <property name="version_code" value="${mymanifest.manifest.android:versionCode}" />
+    <property name="apkname" value="${ant.project.name}_${mymanifest.manifest.android:versionName}.apk" />
+    <property name="out.final.file" location="${release_dir}/${apkname}" />
+    <target name="deploy">
+        <mkdir dir="${release_dir}"/>
+        <antcall target="create_json" />
+        <antcall target="release" />
+    </target>
+    <target name="create_json">
+        <echo file="${release_dir}/${config_file}">{${line.separator}</echo>
+        <echo file="${release_dir}/${config_file}" append="true">"app_url" : "${url_prefix}/${apkname}",${line.separator}</echo>
+        <echo file="${release_dir}/${config_file}" append="true">"app_name" : "${apkname}",${line.separator}</echo>
+        <echo file="${release_dir}/${config_file}" append="true">"version_code" : ${version_code},${line.separator}</echo>
+        <echo file="${release_dir}/${config_file}" append="true">"version_name" : "${version_name}"${line.separator}</echo>
+        <echo file="${release_dir}/${config_file}" append="true">}</echo>
+    </target>
+</project>
