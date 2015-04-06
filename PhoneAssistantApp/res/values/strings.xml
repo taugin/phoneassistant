@@ -65,4 +65,5 @@
     <string name="all_apps_share">ShareApps</string>
     <string name="wlan_type">Wlan</string>
     <string name="hotpot_type">Hotpot</string>
+    <string name="unzipping">Unzipping</string>
 </resources> 

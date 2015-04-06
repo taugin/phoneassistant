@@ -160,6 +160,8 @@ public class ImportExportActivity extends Activity implements OnClickListener,
             }
             File file = new File(mImportingFile);
             if (file.exists()) {
+                mImportExportDialog.setStatus(R.string.unzipping);
+                mImportExportDialog.resetIndexState();
                 mImportHelper.unzipFile(mImportingFile);
                 mImportHelper.importCallInfo();
             }
@@ -273,6 +275,33 @@ public class ImportExportActivity extends Activity implements OnClickListener,
                             text);
                     mStatusText.setText(statusText);
                     mIndexState.setText(String.valueOf(cur + "/" + max));
+                }
+            });
+        }
+
+        public void setStatus(final String statusText) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mStatusText.setText(statusText);
+                }
+            });
+        }
+
+        public void setStatus(final int resId) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mStatusText.setText(resId);
+                }
+            });
+        }
+
+        public void resetIndexState() {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mIndexState.setText("");
                 }
             });
         }

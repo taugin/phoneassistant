@@ -69,4 +69,5 @@
     <string name="all_apps_share">系统应用分享</string>
     <string name="wlan_type">局域网方式</string>
     <string name="hotpot_type">热点方式</string>
+    <string name="unzipping">正在解压</string>
 </resources>
