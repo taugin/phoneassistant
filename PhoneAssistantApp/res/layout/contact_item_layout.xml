@@ -144,7 +144,7 @@
         android:layout_height="48dp"
         android:background="@drawable/frame_drawable"
         android:orientation="horizontal"
-        android:visibility="gone" >
+        android:visibility="visible" >
 
         <com.android.phoneassistant.view.CustomLinearLayout
             android:id="@+id/black_name"
@@ -167,7 +167,26 @@
                 android:text="@string/black_name"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </com.android.phoneassistant.view.CustomLinearLayout>
+        <com.android.phoneassistant.view.CustomLinearLayout
+            android:id="@+id/send_sms"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:background="@drawable/item_background"
+            android:descendantFocusability="blocksDescendants"
+            android:clickable="true"
+            android:gravity="center" >
 
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:button="@drawable/sms"
+                android:gravity="center"
+                android:tag="CustomLinearLayoutTag"
+                android:text="@string/send_sms"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+        </com.android.phoneassistant.view.CustomLinearLayout>
         <com.android.phoneassistant.view.CustomLinearLayout
             android:id="@+id/delete_item"
             android:layout_width="match_parent"

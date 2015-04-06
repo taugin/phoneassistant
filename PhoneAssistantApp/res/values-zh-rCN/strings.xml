@@ -70,4 +70,5 @@
     <string name="wlan_type">局域网方式</string>
     <string name="hotpot_type">热点方式</string>
     <string name="unzipping">正在解压</string>
+    <string name="send_sms">发短信</string>
 </resources>

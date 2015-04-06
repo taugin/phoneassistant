@@ -177,6 +177,7 @@ public class RecordListFragment extends ListFragment implements OnCheckedChangeL
         View moreFunction;
         View deleteItem;
         View blackName;
+        View sendSms;
         CheckBox blackNameState;
     }
     private class RecordListAdapter extends ArrayAdapter<ContactInfo> {
@@ -216,6 +217,8 @@ public class RecordListFragment extends ListFragment implements OnCheckedChangeL
                 viewHolder.blackName = convertView.findViewById(R.id.black_name);
                 viewHolder.blackName.setOnClickListener(RecordListFragment.this);
                 viewHolder.blackNameState = (CheckBox) convertView.findViewById(R.id.blacknamestate);
+                viewHolder.sendSms = convertView.findViewById(R.id.send_sms);
+                viewHolder.sendSms.setOnClickListener(RecordListFragment.this);
                 convertView.setTag(viewHolder);
             } else {
                 viewHolder = (ViewHolder) convertView.getTag();
@@ -230,6 +233,7 @@ public class RecordListFragment extends ListFragment implements OnCheckedChangeL
 
             viewHolder.deleteItem.setTag(position);
             viewHolder.blackName.setTag(position);
+            viewHolder.sendSms.setTag(position);
 
             ContactInfo info = getItem(position);
 
@@ -381,6 +385,12 @@ public class RecordListFragment extends ListFragment implements OnCheckedChangeL
             ContactInfo info = mListAdapter.getItem(position);
             info.checked = true;
             showConfirmDialog();
+        } else if (v.getId() == R.id.send_sms) {
+            int position = (Integer) v.getTag();
+            ContactInfo info = mListAdapter.getItem(position);
+            Uri smsToUri = Uri.parse("smsto:" + info.contactNumber);
+            Intent intent = new Intent(Intent.ACTION_SENDTO, smsToUri);
+            startActivity(intent);
         }
     }
 
