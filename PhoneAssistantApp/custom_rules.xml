@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="custom_ruls" default="help">
-    <property name="release_dir" location="../release_dir" />
+    <property name="release_dir" location="../versionrelease" />
     <property name="config_file" value="config.json" />
     <property name="url_prefix" value="https://raw.githubusercontent.com/taugin/versionrelease/master/phoneassistant" />
     <xmlproperty file="AndroidManifest.xml" prefix="mymanifest" collapseAttributes="true" />
