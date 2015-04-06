@@ -12,6 +12,7 @@
         <delete dir="${release_dir}" />
         <mkdir dir="${release_dir}"/>
         <antcall target="create_json" />
+        <antcall target="clean" />
         <antcall target="release" />
     </target>
     <target name="create_json">
