@@ -1,5 +1,6 @@
 package com.android.phoneassistant.util;
 
+import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -9,6 +10,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
+import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.provider.ContactsContract.Contacts;
 import android.text.TextUtils;
 
@@ -35,11 +37,9 @@ public class ServiceUtil {
                 c.close();
             }
         }
-        Log.d(Log.TAG, "addOrThrowContact = id = " + _id);
-        String name = getNameFromContact(context, phoneNumber);
-        if (TextUtils.isEmpty(name)) {
-            name = getNameFromContact(context, "+86" + phoneNumber);
-        }
+        Log.d(Log.TAG, "id = " + _id);
+        HashMap<String, String> hashMap = queryContact(context);
+        String name = hashMap.get(phoneNumber);
         Log.d(Log.TAG, "name = " + name);
         if (_id != -1) {
             ContentValues values = new ContentValues();
@@ -48,6 +48,8 @@ public class ServiceUtil {
             if (!TextUtils.isEmpty(name)) {
                 values.put(DBConstant.CONTACT_NAME, name);
                 values.put(DBConstant.CONTACT_MODIFY_NAME, DBConstant.MODIFY_NAME_FORBID);
+            } else {
+                values.put(DBConstant.CONTACT_MODIFY_NAME, DBConstant.MODIFY_NAME_ALLOW);
             }
             context.getContentResolver().update(ContentUris.withAppendedId(DBConstant.CONTACT_URI, _id), values, null, null);
             return _id;
@@ -61,7 +63,7 @@ public class ServiceUtil {
             values.put(DBConstant.CONTACT_MODIFY_NAME, DBConstant.MODIFY_NAME_FORBID);
         }
         Uri contentUri = context.getContentResolver().insert(DBConstant.CONTACT_URI, values);
-        
+
         return (int) ContentUris.parseId(contentUri);
     }
     
@@ -142,6 +144,40 @@ public class ServiceUtil {
 
         return isValid;
 
+    }
+    
+    private static HashMap<String, String> queryContact(Context context) {
+        HashMap<String, String> hashMap = new HashMap<String, String>();
+        String[] PHONES_PROJECTION = new String[] {Phone.DISPLAY_NAME, Phone.NUMBER };
+        Cursor c = null;
+        try {
+            c = context.getContentResolver().query(Phone.CONTENT_URI, PHONES_PROJECTION, 
+                    null, null, null);
+            if (c != null) {
+                if (c.moveToFirst()) {
+                    do {
+                        String phoneNumber = c.getString(c.getColumnIndex(Phone.NUMBER));
+                        String displayName = c.getString(c.getColumnIndex(Phone.DISPLAY_NAME));
+                        if (phoneNumber.startsWith("+86")) {
+                            phoneNumber = phoneNumber.substring("+86".length());
+                        }
+                        phoneNumber = phoneNumber.replaceAll("-", "");
+                        phoneNumber = phoneNumber.replaceAll("\\s+", "");
+                        //Log.d(Log.TAG, phoneNumber + " : " + displayName);
+                        if (!TextUtils.isEmpty(displayName)) {
+                            hashMap.put(phoneNumber, displayName);
+                        }
+                    } while (c.moveToNext());
+                }
+            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (c != null) {
+                c.close();
+            }
+        }
+        return hashMap;
     }
 
 }
