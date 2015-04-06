@@ -15,6 +15,7 @@ public class ContactInfo {
     public boolean contactModifyName;
     public boolean checked;
     public boolean blocked;
+    public boolean expand;
     
     public String toString() {
         return contactNumber;

@@ -64,6 +64,7 @@ public class RecordListFragment extends ListFragment implements OnCheckedChangeL
     private CheckBox mCheckBox;
     private MenuItem mMenuItem;
     private SearchView mSearchView;
+    private int mExpandPos = -1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -141,6 +142,7 @@ public class RecordListFragment extends ListFragment implements OnCheckedChangeL
                     RecordFileManager.getInstance(getActivity()).deleteContactFromDB(mRecordList);
                     mViewState = VIEW_STATE_NORMAL;
                     mListAdapter.notifyDataSetChanged();
+                    mExpandPos = -1;
                     if (mActionMode != null) {
                         mActionMode.finish();
                     }
@@ -162,7 +164,7 @@ public class RecordListFragment extends ListFragment implements OnCheckedChangeL
         mAlertDialog.show();
     }
 
-    private ViewHolder lastViewHolder = null;
+    private ContactInfo lastContactInfo = null;
     class ViewHolder {
         LinearLayout dialNumber;
         LinearLayout itemContainer;
@@ -224,8 +226,6 @@ public class RecordListFragment extends ListFragment implements OnCheckedChangeL
                 viewHolder = (ViewHolder) convertView.getTag();
             }
 
-            viewHolder.moreFunction.setVisibility(View.GONE);
-            viewHolder.functionMenuState.setChecked(false);
             viewHolder.itemContainer.setTag(position);
             viewHolder.dialNumber.setTag(position);
             viewHolder.checkBoxContainer.setTag(position);
@@ -272,6 +272,12 @@ public class RecordListFragment extends ListFragment implements OnCheckedChangeL
                     viewHolder.functionMenu.setVisibility(View.INVISIBLE);
                     viewHolder.checkBox.setVisibility(View.VISIBLE);
                 }
+
+                if (mExpandPos != -1) {
+                    info.expand = mExpandPos == position;
+                }
+                viewHolder.moreFunction.setVisibility(info.expand ? View.VISIBLE : View.GONE);
+                viewHolder.functionMenuState.setChecked(info.expand);
             }
             return convertView;
         }
@@ -331,22 +337,14 @@ public class RecordListFragment extends ListFragment implements OnCheckedChangeL
             int visiblePos = position - getListView().getFirstVisiblePosition();
             View view = getListView().getChildAt(visiblePos);
             ViewHolder holder = (ViewHolder) view.getTag();
-
-            if (lastViewHolder != null && (lastViewHolder != holder)) {
-                lastViewHolder.moreFunction.setVisibility(View.GONE);
-                lastViewHolder.functionMenuState.setChecked(false);
+            if (lastContactInfo != null && (lastContactInfo != info)) {
+                lastContactInfo.expand = false;
             }
-
-            if (holder != null) {
-                int visibility = holder.moreFunction.getVisibility();
-                if (visibility == View.GONE) {
-                    holder.moreFunction.setVisibility(View.VISIBLE);
-                } else {
-                    holder.moreFunction.setVisibility(View.GONE);
-                }
-                holder.blackNameState.setChecked(info.blocked);
-            }
-            lastViewHolder = holder;
+            info.expand = !info.expand;
+            holder.blackNameState.setChecked(info.blocked);
+            mExpandPos = info.expand ? position : -1;
+            lastContactInfo = info;
+            mListAdapter.notifyDataSetChanged();
         } else if (v.getId() == R.id.black_name) {
             int position = (Integer) v.getTag();
             if (mPopupWindow != null && mPopupWindow.isShowing()) {
