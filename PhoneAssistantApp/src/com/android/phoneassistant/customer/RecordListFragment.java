@@ -178,6 +178,7 @@ public class RecordListFragment extends ListFragment implements OnCheckedChangeL
         View deleteItem;
         View blackName;
         View sendSms;
+        View blackStateIcon;
         CheckBox blackNameState;
     }
     private class RecordListAdapter extends ArrayAdapter<ContactInfo> {
@@ -201,6 +202,7 @@ public class RecordListFragment extends ListFragment implements OnCheckedChangeL
                 viewHolder.itemContainer.setOnLongClickListener(RecordListFragment.this);
                 viewHolder.displayName = (TextView) convertView.findViewById(R.id.display_name);
                 viewHolder.displayNumber = (TextView) convertView.findViewById(R.id.display_number);
+                viewHolder.blackStateIcon = convertView.findViewById(R.id.black_state_icon);
                 viewHolder.callState = (TextView) convertView.findViewById(R.id.call_state);
                 viewHolder.callLogDate = (TextView) convertView.findViewById(R.id.call_log_date);
                 viewHolder.functionMenu = convertView.findViewById(R.id.function_menu);
@@ -277,6 +279,7 @@ public class RecordListFragment extends ListFragment implements OnCheckedChangeL
                 viewHolder.moreFunction.setVisibility(info.expand ? View.VISIBLE : View.GONE);
                 viewHolder.functionMenuState.setChecked(info.expand);
                 viewHolder.blackNameState.setChecked(info.blocked);
+                viewHolder.blackStateIcon.setVisibility(info.blocked ? View.VISIBLE : View.INVISIBLE);
             }
             return convertView;
         }
@@ -363,6 +366,7 @@ public class RecordListFragment extends ListFragment implements OnCheckedChangeL
                     info.blocked = false;
                 }
             }
+            mListAdapter.notifyDataSetChanged();
         } else if (v.getId() == R.id.check_box_container) {
             int position = (Integer) v.getTag();
             ContactInfo info = mListAdapter.getItem(position);

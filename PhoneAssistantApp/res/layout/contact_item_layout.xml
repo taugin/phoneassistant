@@ -37,33 +37,47 @@
             android:orientation="vertical"
             android:paddingLeft="5dp" >
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:orientation="vertical" >
+                android:layout_weight="1" >
 
-                <TextView
-                    android:id="@+id/display_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="marquee"
-                    android:gravity="center_vertical"
-                    android:singleLine="true"
-                    android:text="@string/app_name"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                <ImageView
+                    android:id="@+id/black_state_icon"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_alignParentRight="true"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/black_state_icon" />
 
-                <TextView
-                    android:id="@+id/display_number"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="-5dp"
-                    android:ellipsize="marquee"
+                    android:layout_height="match_parent"
                     android:gravity="center_vertical"
-                    android:singleLine="true"
-                    android:textAppearance="?android:attr/textAppearanceSmall" />
-            </LinearLayout>
+                    android:layout_toLeftOf="@+id/black_state_icon"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/display_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="marquee"
+                        android:gravity="center_vertical"
+                        android:singleLine="true"
+                        android:text="@string/app_name"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+                    <TextView
+                        android:id="@+id/display_number"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="-5dp"
+                        android:ellipsize="marquee"
+                        android:gravity="center_vertical"
+                        android:singleLine="true"
+                        android:textAppearance="?android:attr/textAppearanceSmall" />
+                </LinearLayout>
+            </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -152,8 +166,8 @@
             android:layout_height="48dp"
             android:layout_weight="1"
             android:background="@drawable/item_background"
-            android:descendantFocusability="blocksDescendants"
             android:clickable="true"
+            android:descendantFocusability="blocksDescendants"
             android:gravity="center" >
 
             <CheckBox
@@ -167,14 +181,15 @@
                 android:text="@string/black_name"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </com.android.phoneassistant.view.CustomLinearLayout>
+
         <com.android.phoneassistant.view.CustomLinearLayout
             android:id="@+id/send_sms"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_weight="1"
             android:background="@drawable/item_background"
-            android:descendantFocusability="blocksDescendants"
             android:clickable="true"
+            android:descendantFocusability="blocksDescendants"
             android:gravity="center" >
 
             <CheckBox
@@ -187,14 +202,15 @@
                 android:text="@string/send_sms"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </com.android.phoneassistant.view.CustomLinearLayout>
+
         <com.android.phoneassistant.view.CustomLinearLayout
             android:id="@+id/delete_item"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_weight="1"
             android:background="@drawable/item_background"
-            android:descendantFocusability="blocksDescendants"
             android:clickable="true"
+            android:descendantFocusability="blocksDescendants"
             android:gravity="center" >
 
             <CheckBox
