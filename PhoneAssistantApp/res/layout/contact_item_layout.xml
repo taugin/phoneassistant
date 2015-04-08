@@ -181,7 +181,7 @@
                 android:text="@string/black_name"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </com.android.phoneassistant.view.CustomLinearLayout>
-
+        <View style="@style/vertical_line" />
         <com.android.phoneassistant.view.CustomLinearLayout
             android:id="@+id/send_sms"
             android:layout_width="match_parent"
@@ -202,7 +202,7 @@
                 android:text="@string/send_sms"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
         </com.android.phoneassistant.view.CustomLinearLayout>
-
+        <View style="@style/vertical_line" />
         <com.android.phoneassistant.view.CustomLinearLayout
             android:id="@+id/delete_item"
             android:layout_width="match_parent"

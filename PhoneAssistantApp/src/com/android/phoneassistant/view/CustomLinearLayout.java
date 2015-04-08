@@ -18,6 +18,7 @@ public class CustomLinearLayout extends LinearLayout {
     public CustomLinearLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
+
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         return true;
@@ -26,11 +27,10 @@ public class CustomLinearLayout extends LinearLayout {
     protected void onFinishInflate() {
         super.onFinishInflate();
         mCheckBox = (CheckBox) findViewWithTag("CustomLinearLayoutTag");
+        mCheckBox.setBackgroundColor(getResources().getColor(android.R.color.transparent));
     }
     public void setPressed(boolean pressed) {
         super.setPressed(pressed);
-        if (pressed) {
-            mCheckBox.setChecked(!mCheckBox.isChecked());
-        }
+        mCheckBox.setPressed(pressed);
     }
 }

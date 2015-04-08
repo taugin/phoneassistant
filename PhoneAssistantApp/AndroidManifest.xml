@@ -87,6 +87,7 @@
 
         <service
             android:name="com.android.phoneassistant.service.PhoneAssistantService"
+            android:process=":remote"
             android:exported="false" >
             <intent-filter>
                 <action android:name="com.android.phoneassistant.action.INCOMING_PHONE" />
