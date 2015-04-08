@@ -12,7 +12,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.SpannableString;
@@ -29,7 +28,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
-import android.view.ViewGroup.LayoutParams;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
@@ -278,6 +276,7 @@ public class RecordListFragment extends ListFragment implements OnCheckedChangeL
                 }
                 viewHolder.moreFunction.setVisibility(info.expand ? View.VISIBLE : View.GONE);
                 viewHolder.functionMenuState.setChecked(info.expand);
+                viewHolder.blackNameState.setChecked(info.blocked);
             }
             return convertView;
         }
@@ -341,7 +340,6 @@ public class RecordListFragment extends ListFragment implements OnCheckedChangeL
                 lastContactInfo.expand = false;
             }
             info.expand = !info.expand;
-            holder.blackNameState.setChecked(info.blocked);
             mExpandPos = info.expand ? position : -1;
             lastContactInfo = info;
             mListAdapter.notifyDataSetChanged();
