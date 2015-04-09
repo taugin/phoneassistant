@@ -251,20 +251,18 @@ public class RecordListFragment extends ListFragment implements OnCheckedChangeL
                     len = filter.length();
                 }
                 span.setSpan(new ForegroundColorSpan(Color.RED), 0, len, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-                if (info != null) {
-                    if (!TextUtils.isEmpty(info.contactName)) {
-                        viewHolder.displayName.setText(info.contactName);
-                        viewHolder.displayNumber.setText(span);
-                    } else {
-                        viewHolder.displayNumber.setText("");
-                        viewHolder.displayName.setText(span);
-                    }
-                    String callLog = String.format("%d%s", info.contactLogCount, RecordListFragment.this.getResources().getString(R.string.call_log_count));
-                    viewHolder.callState.setText(callLog);
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                    viewHolder.callLogDate.setText(sdf.format(new Date(info.contactUpdate)));
-                    viewHolder.checkBox.setChecked(info.checked);
+                if (!TextUtils.isEmpty(info.contactName)) {
+                    viewHolder.displayName.setText(info.contactName);
+                    viewHolder.displayNumber.setText(span);
+                } else {
+                    viewHolder.displayNumber.setText("");
+                    viewHolder.displayName.setText(span);
                 }
+                String callLog = String.format("%d%s", info.contactLogCount, RecordListFragment.this.getResources().getString(R.string.call_log_count));
+                viewHolder.callState.setText(callLog);
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                viewHolder.callLogDate.setText(sdf.format(new Date(info.contactUpdate)));
+                viewHolder.checkBox.setChecked(info.checked);
                 if (mViewState == VIEW_STATE_NORMAL) {
                     viewHolder.functionMenu.setVisibility(View.VISIBLE);
                     viewHolder.checkBox.setVisibility(View.INVISIBLE);
@@ -380,6 +378,7 @@ public class RecordListFragment extends ListFragment implements OnCheckedChangeL
             } else {
                 mMenuItem.setTitle(android.R.string.selectAll);
             }
+            mListAdapter.notifyDataSetChanged();
         } else if (v.getId() == R.id.delete_item) {
             int position = (Integer) v.getTag();
             ContactInfo info = mListAdapter.getItem(position);
