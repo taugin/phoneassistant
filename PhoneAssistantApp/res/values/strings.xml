@@ -67,4 +67,5 @@
     <string name="hotpot_type">Hotpot</string>
     <string name="unzipping">Unzipping</string>
     <string name="send_sms">SendSms</string>
+    <string name="sms_activity_notfound">Sms Activity Not Found !</string>
 </resources> 

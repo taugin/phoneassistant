@@ -71,4 +71,5 @@
     <string name="hotpot_type">热点方式</string>
     <string name="unzipping">正在解压</string>
     <string name="send_sms">发短信</string>
+    <string name="sms_activity_notfound">未找到短信应用！</string>
 </resources>

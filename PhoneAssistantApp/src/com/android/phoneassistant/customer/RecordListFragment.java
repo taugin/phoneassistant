@@ -7,6 +7,7 @@ import java.util.Date;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ListFragment;
+import android.content.ActivityNotFoundException;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -38,6 +39,7 @@ import android.widget.PopupWindow;
 import android.widget.SearchView;
 import android.widget.SearchView.OnQueryTextListener;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.phoneassistant.R;
 import com.android.phoneassistant.info.ContactInfo;
@@ -390,7 +392,11 @@ public class RecordListFragment extends ListFragment implements OnCheckedChangeL
             ContactInfo info = mListAdapter.getItem(position);
             Uri smsToUri = Uri.parse("smsto:" + info.contactNumber);
             Intent intent = new Intent(Intent.ACTION_SENDTO, smsToUri);
-            startActivity(intent);
+            try {
+                startActivity(intent);
+            } catch(ActivityNotFoundException e) {
+                Toast.makeText(getActivity(), R.string.sms_activity_notfound, Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
