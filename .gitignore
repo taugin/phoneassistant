@@ -4,5 +4,6 @@ bin/
 gen/
 ic_launcher-web.png
 PhoneAssistantApp/.classpath
+PhoneAssistantApp/instructions.txt
 release_dir
 versionrelease

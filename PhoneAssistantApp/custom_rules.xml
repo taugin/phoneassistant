@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="custom_ruls" default="help">
+    <taskdef resource="net/sf/antcontrib/antcontrib.properties">
+        <classpath>
+            <pathelement location="./ant-contrib-1.0b3.jar" />
+        </classpath>
+    </taskdef>
     <property name="release_dir" location="../versionrelease" />
     <property name="config_file" value="config.json" />
     <property name="url_prefix" value="https://raw.githubusercontent.com/taugin/versionrelease/master/phoneassistant" />
@@ -7,6 +12,12 @@
     <property name="version_name" value="${mymanifest.manifest.android:versionName}" />
     <property name="version_code" value="${mymanifest.manifest.android:versionCode}" />
     <property name="apkname" value="${ant.project.name}_${mymanifest.manifest.android:versionName}.apk" />
+    <loadfile property="instructions" srcFile="instructions.txt" encoding="GBK" failonerror="false"/>
+
+    <tstamp><format property="TODAY_CN" pattern="yyyy-MM-dd" locale="zh"/></tstamp>
+    <tstamp><format property="TIME_CN" pattern="yyyy-MM-dd-HH-mm-ss" locale="zh"/></tstamp>
+    <tstamp><format property="RELEASE_TIME" pattern="yyyy-MM-dd HH-mm-ss" locale="zh"/></tstamp>
+
     <target name="deploy">
         <property name="out.final.file" location="${release_dir}/${apkname}" />
         <delete dir="${release_dir}" />
@@ -20,7 +31,17 @@
         <echo file="${release_dir}/${config_file}" append="true">"app_url" : "${url_prefix}/${apkname}",${line.separator}</echo>
         <echo file="${release_dir}/${config_file}" append="true">"app_name" : "${apkname}",${line.separator}</echo>
         <echo file="${release_dir}/${config_file}" append="true">"version_code" : ${version_code},${line.separator}</echo>
-        <echo file="${release_dir}/${config_file}" append="true">"version_name" : "${version_name}"${line.separator}</echo>
+        <echo file="${release_dir}/${config_file}" append="true">"version_name" : "${version_name}",${line.separator}</echo>
+        <echo file="${release_dir}/${config_file}" append="true">"release_time" : "${RELEASE_TIME}",${line.separator}</echo>
+        <if>
+        <condition><isset property="instructions"/></condition>
+        <then>
+            <echo file="${release_dir}/${config_file}" append="true">"instructions" : "${instructions}"${line.separator}</echo>
+        </then>
+        <else>
+            <echo file="${release_dir}/${config_file}" append="true">"instructions" : ""${line.separator}</echo>
+        </else>
+    </if>
         <echo file="${release_dir}/${config_file}" append="true">}</echo>
     </target>
 </project>

@@ -56,11 +56,10 @@ public class UpgradeManager implements Runnable, OnClickListener {
     private boolean mCancelDownload = false;
 
     private ProgressBar mProgressBar;
-    private TextView mDownloadSize;
+    private Button mDownloadSize;
     private Button mDownload;
     private Button mCancel;
     private View mProgressLayout;
-    private View mBtnLayout;
     private UpgradeInfo mUpgradeInfo;
     private AlertDialog mAlertDialog;
 
@@ -209,16 +208,24 @@ public class UpgradeManager implements Runnable, OnClickListener {
             LayoutInflater inflater = LayoutInflater.from(mContext);
             View view = inflater.inflate(R.layout.upgrade_layout, null);
             mProgressBar = (ProgressBar) view.findViewById(R.id.progress_bar);
-            mDownloadSize = (TextView) view.findViewById(R.id.download_size);
             mProgressLayout = view.findViewById(R.id.progress_layout);
-            mBtnLayout = view.findViewById(R.id.btn_layout);
-            mDownload = (Button) view.findViewById(R.id.download);
+            mDownloadSize = mDownload = (Button) view.findViewById(R.id.upgrade_button);
             mDownload.setOnClickListener(this);
             mCancel = (Button) view.findViewById(R.id.cancel);
             mCancel.setOnClickListener(this);
+            TextView versionView = (TextView) view.findViewById(R.id.version_name);
+            String versionName = mContext.getResources().getString(R.string.version_name, mUpgradeInfo.version_name);
+            versionView.setText(versionName);
+            TextView releaseView = (TextView) view.findViewById(R.id.release_time);
+            String releaseTime = mContext.getResources().getString(R.string.release_time, mUpgradeInfo.release_time);
+            releaseView.setText(releaseTime);
+            if (TextUtils.isEmpty(mUpgradeInfo.instructions)) {
+                mUpgradeInfo.instructions = mContext.getResources().getString(R.string.empty_instructions);
+            }
+            TextView instructionsView = (TextView) view.findViewById(R.id.version_instruction);
+            instructionsView.setText(mUpgradeInfo.instructions);
             AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
             String title = mContext.getResources().getString(R.string.new_version_tiptitle);
-            title += mUpgradeInfo.version_name;
             builder.setTitle(title);
             builder.setView(view);
 
@@ -324,9 +331,11 @@ public class UpgradeManager implements Runnable, OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-        case R.id.download:
+        case R.id.upgrade_button:
             startDownload();
             v.setEnabled(false);
+            v.setBackgroundColor(mContext.getResources().getColor(android.R.color.transparent));
+            ((TextView)v).setText(R.string.connecting);
             break;
         case R.id.cancel:
             mCancelDownload = true;
