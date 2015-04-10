@@ -32,10 +32,12 @@ import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
 import com.android.phoneassistant.R;
 import com.android.phoneassistant.webserver.listener.OnWsListener;
@@ -46,6 +48,7 @@ import com.chukong.sdk.GlobalInit;
 import com.chukong.sdk.common.CmdExecutor;
 import com.chukong.sdk.common.Log;
 import com.chukong.sdk.receiver.WifiApStateReceiver;
+import com.chukong.sdk.redirect.RedirectSwitch;
 import com.chukong.sdk.serv.WebServer;
 import com.chukong.sdk.util.CommonUtil;
 import com.chukong.sdk.util.CopyUtil;
@@ -59,7 +62,7 @@ import com.google.zxing.WriterException;
  * @author join
  */
 @SuppressWarnings("deprecation")
-public class WebServerDisplayActivity extends WebServActivity implements OnWsListener {
+public class WebServerDisplayActivity extends WebServActivity implements OnWsListener, OnClickListener {
 
     static final String TAG = "WSActivity";
     static final boolean DEBUG = false || Config.DEV_MODE;
@@ -72,6 +75,7 @@ public class WebServerDisplayActivity extends WebServActivity implements OnWsLis
     private String ipAddr;
 
     private boolean needResumeServer = true;
+    private ToggleButton toggleBtnRedirect;
 
     private static final int W_START = 0x0101;
     private static final int W_STOP = 0x0102;
@@ -157,6 +161,12 @@ public class WebServerDisplayActivity extends WebServActivity implements OnWsLis
     }
 
     private void initViews(Bundle state) {
+        toggleBtnRedirect = (ToggleButton) findViewById(R.id.toggleBtnRedirect);
+        if (toggleBtnRedirect != null) {
+            boolean redirect = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Constants.REDIRECT_STATUS, false);
+            toggleBtnRedirect.setChecked(redirect);
+            toggleBtnRedirect.setOnClickListener(this);
+        }
         urlText = (TextView) findViewById(R.id.urlText);
         qrCodeView = (ImageView) findViewById(R.id.qrCodeView);
         if (state != null) {
@@ -462,6 +472,37 @@ public class WebServerDisplayActivity extends WebServActivity implements OnWsLis
         IntentFilter filter = new IntentFilter(Intent.ACTION_PACKAGE_ADDED);
         filter.addDataScheme("package");
         registerReceiver(receiver, filter);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch(v.getId()) {
+        case R.id.toggleBtnRedirect:
+            setRedirect(toggleBtnRedirect.isChecked());
+            break;
+        default:
+            break;
+        }
+    }
+
+    private void setRedirect(boolean redirect) {
+        Log.d(Log.TAG, "CommonUtil.isRooted() = " + CommonUtil.isRooted());
+        boolean wifiApEnabled = WifiApManager.getInstance(this)
+                .isWifiApEnabled();
+        if (redirect && !wifiApEnabled) {
+            Toast.makeText(this, "建议先开启WifiAp", Toast.LENGTH_SHORT).show();
+            toggleBtnRedirect.setChecked(false);
+            return;
+        }
+        boolean result = RedirectSwitch.getInstance(this).setRedirectState(
+                redirect);
+        boolean preState = PreferenceManager.getDefaultSharedPreferences(this)
+                .getBoolean(Constants.REDIRECT_STATUS, false);
+        toggleBtnRedirect.setChecked(result ? redirect : preState);
+        if (!result) {
+            // missRootPermissions();
+            Toast.makeText(this, R.string.miss_root, Toast.LENGTH_SHORT).show();
+        }
     }
 
     private class GlobalThread extends AsyncTask<GlobalInit, Void, Void> {
