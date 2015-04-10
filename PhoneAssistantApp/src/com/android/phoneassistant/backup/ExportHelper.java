@@ -221,39 +221,66 @@ public class ExportHelper {
         });
         return zippedFile;
     }
-    private void generateZipFile() {
-        String zipfile = getBackupZipFileName();
-        String zippedFile[] = queryZippedFile();
-        String recordDir = Utils.getRecorderFolder();
-        File recorderFile = new File(recordDir);
-        if (!recorderFile.exists()) {
-            return;
-        }
-        ZipOutputStream zos = null;
-        FileInputStream fis = null;
-        if (zippedFile == null || zippedFile.length <= 0) {
-            return;
-        }
+
+    private void zippingFile(FileInputStream fis, ZipOutputStream zos, String srcPath, String srcName) {
         try {
-            FileOutputStream fos = new FileOutputStream(zipfile);
-            zos = new ZipOutputStream(new BufferedOutputStream(fos));
-            for (String file : zippedFile) {
-                fis = new FileInputStream(recordDir + File.separator + file);
-                byte[] bytes = new byte[1024];
-                int len = 0;
-                ZipEntry entry = new ZipEntry(file);
-                zos.putNextEntry(entry);
-                while ((len = fis.read(bytes)) > 0) {
-                    zos.write(bytes, 0, len);
-                }
-                fis.close();
-                zos.closeEntry();
+        File file = new File(srcPath);
+        if (file.exists()) {
+            Log.d(Log.TAG, "Zipping : " + srcName);
+            fis = new FileInputStream(file);
+            byte[] bytes = new byte[1024];
+            int len = 0;
+            ZipEntry entry = new ZipEntry(srcName);
+            zos.putNextEntry(entry);
+            while ((len = fis.read(bytes)) > 0) {
+                zos.write(bytes, 0, len);
             }
+            fis.close();
+            zos.closeEntry();
+        }
         } catch (FileNotFoundException e) {
             Log.d(Log.TAG, "error : " + e);
         } catch (IOException e) {
             Log.d(Log.TAG, "error : " + e);
-        } finally {
+        }
+    }
+
+    private void generateZipFile() {
+        String zipfile = getBackupZipFileName();
+        String recordDir = Utils.getRecorderFolder();
+        File recorderPath = new File(recordDir);
+        if (!recorderPath.exists()) {
+            return;
+        }
+        ZipOutputStream zos = null;
+        FileInputStream fis = null;
+        String recorderName = null;
+        String recorderFile = null;
+
+        Cursor c = null;
+        try {
+            FileOutputStream fos = new FileOutputStream(zipfile);
+            zos = new ZipOutputStream(new BufferedOutputStream(fos));
+            String backName = "datebase_backup.xml";
+            String backFile = recordDir + File.separator + backName;
+            zippingFile(fis, zos, backFile, backName);
+            c = mContext.getContentResolver().query(DBConstant.RECORD_URI,
+                    null, null, null, DBConstant.RECORD_START + " DESC");
+            if (c != null && c.moveToFirst()) {
+                do {
+                    recorderName = c.getString(c.getColumnIndex(DBConstant.RECORD_NAME));
+                    recorderFile = c.getString(c.getColumnIndex(DBConstant.RECORD_FILE));
+                    if (!TextUtils.isEmpty(recorderName) && !TextUtils.isEmpty(recorderFile)) {
+                        zippingFile(fis, zos, recorderFile, recorderName);
+                    }
+                } while(c.moveToNext());
+            }
+        } catch(Exception e) {
+            Log.d(Log.TAG, "error : " + e);
+        }finally {
+            if (c != null) {
+                c.close();
+            }
             if (zos != null) {
                 try {
                     zos.close();

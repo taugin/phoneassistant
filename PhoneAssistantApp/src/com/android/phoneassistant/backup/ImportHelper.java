@@ -206,9 +206,6 @@ public class ImportHelper {
                 eventType = parser.next();
             }
             Log.d(Log.TAG, "End Document");
-            if (mOnImportExportListener != null) {
-                mOnImportExportListener.onEnd();
-            }
         } catch (XmlPullParserException e) {
         } catch (Exception e) {
         }
@@ -217,6 +214,9 @@ public class ImportHelper {
         File databaseBackFile = new File(databaseBack);
         if (databaseBackFile.exists()) {
             databaseBackFile.delete();
+        }
+        if (mOnImportExportListener != null) {
+            mOnImportExportListener.onEnd();
         }
     }
 
