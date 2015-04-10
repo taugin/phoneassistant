@@ -74,4 +74,5 @@
     <string name="empty_instructions">Empty</string>
     <string name="upgrade_button">Upgrade</string>
     <string name="connecting">Connection &#8230;</string>
+    <string name="get_upgradeinfo">Fetching Upgrade Infomation &#8230;</string>
 </resources> 
