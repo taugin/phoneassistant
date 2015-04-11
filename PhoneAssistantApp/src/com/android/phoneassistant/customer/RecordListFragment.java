@@ -50,6 +50,7 @@ import com.android.phoneassistant.provider.DBConstant;
 import com.android.phoneassistant.util.Constant;
 import com.android.phoneassistant.util.FragmentListener;
 import com.android.phoneassistant.util.Log;
+import com.android.phoneassistant.view.CustomCheckBox;
 
 public class RecordListFragment extends ListFragment implements OnCheckedChangeListener, OnClickListener,
                                     OnLongClickListener, Callback, FragmentListener, OnQueryTextListener {
@@ -173,16 +174,13 @@ public class RecordListFragment extends ListFragment implements OnCheckedChangeL
         TextView displayNumber;
         TextView callState;
         TextView callLogDate;
-        CheckBox checkBox;
-        LinearLayout checkBoxContainer;
-        View functionMenu;
-        CheckBox functionMenuState;
+        CustomCheckBox deleteCheckBox;
+        CustomCheckBox functionMenu;
         View moreFunction;
-        View deleteItem;
-        View blackName;
-        View sendSms;
+        CustomCheckBox deleteItem;
+        CustomCheckBox blackName;
+        CustomCheckBox sendSms;
         View blackStateIcon;
-        CheckBox blackNameState;
     }
     private class RecordListAdapter extends ArrayAdapter<ContactInfo> {
 
@@ -208,21 +206,18 @@ public class RecordListFragment extends ListFragment implements OnCheckedChangeL
                 viewHolder.blackStateIcon = convertView.findViewById(R.id.black_state_icon);
                 viewHolder.callState = (TextView) convertView.findViewById(R.id.call_state);
                 viewHolder.callLogDate = (TextView) convertView.findViewById(R.id.call_log_date);
-                viewHolder.functionMenu = convertView.findViewById(R.id.function_menu);
+                viewHolder.functionMenu = (CustomCheckBox) convertView.findViewById(R.id.function_menu);
                 viewHolder.functionMenu.setOnClickListener(RecordListFragment.this);
-                viewHolder.functionMenuState = (CheckBox) convertView.findViewById(R.id.function_menu_status);
 
-                viewHolder.checkBox = (CheckBox) convertView.findViewById(R.id.check_box);
-                viewHolder.checkBoxContainer = (LinearLayout) convertView.findViewById(R.id.check_box_container);
-                viewHolder.checkBoxContainer.setOnClickListener(RecordListFragment.this);
+                viewHolder.deleteCheckBox = (CustomCheckBox) convertView.findViewById(R.id.delete_checkbox);
+                viewHolder.deleteCheckBox.setOnClickListener(RecordListFragment.this);
 
                 viewHolder.moreFunction = convertView.findViewById(R.id.more_function);
-                viewHolder.deleteItem = convertView.findViewById(R.id.delete_item);
+                viewHolder.deleteItem = (CustomCheckBox) convertView.findViewById(R.id.delete_item);
                 viewHolder.deleteItem.setOnClickListener(RecordListFragment.this);
-                viewHolder.blackName = convertView.findViewById(R.id.black_name);
+                viewHolder.blackName = (CustomCheckBox) convertView.findViewById(R.id.black_name);
                 viewHolder.blackName.setOnClickListener(RecordListFragment.this);
-                viewHolder.blackNameState = (CheckBox) convertView.findViewById(R.id.blacknamestate);
-                viewHolder.sendSms = convertView.findViewById(R.id.send_sms);
+                viewHolder.sendSms = (CustomCheckBox) convertView.findViewById(R.id.send_sms);
                 viewHolder.sendSms.setOnClickListener(RecordListFragment.this);
                 convertView.setTag(viewHolder);
             } else {
@@ -231,7 +226,7 @@ public class RecordListFragment extends ListFragment implements OnCheckedChangeL
 
             viewHolder.itemContainer.setTag(position);
             viewHolder.dialNumber.setTag(position);
-            viewHolder.checkBoxContainer.setTag(position);
+            viewHolder.deleteCheckBox.setTag(position);
             viewHolder.functionMenu.setTag(position);
 
             viewHolder.deleteItem.setTag(position);
@@ -265,21 +260,21 @@ public class RecordListFragment extends ListFragment implements OnCheckedChangeL
                 viewHolder.callState.setText(callLog);
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 viewHolder.callLogDate.setText(sdf.format(new Date(info.contactUpdate)));
-                viewHolder.checkBox.setChecked(info.checked);
+                viewHolder.deleteCheckBox.setChecked(info.checked);
                 if (mViewState == VIEW_STATE_NORMAL) {
                     viewHolder.functionMenu.setVisibility(View.VISIBLE);
-                    viewHolder.checkBox.setVisibility(View.INVISIBLE);
+                    viewHolder.deleteCheckBox.setVisibility(View.INVISIBLE);
                 } else if (mViewState == VIEW_STATE_DELETE) {
                     viewHolder.functionMenu.setVisibility(View.INVISIBLE);
-                    viewHolder.checkBox.setVisibility(View.VISIBLE);
+                    viewHolder.deleteCheckBox.setVisibility(View.VISIBLE);
                 }
 
                 if (mExpandPos != -1) {
                     info.expand = mExpandPos == position;
                 }
                 viewHolder.moreFunction.setVisibility(info.expand ? View.VISIBLE : View.GONE);
-                viewHolder.functionMenuState.setChecked(info.expand);
-                viewHolder.blackNameState.setChecked(info.blocked);
+                viewHolder.functionMenu.setChecked(info.expand);
+                viewHolder.blackName.setChecked(info.blocked);
                 viewHolder.blackStateIcon.setVisibility(info.blocked ? View.VISIBLE : View.INVISIBLE);
             }
             return convertView;
@@ -357,7 +352,7 @@ public class RecordListFragment extends ListFragment implements OnCheckedChangeL
             Log.d(Log.TAG, "info blocked = " + info.blocked);
             updateBlockCall(info);
             mListAdapter.notifyDataSetChanged();
-        } else if (v.getId() == R.id.check_box_container) {
+        } else if (v.getId() == R.id.delete_checkbox) {
             int position = (Integer) v.getTag();
             ContactInfo info = mListAdapter.getItem(position);
             info.checked = !info.checked;

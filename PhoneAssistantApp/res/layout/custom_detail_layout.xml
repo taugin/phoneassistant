@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:box="http://schemas.android.com/apk/res/com.android.phoneassistant"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical" >
@@ -113,14 +114,7 @@
             android:layout_weight="0"
             android:gravity="center"
             android:clickable="true"
-            android:background="@drawable/item_background">
-
-            <CheckBox
-                android:id="@+id/call_log_show_control"
-                android:tag="CustomLinearLayoutTag"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:button="@drawable/calllog_control_selector" />
-        </com.android.phoneassistant.view.CustomCheckBox>
+            box:button="@drawable/calllog_control_selector"
+            android:background="@drawable/item_background"/>
     </LinearLayout>
 </LinearLayout>

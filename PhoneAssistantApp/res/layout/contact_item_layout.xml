@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:box="http://schemas.android.com/apk/res/com.android.phoneassistant"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:descendantFocusability="afterDescendants"
@@ -114,41 +115,21 @@
             android:clickable="true" >
 
             <com.android.phoneassistant.view.CustomCheckBox
-                android:id="@+id/check_box_container"
+                android:id="@+id/delete_checkbox"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/item_background"
                 android:clickable="true"
-                android:gravity="center" >
-
-                <CheckBox
-                    android:id="@+id/check_box"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:tag="CustomLinearLayoutTag"
-                    android:visibility="invisible" />
-            </com.android.phoneassistant.view.CustomCheckBox>
+                android:gravity="center" />
 
             <com.android.phoneassistant.view.CustomCheckBox
                 android:id="@+id/function_menu"
                 android:layout_width="@dimen/listview_item_height"
                 android:layout_height="@dimen/listview_item_height"
                 android:background="@drawable/item_background"
+                box:button="@drawable/menu_more_selector"
                 android:clickable="true"
-                android:gravity="center" >
-
-                <CheckBox
-                    android:id="@+id/function_menu_status"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:background="@drawable/item_background"
-                    android:button="@drawable/menu_more_selector"
-                    android:gravity="center"
-                    android:tag="CustomLinearLayoutTag"
-                    android:visibility="visible" />
-            </com.android.phoneassistant.view.CustomCheckBox>
+                android:gravity="center" />
         </RelativeLayout>
     </LinearLayout>
 
@@ -168,19 +149,9 @@
             android:background="@drawable/item_background"
             android:clickable="true"
             android:descendantFocusability="blocksDescendants"
-            android:gravity="center" >
-
-            <CheckBox
-                android:id="@+id/blacknamestate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:button="@drawable/black_btn_check"
-                android:gravity="center"
-                android:tag="CustomLinearLayoutTag"
-                android:text="@string/black_name"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-        </com.android.phoneassistant.view.CustomCheckBox>
+            box:text="@string/black_name"
+            box:button="@drawable/black_btn_check"
+            android:gravity="center" />
         <View style="@style/vertical_line" />
         <com.android.phoneassistant.view.CustomCheckBox
             android:id="@+id/send_sms"
@@ -189,19 +160,10 @@
             android:layout_weight="1"
             android:background="@drawable/item_background"
             android:clickable="true"
+            box:text="@string/send_sms"
+            box:button="@drawable/sms"
             android:descendantFocusability="blocksDescendants"
-            android:gravity="center" >
-
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:button="@drawable/sms"
-                android:gravity="center"
-                android:tag="CustomLinearLayoutTag"
-                android:text="@string/send_sms"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-        </com.android.phoneassistant.view.CustomCheckBox>
+            android:gravity="center" />
         <View style="@style/vertical_line" />
         <com.android.phoneassistant.view.CustomCheckBox
             android:id="@+id/delete_item"
@@ -210,19 +172,10 @@
             android:layout_weight="1"
             android:background="@drawable/item_background"
             android:clickable="true"
+            box:text="@string/action_delete"
+            box:button="@drawable/delete_file"
             android:descendantFocusability="blocksDescendants"
-            android:gravity="center" >
-
-            <CheckBox
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:button="@drawable/delete_file"
-                android:gravity="center"
-                android:tag="CustomLinearLayoutTag"
-                android:text="@string/action_delete"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-        </com.android.phoneassistant.view.CustomCheckBox>
+            android:gravity="center" />
     </LinearLayout>
 
 </LinearLayout>
