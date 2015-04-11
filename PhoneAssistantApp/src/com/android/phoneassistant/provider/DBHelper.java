@@ -52,8 +52,8 @@ public class DBHelper extends SQLiteOpenHelper {
           + DBConstant.BLOCK_NUMBER + " TEXT UNIQUE,"
           + DBConstant.BLOCK_COUNT + " INTEGER DEFAULT 0,"
           + DBConstant.BLOCK_TIME + " LONG DEFAULT 0,"
-          + DBConstant.BLOCK_HIS_TIMES + " TEXT,"
-          + DBConstant.BLOCK_TYPE + " INTEGER DEFAULT 0,"
+          + DBConstant.BLOCK_CALL + " INTEGER DEFAULT 0,"
+          + DBConstant.BLOCK_SMS + " INTEGER DEFAULT 0,"
           + DBConstant.BLOCK_CONTENT + " TEXT"
           + ")";
     private static final String DROP_BLOCK_TABLE = "DROP TABLE " + DBConstant.TABLE_RECORD + " IF EXISTS";

@@ -177,7 +177,7 @@ public class RecordFileManager {
                         info.contactNumber = c.getString(c.getColumnIndex(DBConstant.CONTACT_NUMBER));
                         info.contactLogCount = c.getInt(c.getColumnIndex(DBConstant.CONTACT_CALL_LOG_COUNT));
                         info.contactUpdate = c.getLong(c.getColumnIndex(DBConstant.CONTACT_UPDATE));
-                        info.blocked = BlackNameManager.getInstance(mContext).isBlackInDB(info.contactNumber);
+                        info.blocked = BlackNameManager.getInstance(mContext).isBlockCall(info.contactNumber);
                         list.add(info);
                     } while(c.moveToNext());
                 }
@@ -285,8 +285,8 @@ public class RecordFileManager {
                         info.blackNumber = c.getString(c.getColumnIndex(DBConstant.BLOCK_NUMBER));
                         info.blockCount = c.getInt(c.getColumnIndex(DBConstant.BLOCK_COUNT));
                         info.blockTime = c.getLong(c.getColumnIndex(DBConstant.BLOCK_TIME));
-                        info.blockHisTimes = c.getString(c.getColumnIndex(DBConstant.BLOCK_HIS_TIMES));
-                        info.blockType = c.getInt(c.getColumnIndex(DBConstant.BLOCK_TYPE));
+                        info.blockCall = c.getInt(c.getColumnIndex(DBConstant.BLOCK_CALL)) == DBConstant.BLOCK;
+                        info.blockSms = c.getInt(c.getColumnIndex(DBConstant.BLOCK_SMS)) == DBConstant.BLOCK;
                         info.blockContent = c.getString(c.getColumnIndex(DBConstant.BLOCK_CONTENT));
                         list.add(info);
                     } while(c.moveToNext());

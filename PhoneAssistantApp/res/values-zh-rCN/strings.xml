@@ -79,4 +79,8 @@
     <string name="upgrade_button">升级</string>
     <string name="connecting">正在连接 &#8230;</string>
     <string name="get_upgradeinfo">正在获取更新信息&#8230;</string>
+
+
+    <string name="call_block">电话拦截</string>
+    <string name="sms_block">短信拦截</string>
 </resources>

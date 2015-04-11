@@ -29,11 +29,11 @@ public class BlackNameManager {
         if (PreferenceManager.getDefaultSharedPreferences(mContext).getBoolean("key_block_all", false)) {
             return true;
         }*/
-        return isBlackInDB(phoneNumber);
+        return isBlockCall(phoneNumber);
     }
 
-    public boolean isBlackInDB(String number) {
-        String where = DBConstant.BLOCK_NUMBER + " LIKE '%" + number + "'";
+    public boolean isBlockCall(String number) {
+        String where = DBConstant.BLOCK_NUMBER + " LIKE '%" + number + "' AND " + DBConstant.BLOCK_CALL + "=" + DBConstant.BLOCK;
         Cursor c = null;
         int count = 0;
         try {
@@ -42,7 +42,7 @@ public class BlackNameManager {
                 count = c.getCount();
             }
         } catch (Exception e) {
-            
+            Log.d(Log.TAG, "error : " + e);
         } finally {
             if (c != null) {
                 c.close();
@@ -80,19 +80,9 @@ public class BlackNameManager {
         String where = DBConstant.BLOCK_NUMBER + " LIKE '%" + phoneNumber + "'";
         int count = getBlockCount(phoneNumber);
         long time = System.currentTimeMillis();
-        String dates = getBlockHisTimes(phoneNumber);
-        if (TextUtils.isEmpty(dates)) {
-            dates = "";
-            dates += String.valueOf(time);
-        } else {
-            dates += ",";
-            dates += String.valueOf(time);
-        }
         ContentValues values = new ContentValues();
         values.put(DBConstant.BLOCK_COUNT, count + 1);
         values.put(DBConstant.BLOCK_TIME, time);
-        values.put(DBConstant.BLOCK_HIS_TIMES, dates);
-        values.put(DBConstant.BLOCK_TYPE, DBConstant.BLOCK_TYPE_CALL);
         mContext.getContentResolver().update(DBConstant.BLOCK_URI, values, where, null);
     }
     public int getBlockCount(String phoneNumber) {
@@ -116,25 +106,6 @@ public class BlackNameManager {
     public boolean deleteBlackName(String phoneNumber) {
         String where = DBConstant.BLOCK_NUMBER + " LIKE '%" + phoneNumber + "'";
         return mContext.getContentResolver().delete(DBConstant.BLOCK_URI, where, null) > 0;
-    }
-    
-    public String getBlockHisTimes(String phoneNumber) {
-        String where = DBConstant.BLOCK_NUMBER + " LIKE '%" + phoneNumber + "'";
-        Cursor c = null;
-        String dates = null;
-        try {
-            c = mContext.getContentResolver().query(DBConstant.BLOCK_URI, null, where, null, null);
-            if (c != null && c.moveToFirst()) {
-                dates = c.getString(c.getColumnIndex(DBConstant.BLOCK_HIS_TIMES));
-            }
-        } catch (Exception e) {
-            
-        } finally {
-            if (c != null) {
-                c.close();
-            }
-        }
-        return dates;
     }
 
     public long getBlockTime(String phoneNumber) {

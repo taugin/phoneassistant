@@ -36,11 +36,15 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.android.phoneassistant.R;
+import com.android.phoneassistant.customer.RecordListFragment;
 import com.android.phoneassistant.info.BlackInfo;
+import com.android.phoneassistant.info.ContactInfo;
 import com.android.phoneassistant.manager.RecordFileManager;
 import com.android.phoneassistant.provider.DBConstant;
+import com.android.phoneassistant.util.Constant;
 import com.android.phoneassistant.util.FragmentListener;
 import com.android.phoneassistant.util.Log;
+import com.android.phoneassistant.view.CustomCheckBox;
 
 public class BlackListFragment extends ListFragment implements OnClickListener, OnLongClickListener, Callback, FragmentListener{
 
@@ -57,6 +61,7 @@ public class BlackListFragment extends ListFragment implements OnClickListener, 
     private EditText mPhoneNumber;
     private PopupWindow mPopupWindow;
     private CheckBox mCheckBox;
+    private int mExpandPos = -1;
 
     
     @Override
@@ -161,6 +166,7 @@ public class BlackListFragment extends ListFragment implements OnClickListener, 
                     RecordFileManager.getInstance(getActivity()).deleteBlackInfoFromDB(mBlackList);
                     mViewState = VIEW_STATE_NORMAL;
                     mListAdapter.notifyDataSetChanged();
+                    mExpandPos = -1;
                     if (mActionMode != null) {
                         mActionMode.finish();
                     }
@@ -169,9 +175,9 @@ public class BlackListFragment extends ListFragment implements OnClickListener, 
             builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    mViewState = VIEW_STATE_NORMAL;
-                    mListAdapter.notifyDataSetChanged();
                     if (mActionMode != null) {
+                        mViewState = VIEW_STATE_NORMAL;
+                        mListAdapter.notifyDataSetChanged();
                         mActionMode.finish();
                     }
                 }
@@ -207,15 +213,24 @@ public class BlackListFragment extends ListFragment implements OnClickListener, 
         }
         mAddBlackDialog.show();
     }
-    
+
+    private BlackInfo lastContactInfo = null;
     class ViewHolder {
+        LinearLayout dialNumber;
         LinearLayout itemContainer;
         TextView displayName;
-        TextView blockCount;
+        TextView displayNumber;
+        TextView blockState;
         TextView blockDate;
-        LinearLayout checkBoxContainer;
-        CheckBox checkBox;
-        View deleteBlack;
+        CustomCheckBox deleteCheckBox;
+        CustomCheckBox functionMenu;
+        View moreFunction;
+        View deleteItem;
+        CustomCheckBox blockCall;
+        CustomCheckBox blockSms;
+        View blackCallIcon;
+        View blackSmsIcon;
+        CheckBox blackNameState;
     }
     private class BlackListAdapter extends ArrayAdapter<BlackInfo>{
 
@@ -235,61 +250,73 @@ public class BlackListFragment extends ListFragment implements OnClickListener, 
                 viewHolder.itemContainer.setOnClickListener(BlackListFragment.this);
                 viewHolder.itemContainer.setOnLongClickListener(BlackListFragment.this);
                 viewHolder.displayName = (TextView) convertView.findViewById(R.id.display_name);
-                viewHolder.blockCount = (TextView) convertView.findViewById(R.id.block_count);
+                viewHolder.displayNumber = (TextView) convertView.findViewById(R.id.display_number);
+                viewHolder.blockState = (TextView) convertView.findViewById(R.id.block_count);
                 viewHolder.blockDate = (TextView) convertView.findViewById(R.id.block_date);
-                viewHolder.deleteBlack = convertView.findViewById(R.id.delete_black);
-                viewHolder.deleteBlack.setOnClickListener(BlackListFragment.this);
-                viewHolder.checkBoxContainer = (LinearLayout) convertView.findViewById(R.id.check_box_container);
-                viewHolder.checkBoxContainer.setOnClickListener(BlackListFragment.this);
-                viewHolder.checkBox = (CheckBox) convertView.findViewById(R.id.check_box);
+
+                viewHolder.blackCallIcon = convertView.findViewById(R.id.black_call_icon);
+                viewHolder.blackSmsIcon = convertView.findViewById(R.id.black_sms_icon);
+
+                viewHolder.functionMenu = (CustomCheckBox) convertView.findViewById(R.id.function_menu);
+                viewHolder.functionMenu.setOnClickListener(BlackListFragment.this);
+
+                viewHolder.deleteCheckBox = (CustomCheckBox) convertView.findViewById(R.id.delete_checkbox);
+                viewHolder.deleteCheckBox.setOnClickListener(BlackListFragment.this);
+
+                viewHolder.deleteItem = convertView.findViewById(R.id.delete_item);
+                viewHolder.deleteItem.setOnClickListener(BlackListFragment.this);
+                viewHolder.moreFunction = convertView.findViewById(R.id.more_function);
+
+                viewHolder.blockCall =  (CustomCheckBox) convertView.findViewById(R.id.call_block);
+                viewHolder.blockCall.setOnClickListener(BlackListFragment.this);
+                viewHolder.blockSms =  (CustomCheckBox) convertView.findViewById(R.id.sms_block);
+                viewHolder.blockSms.setOnClickListener(BlackListFragment.this);
                 convertView.setTag(viewHolder);
             } else {
                 viewHolder = (ViewHolder) convertView.getTag();
             }
             viewHolder.itemContainer.setTag(position);
-            viewHolder.deleteBlack.setTag(position);
-            viewHolder.checkBoxContainer.setTag(position);
+            viewHolder.deleteCheckBox.setTag(position);
+            viewHolder.functionMenu.setTag(position);
+            viewHolder.deleteItem.setTag(position);
+            viewHolder.blockCall.setTag(position);
+            viewHolder.blockSms.setTag(position);
 
             BlackInfo info = getItem(position);
             if (info != null) {
-                String displayName = info.blackNumber;
-                if (!TextUtils.isEmpty(info.blackName)) {
-                    displayName += "-" + info.blackName;
-                }
-                viewHolder.displayName.setText(displayName);
-                viewHolder.blockCount.setText(getResources().getString(R.string.block_times_args, info.blockCount));
+                viewHolder.blockState.setText(getResources().getString(R.string.block_times_args, info.blockCount));
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                /**
-                if (info.blockHisTimes != null) {
-                    String dates[] = info.blockHisTimes.split(",");
-                    if (dates != null) {
-                        String lastDate = dates[dates.length - 1];
-                        long lastTime = 0;
-                        try {
-                            lastTime = Long.parseLong(lastDate);
-                        } catch(NumberFormatException e) {
-                            lastTime = System.currentTimeMillis();
-                        }
-                        viewHolder.blockDate.setText(sdf.format(new Date(lastTime)));
-                    } else {
-                        viewHolder.blockDate.setText("");
-                    }
+                if (!TextUtils.isEmpty(info.blackName)) {
+                    viewHolder.displayName.setText(info.blackName);
+                    viewHolder.displayNumber.setText(info.blackNumber);
                 } else {
-                    viewHolder.blockDate.setText("");
-                }*/
+                    viewHolder.displayNumber.setText("");
+                    viewHolder.displayName.setText(info.blackNumber);
+                }
+
                 if (info.blockTime != 0) {
                     viewHolder.blockDate.setText(sdf.format(new Date(info.blockTime)));
                 } else {
                     viewHolder.blockDate.setText("");
                 }
-                viewHolder.checkBox.setChecked(info.checked);
+                viewHolder.deleteCheckBox.setChecked(info.checked);
+                if (mExpandPos != -1) {
+                    info.expand = mExpandPos == position;
+                }
+                viewHolder.moreFunction.setVisibility(info.expand ? View.VISIBLE : View.GONE);
+                viewHolder.functionMenu.setChecked(info.expand);
+
+                viewHolder.blockCall.setChecked(info.blockCall);
+                viewHolder.blockSms.setChecked(info.blockSms);
+                viewHolder.blackCallIcon.setVisibility(info.blockCall ? View.VISIBLE : View.INVISIBLE);
+                viewHolder.blackSmsIcon.setVisibility(info.blockSms ? View.VISIBLE : View.INVISIBLE);
             }
             if (mViewState == VIEW_STATE_NORMAL) {
-                viewHolder.deleteBlack.setVisibility(View.VISIBLE);
-                viewHolder.checkBox.setVisibility(View.INVISIBLE);
+                viewHolder.functionMenu.setVisibility(View.VISIBLE);
+                viewHolder.deleteCheckBox.setVisibility(View.INVISIBLE);
             } else if (mViewState == VIEW_STATE_DELETE) {
-                viewHolder.deleteBlack.setVisibility(View.INVISIBLE);
-                viewHolder.checkBox.setVisibility(View.VISIBLE);
+                viewHolder.functionMenu.setVisibility(View.INVISIBLE);
+                viewHolder.deleteCheckBox.setVisibility(View.VISIBLE);
             }
             return convertView;
         }
@@ -308,7 +335,7 @@ public class BlackListFragment extends ListFragment implements OnClickListener, 
             //startActivity(intent);
             Log.d(Log.TAG, "position = " + position);
             Log.d(Log.TAG, "info = " + info.blackNumber);
-        } else if (v.getId() == R.id.check_box_container) {
+        } else if (v.getId() == R.id.delete_checkbox) {
             int position = (Integer) v.getTag();
             BlackInfo info = mListAdapter.getItem(position);
             info.checked = !info.checked;
@@ -321,20 +348,65 @@ public class BlackListFragment extends ListFragment implements OnClickListener, 
             } else {
                 mMenuItem.setTitle(android.R.string.selectAll);
             }
-        } else if (v.getId() == R.id.delete_black) {
+            mListAdapter.notifyDataSetChanged();
+        } else if (v.getId() == R.id.delete_item) {
+            /*
             v.setEnabled(false);
-            synchronized(mListAdapter) {
+            synchronized (mListAdapter) {
                 int position = (Integer) v.getTag();
-                    if (position < mListAdapter.getCount()) {
+                if (position < mListAdapter.getCount()) {
                     BlackInfo info = mListAdapter.getItem(position);
-                    Uri uri = ContentUris.withAppendedId(DBConstant.BLOCK_URI, info._id);
-                    int ret = getActivity().getContentResolver().delete(uri, null, null);
+                    Uri uri = ContentUris.withAppendedId(DBConstant.BLOCK_URI,
+                            info._id);
+                    int ret = getActivity().getContentResolver().delete(uri,
+                            null, null);
                     if (ret > 0) {
                         mListAdapter.remove(info);
+                        mExpandPos = -1;
                     }
                 }
             }
             v.setEnabled(true);
+            */
+            int position = (Integer) v.getTag();
+            BlackInfo info = mListAdapter.getItem(position);
+            info.checked = true;
+            showConfirmDialog();
+        } else if (v.getId() == R.id.function_menu) {
+            int position = (Integer) v.getTag();
+            BlackInfo info = mListAdapter.getItem(position);
+            int visiblePos = position - getListView().getFirstVisiblePosition();
+            View view = getListView().getChildAt(visiblePos);
+            ViewHolder holder = (ViewHolder) view.getTag();
+            if (lastContactInfo != null && (lastContactInfo != info)) {
+                lastContactInfo.expand = false;
+            }
+            info.expand = !info.expand;
+            mExpandPos = info.expand ? position : -1;
+            lastContactInfo = info;
+            mListAdapter.notifyDataSetChanged();
+        } else if (v.getId() == R.id.call_block) {
+            int position = (Integer) v.getTag();
+            BlackInfo info = mListAdapter.getItem(position);
+            String where = DBConstant._ID + "=" + info._id;
+            ContentValues values = new ContentValues();
+            values.put(DBConstant.BLOCK_CALL, info.blockCall ? DBConstant.NO_BLOCK : DBConstant.BLOCK);
+            if (getActivity().getContentResolver().update(DBConstant.BLOCK_URI, values, where, null) > 0) {
+                CustomCheckBox checkBox = (CustomCheckBox)v;
+                checkBox.setChecked(!checkBox.isChecked());
+                info.blockCall = !info.blockCall;
+            }
+        } else if (v.getId() == R.id.sms_block) {
+            int position = (Integer) v.getTag();
+            BlackInfo info = mListAdapter.getItem(position);
+            String where = DBConstant._ID + "=" + info._id;
+            ContentValues values = new ContentValues();
+            values.put(DBConstant.BLOCK_SMS, info.blockSms ? DBConstant.NO_BLOCK : DBConstant.BLOCK);
+            if (getActivity().getContentResolver().update(DBConstant.BLOCK_URI, values, where, null) > 0) {
+                CustomCheckBox checkBox = (CustomCheckBox)v;
+                checkBox.setChecked(!checkBox.isChecked());
+                info.blockSms = !info.blockSms;
+            }
         }
     }
 
@@ -404,6 +476,9 @@ public class BlackListFragment extends ListFragment implements OnClickListener, 
         mode.setTitle(R.string.action_delete);
         mode.getMenuInflater().inflate(R.menu.action_mode_menu, menu);
         mMenuItem = menu.findItem(R.id.action_selectall);
+        Intent intent = new Intent(Constant.ACTION_RADIOGROUP_ENABLE);
+        intent.putExtra("radiogroup_enable", false);
+        getActivity().sendBroadcast(intent);
         return true;
     }
 
@@ -444,6 +519,10 @@ public class BlackListFragment extends ListFragment implements OnClickListener, 
         mViewState = VIEW_STATE_NORMAL;
         mListAdapter.notifyDataSetChanged();
         mActionMode = null;
+
+        Intent intent = new Intent(Constant.ACTION_RADIOGROUP_ENABLE);
+        intent.putExtra("radiogroup_enable", true);
+        getActivity().sendBroadcast(intent);
     }
     public void finishActionModeIfNeed() {
         if (mActionMode != null) {

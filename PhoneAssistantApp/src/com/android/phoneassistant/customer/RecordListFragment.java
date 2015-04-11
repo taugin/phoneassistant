@@ -12,6 +12,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -354,18 +355,7 @@ public class RecordListFragment extends ListFragment implements OnCheckedChangeL
 
             ContactInfo info = mListAdapter.getItem(position);
             Log.d(Log.TAG, "info blocked = " + info.blocked);
-            if (!info.blocked) {
-                ContentValues values = new ContentValues();
-                values.put(DBConstant.BLOCK_NAME, info.contactName);
-                values.put(DBConstant.BLOCK_NUMBER, info.contactNumber);
-                if (getActivity().getContentResolver().insert(DBConstant.BLOCK_URI, values) != null) {
-                    info.blocked = true;
-                }
-            } else {
-                if (BlackNameManager.getInstance(getActivity()).deleteBlackName(info.contactNumber)) {
-                    info.blocked = false;
-                }
-            }
+            updateBlockCall(info);
             mListAdapter.notifyDataSetChanged();
         } else if (v.getId() == R.id.check_box_container) {
             int position = (Integer) v.getTag();
@@ -399,6 +389,40 @@ public class RecordListFragment extends ListFragment implements OnCheckedChangeL
         }
     }
 
+    private int getBlockCallId(ContactInfo info) {
+        Cursor c = null;
+        String selection = DBConstant.BLOCK_NUMBER + " LIKE '%" + info.contactNumber + "'";
+        String projection[] = new String[]{DBConstant._ID};
+        try {
+            c = getActivity().getContentResolver().query(DBConstant.BLOCK_URI, projection, selection, null, null);
+            if (c != null && c.moveToFirst()) {
+                return c.getInt(c.getColumnIndex(DBConstant._ID));
+            }
+        } catch(Exception e) {
+            Log.d(Log.TAG, "error : " + e);
+        }
+        return -1;
+    }
+    private void updateBlockCall(ContactInfo info) {
+        int _id = getBlockCallId(info);
+        Log.d(Log.TAG, "_id = " + _id);
+        if (_id == -1) {
+            ContentValues values = new ContentValues();
+            values.put(DBConstant.BLOCK_NAME, info.contactName);
+            values.put(DBConstant.BLOCK_NUMBER, info.contactNumber);
+            values.put(DBConstant.BLOCK_CALL, DBConstant.BLOCK);
+            if (getActivity().getContentResolver().insert(DBConstant.BLOCK_URI, values) != null) {
+                info.blocked = true;
+            }
+        } else {
+            String where = DBConstant._ID + "=" + _id;
+            ContentValues values = new ContentValues();
+            values.put(DBConstant.BLOCK_CALL, info.blocked ? DBConstant.NO_BLOCK : DBConstant.BLOCK);
+            if (getActivity().getContentResolver().update(DBConstant.BLOCK_URI, values, where, null) > 0) {
+                info.blocked = !info.blocked;
+            }
+        }
+    }
     private int getCheckedCount() {
         int count = 0;
         for (ContactInfo info : mRecordList) {
@@ -488,7 +512,7 @@ public class RecordListFragment extends ListFragment implements OnCheckedChangeL
         intent.putExtra("radiogroup_enable", true);
         getActivity().sendBroadcast(intent);
     }
-    
+
     public void finishActionModeIfNeed() {
         Log.d(Log.TAG, "mActionMode = " + mActionMode);
         if (mActionMode != null) {

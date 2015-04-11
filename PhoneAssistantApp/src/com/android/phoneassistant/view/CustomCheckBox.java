@@ -6,16 +6,16 @@ import android.view.MotionEvent;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 
-public class CustomLinearLayout extends LinearLayout {
+public class CustomCheckBox extends LinearLayout {
 
     private CheckBox mCheckBox;
-    public CustomLinearLayout(Context context) {
+    public CustomCheckBox(Context context) {
         super(context, null);
     }
-    public CustomLinearLayout(Context context, AttributeSet attrs) {
+    public CustomCheckBox(Context context, AttributeSet attrs) {
         super(context, attrs, 0);
     }
-    public CustomLinearLayout(Context context, AttributeSet attrs, int defStyle) {
+    public CustomCheckBox(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
 
@@ -32,5 +32,13 @@ public class CustomLinearLayout extends LinearLayout {
     public void setPressed(boolean pressed) {
         super.setPressed(pressed);
         mCheckBox.setPressed(pressed);
+    }
+
+    public void setChecked(boolean checked) {
+        mCheckBox.setChecked(checked);
+    }
+
+    public boolean isChecked(){
+        return mCheckBox.isChecked();
     }
 }
