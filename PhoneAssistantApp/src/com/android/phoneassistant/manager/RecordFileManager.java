@@ -272,9 +272,8 @@ public class RecordFileManager {
         }
         list.clear();
         Cursor c = null;
-        String sortBy = DBConstant.BLOCK_TIME + " DESC";
         try {
-            c = mContext.getContentResolver().query(DBConstant.BLOCK_URI, null, null, null, sortBy);
+            c = mContext.getContentResolver().query(DBConstant.BLOCK_URI, null, null, null, null);
             if (c != null) {
                 if (c.moveToFirst()) {
                     BlackInfo info = null;
@@ -283,8 +282,8 @@ public class RecordFileManager {
                         info._id = c.getInt(c.getColumnIndex(DBConstant._ID));
                         info.blackName = c.getString(c.getColumnIndex(DBConstant.BLOCK_NAME));
                         info.blackNumber = c.getString(c.getColumnIndex(DBConstant.BLOCK_NUMBER));
-                        info.blockCount = c.getInt(c.getColumnIndex(DBConstant.BLOCK_COUNT));
-                        info.blockTime = c.getLong(c.getColumnIndex(DBConstant.BLOCK_TIME));
+                        info.blockCallCount = c.getInt(c.getColumnIndex(DBConstant.BLOCK_CALL_COUNT));
+                        info.blockSmsCount = c.getInt(c.getColumnIndex(DBConstant.BLOCK_SMS_COUNT));
                         info.blockCall = c.getInt(c.getColumnIndex(DBConstant.BLOCK_CALL)) == DBConstant.BLOCK;
                         info.blockSms = c.getInt(c.getColumnIndex(DBConstant.BLOCK_SMS)) == DBConstant.BLOCK;
                         list.add(info);

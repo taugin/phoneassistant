@@ -2,11 +2,9 @@ package com.android.phoneassistant.black;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 import android.app.AlertDialog;
 import android.app.ListFragment;
-import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -36,9 +34,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.android.phoneassistant.R;
-import com.android.phoneassistant.customer.RecordListFragment;
 import com.android.phoneassistant.info.BlackInfo;
-import com.android.phoneassistant.info.ContactInfo;
 import com.android.phoneassistant.manager.RecordFileManager;
 import com.android.phoneassistant.provider.DBConstant;
 import com.android.phoneassistant.util.Constant;
@@ -220,8 +216,8 @@ public class BlackListFragment extends ListFragment implements OnClickListener, 
         LinearLayout itemContainer;
         TextView displayName;
         TextView displayNumber;
-        TextView blockState;
-        TextView blockDate;
+        TextView blockCallCount;
+        TextView blockSmsCount;
         CustomCheckBox deleteCheckBox;
         CustomCheckBox functionMenu;
         View moreFunction;
@@ -251,8 +247,8 @@ public class BlackListFragment extends ListFragment implements OnClickListener, 
                 viewHolder.itemContainer.setOnLongClickListener(BlackListFragment.this);
                 viewHolder.displayName = (TextView) convertView.findViewById(R.id.display_name);
                 viewHolder.displayNumber = (TextView) convertView.findViewById(R.id.display_number);
-                viewHolder.blockState = (TextView) convertView.findViewById(R.id.block_count);
-                viewHolder.blockDate = (TextView) convertView.findViewById(R.id.block_date);
+                viewHolder.blockCallCount = (TextView) convertView.findViewById(R.id.block_call_count);
+                viewHolder.blockSmsCount = (TextView) convertView.findViewById(R.id.block_sms_count);
 
                 viewHolder.blackCallIcon = convertView.findViewById(R.id.black_call_icon);
                 viewHolder.blackSmsIcon = convertView.findViewById(R.id.black_sms_icon);
@@ -284,7 +280,8 @@ public class BlackListFragment extends ListFragment implements OnClickListener, 
 
             BlackInfo info = getItem(position);
             if (info != null) {
-                viewHolder.blockState.setText(getResources().getString(R.string.block_times_args, info.blockCount));
+                viewHolder.blockCallCount.setText(getResources().getString(R.string.block_call_times_args, info.blockCallCount));
+                viewHolder.blockSmsCount.setText(getResources().getString(R.string.block_sms_times_args, info.blockCallCount));
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 if (!TextUtils.isEmpty(info.blackName)) {
                     viewHolder.displayName.setText(info.blackName);
@@ -294,11 +291,6 @@ public class BlackListFragment extends ListFragment implements OnClickListener, 
                     viewHolder.displayName.setText(info.blackNumber);
                 }
 
-                if (info.blockTime != 0) {
-                    viewHolder.blockDate.setText(sdf.format(new Date(info.blockTime)));
-                } else {
-                    viewHolder.blockDate.setText("");
-                }
                 viewHolder.deleteCheckBox.setChecked(info.checked);
                 if (mExpandPos != -1) {
                     info.expand = mExpandPos == position;

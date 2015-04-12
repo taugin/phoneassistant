@@ -37,7 +37,8 @@
     <string name="record_content">Record content</string>
     <string name="black_name">BlackName</string>
     <string name="add_black_name">AddBlackName</string>
-    <string name="block_times_args">Block %1$d times</string>
+    <string name="block_call_times_args">Call Block %1$d times</string>
+    <string name="block_sms_times_args">Sms Block %1$d times</string>
     <string name="empty_call_log">CallLog empty</string>
     <string name="empty_black_name">Black empty</string>
     <string name="hour_tag">h</string>

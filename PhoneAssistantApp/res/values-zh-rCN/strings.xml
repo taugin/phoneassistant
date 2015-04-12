@@ -37,7 +37,8 @@
     <string name="record_content">录音内容</string>
     <string name="black_name">黑名单</string>
     <string name="add_black_name">添加黑名单</string>
-    <string name="block_times_args">拦截 %1$d 次</string>
+    <string name="block_call_times_args">电话拦截 %1$d 次</string>
+    <string name="block_sms_times_args">短信拦截 %1$d 次</string>
     <string name="empty_call_log">通话记录为空</string>
     <string name="empty_black_name">黑名单为空</string>
     <string name="hour_tag">时</string>
