@@ -8,7 +8,6 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 
 import com.android.phoneassistant.R;
-import com.android.phoneassistant.util.Log;
 
 public class CustomCheckBox extends LinearLayout {
 

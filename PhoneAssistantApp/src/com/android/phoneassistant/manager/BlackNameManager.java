@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.telephony.SmsMessage;
-import android.widget.Toast;
 
 import com.android.phoneassistant.provider.DBConstant;
 import com.android.phoneassistant.util.Constant;

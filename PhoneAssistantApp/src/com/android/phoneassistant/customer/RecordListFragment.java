@@ -44,7 +44,6 @@ import android.widget.Toast;
 
 import com.android.phoneassistant.R;
 import com.android.phoneassistant.info.ContactInfo;
-import com.android.phoneassistant.manager.BlackNameManager;
 import com.android.phoneassistant.manager.RecordFileManager;
 import com.android.phoneassistant.provider.DBConstant;
 import com.android.phoneassistant.util.Constant;

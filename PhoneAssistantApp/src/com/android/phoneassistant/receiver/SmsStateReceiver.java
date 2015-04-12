@@ -7,7 +7,6 @@ import android.provider.Telephony;
 import android.telephony.SmsMessage;
 
 import com.android.phoneassistant.manager.BlackNameManager;
-import com.android.phoneassistant.provider.DBConstant;
 import com.android.phoneassistant.service.PhoneAssistantService;
 import com.android.phoneassistant.util.Constant;
 import com.android.phoneassistant.util.Log;
