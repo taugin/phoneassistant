@@ -308,8 +308,8 @@ public class BlackListFragment extends ListFragment implements OnClickListener, 
 
                 viewHolder.blockCall.setChecked(info.blockCall);
                 viewHolder.blockSms.setChecked(info.blockSms);
-                viewHolder.blackCallIcon.setVisibility(info.blockCall ? View.VISIBLE : View.INVISIBLE);
-                viewHolder.blackSmsIcon.setVisibility(info.blockSms ? View.VISIBLE : View.INVISIBLE);
+                viewHolder.blackCallIcon.setVisibility(info.blockCall ? View.VISIBLE : View.GONE);
+                viewHolder.blackSmsIcon.setVisibility(info.blockSms ? View.VISIBLE : View.GONE);
             }
             if (mViewState == VIEW_STATE_NORMAL) {
                 viewHolder.functionMenu.setVisibility(View.VISIBLE);

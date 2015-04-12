@@ -26,27 +26,32 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1" >
 
-                <ImageView
-                    android:id="@+id/black_call_icon"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_toLeftOf="@+id/black_sms_icon"
-                    android:background="@android:color/transparent"
-                    android:src="@drawable/block_call_icon" />
-                <ImageView
-                    android:id="@+id/black_sms_icon"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="5dp"
-                    android:background="@android:color/transparent"
-                    android:src="@drawable/block_sms_icon" />
+                <LinearLayout
+                    android:id="@+id/block_icon_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="5dp"
+                    android:layout_alignParentRight="true">
+
+                    <ImageView
+                        android:id="@+id/black_call_icon"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/block_call_icon" />
+
+                    <ImageView
+                        android:id="@+id/black_sms_icon"
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:background="@android:color/transparent"
+                        android:src="@drawable/block_sms_icon" />
+                </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_toLeftOf="@+id/black_state_icon"
                     android:gravity="center_vertical"
                     android:orientation="vertical" >
 
@@ -89,10 +94,10 @@
                     android:id="@+id/block_date"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
                     android:layout_marginRight="5dp"
-                    android:text="@string/app_name"
-                    android:gravity="right|center_vertical" />
+                    android:layout_weight="1"
+                    android:gravity="right|center_vertical"
+                    android:text="@string/app_name" />
             </LinearLayout>
         </LinearLayout>
 
@@ -117,9 +122,9 @@
                 android:layout_width="@dimen/listview_item_height"
                 android:layout_height="@dimen/listview_item_height"
                 android:background="@drawable/item_background"
-                box:button="@drawable/menu_more_selector"
                 android:clickable="true"
-                android:gravity="center" />
+                android:gravity="center"
+                box:button="@drawable/menu_more_selector" />
         </RelativeLayout>
     </LinearLayout>
 
@@ -138,10 +143,11 @@
             android:layout_weight="1"
             android:background="@drawable/item_background"
             android:clickable="true"
-            box:text="@string/call_block"
-            box:button="@drawable/call_block_check"
             android:descendantFocusability="blocksDescendants"
-            android:gravity="center" />
+            android:gravity="center"
+            box:button="@drawable/call_block_check"
+            box:text="@string/call_block" />
+
         <View style="@style/vertical_line" />
 
         <com.android.phoneassistant.view.CustomCheckBox
@@ -151,10 +157,10 @@
             android:layout_weight="1"
             android:background="@drawable/item_background"
             android:clickable="true"
-            box:text="@string/sms_block"
-            box:button="@drawable/call_block_check"
             android:descendantFocusability="blocksDescendants"
-            android:gravity="center" />
+            android:gravity="center"
+            box:button="@drawable/call_block_check"
+            box:text="@string/sms_block" />
 
         <View style="@style/vertical_line" />
 
@@ -165,10 +171,10 @@
             android:layout_weight="1"
             android:background="@drawable/item_background"
             android:clickable="true"
-            box:text="@string/action_delete"
-            box:button="@drawable/delete_file"
             android:descendantFocusability="blocksDescendants"
-            android:gravity="center" />
+            android:gravity="center"
+            box:button="@drawable/delete_file"
+            box:text="@string/action_delete" />
     </LinearLayout>
 
 </LinearLayout>
