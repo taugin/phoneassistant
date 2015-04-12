@@ -8,6 +8,8 @@ public class Constant {
 
     public static final String ACTION_PHONE_STATE = "com.android.phoneassistant.action.PHONE_STATE";
 
+    public static final String ACTION_PHONE_BLOCKSMS = "com.android.phoneassistant.action.BLOCKSMS";
+
     public static final String ACTION_RADIOGROUP_ENABLE = "com.android.phoneassistant.action.RADIOGROUP_ENABLE";
 
     public static final String EXTRA_PHONE_NUMBER = "com.android.phoneassistant.extra.PHONE_NUMBER";

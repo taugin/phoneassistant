@@ -2,8 +2,10 @@ package com.android.phoneassistant.manager;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
-import android.text.TextUtils;
+import android.telephony.SmsMessage;
+import android.widget.Toast;
 
 import com.android.phoneassistant.provider.DBConstant;
 import com.android.phoneassistant.util.Constant;
@@ -50,6 +52,26 @@ public class BlackNameManager {
         }
         return count > 0;
     }
+
+    public boolean isBlockSms(String number) {
+        String where = DBConstant.BLOCK_NUMBER + " LIKE '%" + number + "' AND " + DBConstant.BLOCK_SMS + "=" + DBConstant.BLOCK;
+        Cursor c = null;
+        int count = 0;
+        try {
+            c = mContext.getContentResolver().query(DBConstant.BLOCK_URI, null, where, null, null);
+            if (c != null) {
+                count = c.getCount();
+            }
+        } catch (Exception e) {
+            Log.d(Log.TAG, "error : " + e);
+        } finally {
+            if (c != null) {
+                c.close();
+            }
+        }
+        return count > 0;
+    }
+
     public boolean isMMINunber(String phoneNumber) {
         String mmiNumber = phoneNumber.replaceAll("#", "%23");
         Log.d(Log.TAG, "mmiNumber = " + mmiNumber);
@@ -125,5 +147,40 @@ public class BlackNameManager {
             }
         }
         return time;
+    }
+
+    public final static SmsMessage[] getMessagesFromIntent(Intent intent) {
+        Object[] messages = (Object[]) intent.getSerializableExtra("pdus");
+        byte[][] pduObjs = new byte[messages.length][];
+        for (int i = 0; i < messages.length; i++) {
+            pduObjs[i] = (byte[]) messages[i];
+        }
+        byte[][] pdus = new byte[pduObjs.length][];
+        int pduCount = pdus.length;
+        SmsMessage[] msgs = new SmsMessage[pduCount];
+        for (int i = 0; i < pduCount; i++) {
+            pdus[i] = pduObjs[i];
+            msgs[i] = SmsMessage.createFromPdu(pdus[i]);
+        }
+        return msgs;
+    }
+
+    public void updateBlockSms(Intent intent) {
+        Log.d(Log.TAG, "intent : " + intent);
+        SmsMessage[] messages = getMessagesFromIntent(intent);
+        if (messages == null || messages.length <= 0) {
+            return;
+        }
+        String address = messages[0].getOriginatingAddress();
+        if (address.startsWith("+86")) {
+            address = address.substring("+86".length());
+        }
+        address = address.replaceAll("-", "");
+        address = address.replaceAll("\\s+", "");
+        String content = "";
+        for (SmsMessage message : messages) {
+            content += message.getDisplayMessageBody();
+        }
+        Toast.makeText(mContext, content, Toast.LENGTH_SHORT).show();
     }
 }

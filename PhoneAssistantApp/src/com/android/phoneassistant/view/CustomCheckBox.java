@@ -36,7 +36,7 @@ public class CustomCheckBox extends LinearLayout {
             TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CustomCheckBox);
             mButtonDrawableId = a.getResourceId(R.styleable.CustomCheckBox_button, -1);
             mTextId = a.getResourceId(R.styleable.CustomCheckBox_text, -1);
-            Log.d(Log.TAG, "mTextId : " + mTextId);
+            // Log.d(Log.TAG, "mTextId : " + mTextId);
             a.recycle();
         }
         mCheckBox = new CheckBox(context);

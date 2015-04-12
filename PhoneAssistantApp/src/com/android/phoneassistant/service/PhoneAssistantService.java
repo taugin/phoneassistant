@@ -110,6 +110,8 @@ public class PhoneAssistantService extends Service {
             int state = intent.getIntExtra(Constant.EXTRA_PHONE_STATE, TelephonyManager.CALL_STATE_IDLE);
             Log.d(Log.TAG, "state = " + stateToString(state));
             onCallStateChanged(state);
+        } else if (Constant.ACTION_PHONE_BLOCKSMS.equals(intent.getAction())) {
+            BlackNameManager.getInstance(getApplicationContext()).updateBlockSms(intent);
         }
         return START_STICKY;
     }
