@@ -26,7 +26,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.phoneassistant.R;
-import com.android.phoneassistant.util.Log;
 import com.android.phoneassistant.util.Utils;
 
 public class ImportExportActivity extends Activity implements OnClickListener,
@@ -152,19 +151,9 @@ public class ImportExportActivity extends Activity implements OnClickListener,
     @Override
     public void run() {
         if (mExport) {
-            mExportHelper.exportCallInfo();
+            mExportHelper.exportZipFile();
         } else {
-            Log.d(Log.TAG, "mImportingFile : " + mImportingFile);
-            if (mImportingFile == null) {
-                return;
-            }
-            File file = new File(mImportingFile);
-            if (file.exists()) {
-                mImportExportDialog.setStatus(R.string.unzipping);
-                mImportExportDialog.resetIndexState();
-                mImportHelper.unzipFile(mImportingFile);
-                mImportHelper.importCallInfo();
-            }
+            mImportHelper.importZipFile(mImportingFile);
         }
     }
 
@@ -175,8 +164,8 @@ public class ImportExportActivity extends Activity implements OnClickListener,
     }
 
     @Override
-    public void onProcessing(String statusText) {
-        mImportExportDialog.incrementProgress(statusText);
+    public void onProcessing(int index, String statusText) {
+        mImportExportDialog.incrementProgress(index, statusText);
     }
 
     @Override
@@ -241,6 +230,7 @@ public class ImportExportActivity extends Activity implements OnClickListener,
             mIndexState = (TextView) findViewById(R.id.index_state);
             mStatusText = (TextView) findViewById(R.id.status_text);
             mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
+            mProgressBar.setIndeterminate(true);
             setTitle(mBackup ? R.string.export : R.string.import_);
         }
         
@@ -262,19 +252,16 @@ public class ImportExportActivity extends Activity implements OnClickListener,
             });
         }
 
-        public void incrementProgress(final String text) {
+        public void incrementProgress(final int index, final String text) {
             runOnUiThread(new Runnable() {
 
                 @Override
                 public void run() {
-                    mProgressBar.incrementProgressBy(1);
-                    int max = mProgressBar.getMax();
-                    int cur = mProgressBar.getProgress();
                     String statusText = getResources().getString(
                             mBackup ? R.string.exporting : R.string.importing,
                             text);
                     mStatusText.setText(statusText);
-                    mIndexState.setText(String.valueOf(cur + "/" + max));
+                    mIndexState.setText(String.valueOf(index));
                 }
             });
         }
@@ -293,15 +280,6 @@ public class ImportExportActivity extends Activity implements OnClickListener,
                 @Override
                 public void run() {
                     mStatusText.setText(resId);
-                }
-            });
-        }
-
-        public void resetIndexState() {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    mIndexState.setText("");
                 }
             });
         }

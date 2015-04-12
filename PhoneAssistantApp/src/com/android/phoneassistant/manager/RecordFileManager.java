@@ -330,7 +330,7 @@ public class RecordFileManager {
     }
 
     private boolean recordExists(String recordFile) {
-        Log.d(Log.TAG, "recordFile = " + recordFile);
+        // Log.d(Log.TAG, "recordFile = " + recordFile);
         if (recordFile == null) {
             return false;
         }
