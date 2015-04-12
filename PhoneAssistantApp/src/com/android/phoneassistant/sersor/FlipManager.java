@@ -7,6 +7,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.media.AudioManager;
 
+import com.android.phoneassistant.manager.SoundManager;
 import com.android.phoneassistant.util.Log;
 
 public class FlipManager implements SensorEventListener {
@@ -16,7 +17,6 @@ public class FlipManager implements SensorEventListener {
     private Context mContext;
     private SensorManager mSensorManager;
     private Sensor mSensor;
-    private AudioManager mAudioManager;
     private boolean shouldFlipMute = false;
     public static FlipManager getInstance(Context context) {
         if (sFlipManager == null) {
@@ -28,7 +28,6 @@ public class FlipManager implements SensorEventListener {
     private FlipManager(Context context) {
         mContext = context;
         mSensorManager = (SensorManager) mContext.getSystemService(Context.SENSOR_SERVICE);
-        mAudioManager = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
     }
 
     public void registerAccelerometerListener() {
@@ -80,12 +79,7 @@ public class FlipManager implements SensorEventListener {
             if (shouldFlipMute && z < -9) {
                 Log.getLog(mContext).recordOperation("Flip mute make a call silent");
                 unregisterListenerInternal();
-
-                int ringerMode = mAudioManager.getRingerMode();
-                if (mAudioManager.getRingerMode() != AudioManager.RINGER_MODE_SILENT) {
-                    mAudioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
-                    mAudioManager.setRingerMode(ringerMode);
-                }
+                SoundManager.get(mContext).muteSound();
                 shouldFlipMute = false;
             }
         }

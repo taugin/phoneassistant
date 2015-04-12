@@ -22,6 +22,7 @@ import com.android.phoneassistant.R;
 import com.android.phoneassistant.manager.BlackNameManager;
 import com.android.phoneassistant.manager.RecordFileManager;
 import com.android.phoneassistant.manager.RecordManager;
+import com.android.phoneassistant.manager.SoundManager;
 import com.android.phoneassistant.manager.TmpStorageManager;
 import com.android.phoneassistant.provider.DBConstant;
 import com.android.phoneassistant.sersor.FlipManager;
@@ -75,6 +76,7 @@ public class PhoneAssistantService extends Service {
             int state = intent.getIntExtra(Constant.EXTRA_PHONE_STATE, TelephonyManager.CALL_STATE_IDLE);
             TmpStorageManager.inCallRing(this, phoneNumber, DBConstant.FLAG_INCOMING, System.currentTimeMillis());
             if (BlackNameManager.getInstance(getBaseContext()).interceptPhoneNumber(phoneNumber)) {
+                SoundManager.get(getApplicationContext()).muteSound();
                 TmpStorageManager.inCallBlock(this);
                 Log.getLog(getBaseContext()).recordOperation("Block a call : " + phoneNumber);
                 return START_STICKY;
