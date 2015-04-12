@@ -25,10 +25,10 @@ public class ServiceUtil {
         int count = 0;
         String selection = DBConstant.CONTACT_NUMBER + " LIKE '%" + phoneNumber + "'";
         try {
-            c = context.getContentResolver().query(DBConstant.CONTACT_URI, new String[]{DBConstant._ID, DBConstant.CONTACT_CALL_LOG_COUNT}, selection, null, null);
+            c = context.getContentResolver().query(DBConstant.CONTACT_URI, new String[]{DBConstant._ID, DBConstant.CONTACT_CALLLOG_COUNT}, selection, null, null);
             if (c != null && c.moveToFirst() && c.getCount() > 0) {
                 _id = c.getInt(c.getColumnIndex(DBConstant._ID));
-                count = c.getInt(c.getColumnIndex(DBConstant.CONTACT_CALL_LOG_COUNT));
+                count = c.getInt(c.getColumnIndex(DBConstant.CONTACT_CALLLOG_COUNT));
             }
         } catch (Exception e) {
             
@@ -43,7 +43,7 @@ public class ServiceUtil {
         Log.d(Log.TAG, "name = " + name);
         if (_id != -1) {
             ContentValues values = new ContentValues();
-            values.put(DBConstant.CONTACT_CALL_LOG_COUNT, (count + 1));
+            values.put(DBConstant.CONTACT_CALLLOG_COUNT, (count + 1));
             values.put(DBConstant.CONTACT_UPDATE, time);
             if (!TextUtils.isEmpty(name)) {
                 values.put(DBConstant.CONTACT_NAME, name);
@@ -56,7 +56,7 @@ public class ServiceUtil {
         }
         ContentValues values = new ContentValues();
         values.put(DBConstant.CONTACT_NUMBER, phoneNumber);
-        values.put(DBConstant.CONTACT_CALL_LOG_COUNT, 1);
+        values.put(DBConstant.CONTACT_CALLLOG_COUNT, 1);
         values.put(DBConstant.CONTACT_UPDATE, time);
         if (!TextUtils.isEmpty(name)) {
             values.put(DBConstant.CONTACT_NAME, name);

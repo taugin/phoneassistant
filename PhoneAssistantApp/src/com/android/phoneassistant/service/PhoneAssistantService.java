@@ -50,7 +50,7 @@ public class PhoneAssistantService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        logv("onCreate");
+        Log.d(Log.TAG, "");
         // CallNotifier.getInstance();
         mRecordManager = RecordManager.getInstance(this);
         mHandler = new Handler();
@@ -60,7 +60,7 @@ public class PhoneAssistantService extends Service {
 
     @Override
     public void onDestroy() {
-        logv("onDestroy");
+        Log.d(Log.TAG, "");
         //mTelephonyManager.listen(mPhoneStateListener, PhoneStateListener.LISTEN_NONE);
         super.onDestroy();
     }
@@ -85,7 +85,7 @@ public class PhoneAssistantService extends Service {
             if (PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getBoolean("key_flip_mute", true)){
                 FlipManager.getInstance(getBaseContext()).registerAccelerometerListener();
             }
-            logv("onStartCommand Incoming PhoneNumber" + " : " + phoneNumber);
+            Log.d(Log.TAG, "onStartCommand Incoming PhoneNumber" + " : " + phoneNumber);
             Log.getLog(getBaseContext()).recordOperation("Incoming call : " + phoneNumber);
         } else if (Constant.ACTION_OUTGOING_PHONE.equals(intent.getAction())) {
             String phoneNumber = intent.getStringExtra(Constant.EXTRA_PHONE_NUMBER);
@@ -103,7 +103,7 @@ public class PhoneAssistantService extends Service {
             }
 
             TmpStorageManager.outCallOffHook(this, phoneNumber, DBConstant.FLAG_OUTGOING, System.currentTimeMillis());
-            logv("onStartCommand Outgoing PhoneNumber" + " : " + phoneNumber);
+            Log.d(Log.TAG, "onStartCommand Outgoing PhoneNumber" + " : " + phoneNumber);
             startRecord();
             Log.getLog(getBaseContext()).recordOperation("Outgoing call : " + phoneNumber);
         } else if (Constant.ACTION_PHONE_STATE.equals(intent.getAction())) {
@@ -111,7 +111,7 @@ public class PhoneAssistantService extends Service {
             Log.d(Log.TAG, "state = " + stateToString(state));
             onCallStateChanged(state);
         } else if (Constant.ACTION_PHONE_BLOCKSMS.equals(intent.getAction())) {
-            BlackNameManager.getInstance(getApplicationContext()).updateBlockSms(intent);
+            BlackNameManager.getInstance(getApplicationContext()).insertBlockSms(intent);
         }
         return START_STICKY;
     }
@@ -123,7 +123,7 @@ public class PhoneAssistantService extends Service {
         boolean callBlock = TmpStorageManager.callBlock(this);
         switch(state) {
         case TelephonyManager.CALL_STATE_IDLE:
-            logv("onCallStateChanged lastState = " + stateToString(lastState) + " , state = [CALL_STATE_IDLE]" + " , CallFlag = " + callFlag + " , callBlock = " + callBlock);
+            Log.d(Log.TAG, "onCallStateChanged lastState = " + stateToString(lastState) + " , state = [CALL_STATE_IDLE]" + " , CallFlag = " + callFlag + " , callBlock = " + callBlock);
             if (callBlock) {
                 TmpStorageManager.clear(this);
                 return ;
@@ -153,7 +153,7 @@ public class PhoneAssistantService extends Service {
             TmpStorageManager.toString(this);
             break;
         case TelephonyManager.CALL_STATE_OFFHOOK:
-            logv("onCallStateChanged lastState = " + stateToString(lastState) + " , state = [CALL_STATE_OFFHOOK]" + " , CallFlag = " + callFlag);
+            Log.d(Log.TAG, "onCallStateChanged lastState = " + stateToString(lastState) + " , state = [CALL_STATE_OFFHOOK]" + " , CallFlag = " + callFlag);
             if (callFlag == DBConstant.FLAG_INCOMING) {
                 TmpStorageManager.inCallOffHook(this, System.currentTimeMillis());
                 startRecord();
@@ -168,7 +168,7 @@ public class PhoneAssistantService extends Service {
             Log.getLog(getBaseContext()).recordOperation(operation);
             break;
         case TelephonyManager.CALL_STATE_RINGING:
-            logv("onCallStateChanged lastState = " + stateToString(lastState) + " , state = [CALL_STATE_RINGING]" + " , CallFlag = " + callFlag);
+            Log.d(Log.TAG, "onCallStateChanged lastState = " + stateToString(lastState) + " , state = [CALL_STATE_RINGING]" + " , CallFlag = " + callFlag);
             break;
         default:
             break;
@@ -186,7 +186,7 @@ public class PhoneAssistantService extends Service {
             }
             startRecord();
             TelephonyManager tm = (TelephonyManager) getSystemService(Service.TELEPHONY_SERVICE);
-            logv("call state = " + tm.getCallState());
+            Log.d(Log.TAG, "call state = " + tm.getCallState());
             mHandler.postDelayed(mMonitorIncallScreen, DELAY_TIME);
         }
     };
@@ -266,7 +266,7 @@ public class PhoneAssistantService extends Service {
         if (topActivity == null) {
             return false;
         }
-        logd(topActivity.getClassName());
+        Log.d(Log.TAG, topActivity.getClassName());
         return "com.android.phone.InCallScreen".equals(topActivity.getClassName());
     }
 
@@ -309,13 +309,5 @@ public class PhoneAssistantService extends Service {
         default:
             return "";
         }
-    }
-    private void logd(String msg) {
-        if (DEBUG) {
-            Log.d(Log.TAG, msg);
-        }
-    }
-    private void logv(String msg) {
-        Log.v(Log.TAG, msg);
     }
 }

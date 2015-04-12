@@ -247,7 +247,7 @@ public class ImportHelper {
         values.put(DBConstant.CONTACT_AGE, info.age);
         values.put(DBConstant.CONTACT_ADDRESS, info.address);
         values.put(DBConstant.CONTACT_NUMBER, info.number);
-        values.put(DBConstant.CONTACT_CALL_LOG_COUNT, info.calllogcount);
+        values.put(DBConstant.CONTACT_CALLLOG_COUNT, info.calllogcount);
         values.put(DBConstant.CONTACT_ALLOW_RECORD, info.allowrecord);
         values.put(DBConstant.CONTACT_STATE, info.callstate);
         values.put(DBConstant.CONTACT_UPDATE, info.update);

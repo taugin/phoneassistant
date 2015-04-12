@@ -39,7 +39,7 @@ public class DBConstant {
     public static final String CONTACT_AGE = "contact_age";
     public static final String CONTACT_ADDRESS = "contact_address";
     public static final String CONTACT_NUMBER = "contact_number";
-    public static final String CONTACT_CALL_LOG_COUNT = "contact_call_log_count";
+    public static final String CONTACT_CALLLOG_COUNT = "contact_call_log_count";
     public static final String CONTACT_ALLOW_RECORD = "contact_allow_record";
     public static final String CONTACT_STATE = "contact_state";
     public static final String CONTACT_UPDATE = "contact_update";
@@ -58,11 +58,11 @@ public class DBConstant {
     
     public static final int BLOCK = 1;
     public static final int NO_BLOCK = 0;
-    public static final String TABLE_BLOCK = "block_table";
+    public static final String TABLE_BLOCK = "table_block";
     public static final String BLOCK_NAME = "block_name";
     public static final String BLOCK_NUMBER = "block_number";
-    public static final String BLOCK_CALL_COUNT = "block_count";
-    public static final String BLOCK_SMS_COUNT = "block_count";
+    public static final String BLOCK_CALL_COUNT = "block_call_count";
+    public static final String BLOCK_SMS_COUNT = "block_sms_count";
     public static final String BLOCK_CALL = "block_call";
     public static final String BLOCK_SMS = "block_sms";
 
@@ -71,13 +71,14 @@ public class DBConstant {
 
     public static final Uri BLOCK_URI = Uri.parse("content://" + AUTHORITIES + "/" + TABLE_BLOCK);
 
-    public static final int BLOCK_TYPE_CALL = 0;
-    public static final int BLOCK_TYPE_MMS = 1;
+    public static final int BLOCK_FLAG = 1;
     public static final String TABLE_BLOCK_DETAIL = "block_detail_table";
+    public static final String BLOCK_ID = "block_id";
     public static final String BLOCK_DETAIL_NUMBER = "block_detail_number";
     public static final String BLOCK_DETAIL_TIME = "block_detail_time";
-    public static final String BLOCK_DETAIL_TYPE = "block_detail_type";
     public static final String BLOCK_DETAIL_SMS = "block_detail_sms";
+    public static final String BLOCK_CALL_TYPE = "block_call_type";
+    public static final String BLOCK_SMS_TYPE = "block_sms_type";
 
     public static final String BLOCK_DETAIL_CONTENT_TYPE = "vnd.android.cursor.item/vnd.blockdetail.items";
     public static final String BLOCK_DETAIL_CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.blockdetail.item";

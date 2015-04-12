@@ -146,7 +146,7 @@ public class RecordFileManager {
                     info._id = c.getInt(c.getColumnIndex(DBConstant._ID));
                     info.contactName = c.getString(c.getColumnIndex(DBConstant.CONTACT_NAME));
                     info.contactNumber = c.getString(c.getColumnIndex(DBConstant.CONTACT_NUMBER));
-                    info.contactLogCount = c.getInt(c.getColumnIndex(DBConstant.CONTACT_CALL_LOG_COUNT));
+                    info.contactLogCount = c.getInt(c.getColumnIndex(DBConstant.CONTACT_CALLLOG_COUNT));
                     info.contactModifyName = c.getInt(c.getColumnIndex(DBConstant.CONTACT_MODIFY_NAME)) == DBConstant.MODIFY_NAME_FORBID;
                 } 
             }
@@ -175,9 +175,9 @@ public class RecordFileManager {
                         info._id = c.getInt(c.getColumnIndex(DBConstant._ID));
                         info.contactName = c.getString(c.getColumnIndex(DBConstant.CONTACT_NAME));
                         info.contactNumber = c.getString(c.getColumnIndex(DBConstant.CONTACT_NUMBER));
-                        info.contactLogCount = c.getInt(c.getColumnIndex(DBConstant.CONTACT_CALL_LOG_COUNT));
+                        info.contactLogCount = c.getInt(c.getColumnIndex(DBConstant.CONTACT_CALLLOG_COUNT));
                         info.contactUpdate = c.getLong(c.getColumnIndex(DBConstant.CONTACT_UPDATE));
-                        info.blocked = BlackNameManager.getInstance(mContext).isBlockCall(info.contactNumber);
+                        info.blocked = BlackNameManager.getInstance(mContext).isBlock(info.contactNumber, true);
                         list.add(info);
                     } while(c.moveToNext());
                 }

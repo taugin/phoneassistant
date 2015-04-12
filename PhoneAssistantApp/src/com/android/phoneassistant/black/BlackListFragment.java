@@ -5,10 +5,12 @@ import java.util.ArrayList;
 
 import android.app.AlertDialog;
 import android.app.ListFragment;
+import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.ContentObserver;
 import android.net.Uri;
 import android.os.Bundle;
@@ -77,6 +79,14 @@ public class BlackListFragment extends ListFragment implements OnClickListener, 
         setListShown(true);
         setEmptyText(getResources().getText(R.string.empty_black_name));
         getActivity().getContentResolver().registerContentObserver(DBConstant.BLOCK_URI, true, mBlockObserver);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(Log.TAG, "");
+        IntentFilter filter = new IntentFilter(Constant.ACTION_UPDATE_BLACKUI);
+        getActivity().registerReceiver(mBroadcastReceiver, filter);
         if (mHandler.hasMessages(UPDATE_LIST)) {
             mHandler.removeMessages(UPDATE_LIST);
         }
@@ -84,14 +94,9 @@ public class BlackListFragment extends ListFragment implements OnClickListener, 
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        Log.d(Log.TAG, "");
-    }
-
-    @Override
     public void onPause() {
         super.onPause();
+        getActivity().unregisterReceiver(mBroadcastReceiver);
     }
 
     public boolean onBackPressed() {
@@ -281,7 +286,7 @@ public class BlackListFragment extends ListFragment implements OnClickListener, 
             BlackInfo info = getItem(position);
             if (info != null) {
                 viewHolder.blockCallCount.setText(getResources().getString(R.string.block_call_times_args, info.blockCallCount));
-                viewHolder.blockSmsCount.setText(getResources().getString(R.string.block_sms_times_args, info.blockCallCount));
+                viewHolder.blockSmsCount.setText(getResources().getString(R.string.block_sms_times_args, info.blockSmsCount));
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 if (!TextUtils.isEmpty(info.blackName)) {
                     viewHolder.displayName.setText(info.blackName);
@@ -525,12 +530,20 @@ public class BlackListFragment extends ListFragment implements OnClickListener, 
 
     @Override
     public void onFragmentSelected(int pos) {
-        // TODO Auto-generated method stub
-        
     }
 
     @Override
     public boolean isSearching() {
         return false;
     }
+
+    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (mHandler.hasMessages(UPDATE_LIST)) {
+                mHandler.removeMessages(UPDATE_LIST);
+            }
+            mHandler.sendEmptyMessageDelayed(UPDATE_LIST, 500);
+        }
+    };
 }
