@@ -54,9 +54,9 @@ public class DBHelper extends SQLiteOpenHelper {
           + DBConstant.BLOCK_TIME + " LONG DEFAULT 0,"
           + DBConstant.BLOCK_CALL + " INTEGER DEFAULT 0,"
           + DBConstant.BLOCK_SMS + " INTEGER DEFAULT 0,"
-          + DBConstant.BLOCK_CONTENT + " TEXT"
+          + DBConstant.FOO + " text"
           + ")";
-    private static final String DROP_BLOCK_TABLE = "DROP TABLE " + DBConstant.TABLE_RECORD + " IF EXISTS";
+    private static final String DROP_BLOCK_TABLE = "DROP TABLE " + DBConstant.TABLE_BLOCK + " IF EXISTS";
 
     private static final String TRIGGER_ON_DELETE_RECORD =
             "CREATE TRIGGER DELETE_RECORD_TRIGGER AFTER DELETE ON " + DBConstant.TABLE_RECORD
@@ -66,6 +66,19 @@ public class DBHelper extends SQLiteOpenHelper {
           + " WHERE " + DBConstant.TABLE_CONTACTS + "." + DBConstant._ID + "=" + "OLD." + DBConstant.RECORD_CONTACT_ID + ";"
           + " END;";
     private static final String DROP_TRIGGER_RECORD = "DROP TRIGGER DELETE_RECORD_TRIGGER";
+
+    private static final String CREATE_BLOCK_DETAIL_TABLE =
+            "CREATE TABLE IF NOT EXISTS " + DBConstant.TABLE_BLOCK_DETAIL
+          + "("
+          + DBConstant._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+          + DBConstant.BLOCK_DETAIL_NUMBER + " TEXT,"
+          + DBConstant.BLOCK_DETAIL_TIME + " LONG DEFAULT 0,"
+          + DBConstant.BLOCK_DETAIL_TYPE + " INTEGER DEFAULT 0,"
+          + DBConstant.BLOCK_DETAIL_SMS + " TEXT,"
+          + DBConstant.FOO + " text"
+          + ")";
+    private static final String DROP_BLOCK_DETAIL_TABLE = "DROP TABLE " + DBConstant.TABLE_BLOCK_DETAIL + " IF EXISTS";
+
     private Context mContext;
 
     public DBHelper(Context context) {
@@ -75,11 +88,12 @@ public class DBHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        Log.d(Log.TAG, "CREATE_RECORD_FILE = " + CREATE_RECORD_TABLE);
         try{
             db.execSQL(CREATE_CONTACT_TABLE);
             db.execSQL(CREATE_RECORD_TABLE);
             db.execSQL(CREATE_BLOCK_TABLE);
+            db.execSQL(CREATE_BLOCK_DETAIL_TABLE);
+
             db.execSQL(TRIGGER_ON_DELETE_RECORD);
         }catch(SQLException e){
             Log.d(Log.TAG, "error : " + e);
@@ -93,6 +107,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 db.execSQL(DROP_RECORD_TABLE);
                 db.execSQL(DROP_CONTACT_TABLE);
                 db.execSQL(DROP_BLOCK_TABLE);
+                db.execSQL(DROP_BLOCK_DETAIL_TABLE);
                 db.execSQL(DROP_TRIGGER_RECORD);
             } catch(SQLException e){
                 e.printStackTrace();

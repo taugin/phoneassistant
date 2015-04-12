@@ -65,12 +65,22 @@ public class DBConstant {
     public static final String BLOCK_TIME = "block_time";
     public static final String BLOCK_CALL = "block_call";
     public static final String BLOCK_SMS = "block_sms";
-    public static final String BLOCK_CONTENT = "block_content";
-    public static final int BLOCK_TYPE_CALL = 0;
-    public static final int BLOCK_TYPE_MMS = 1;
 
     public static final String BLOCK_CONTENT_TYPE = "vnd.android.cursor.item/vnd.block.items";
     public static final String BLOCK_CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.block.item";
 
     public static final Uri BLOCK_URI = Uri.parse("content://" + AUTHORITIES + "/" + TABLE_BLOCK);
+
+    public static final int BLOCK_TYPE_CALL = 0;
+    public static final int BLOCK_TYPE_MMS = 1;
+    public static final String TABLE_BLOCK_DETAIL = "block_detail_table";
+    public static final String BLOCK_DETAIL_NUMBER = "block_detail_number";
+    public static final String BLOCK_DETAIL_TIME = "block_detail_time";
+    public static final String BLOCK_DETAIL_TYPE = "block_detail_type";
+    public static final String BLOCK_DETAIL_SMS = "block_detail_sms";
+
+    public static final String BLOCK_DETAIL_CONTENT_TYPE = "vnd.android.cursor.item/vnd.blockdetail.items";
+    public static final String BLOCK_DETAIL_CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.blockdetail.item";
+
+    public static final Uri BLOCK_DETAIL_URI = Uri.parse("content://" + AUTHORITIES + "/" + TABLE_BLOCK_DETAIL);
 }

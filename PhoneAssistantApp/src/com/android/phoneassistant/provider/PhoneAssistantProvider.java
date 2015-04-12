@@ -29,6 +29,8 @@ public class PhoneAssistantProvider extends ContentProvider {
     private static final int TABLE_BASEINFO_ID = 3;
     private static final int TABLE_BLOCK = 4;
     private static final int TABLE_BLOCK_ID = 5;
+    private static final int TABLE_BLOCK_DETAIL = 6;
+    private static final int TABLE_BLOCK_DETAIL_ID = 7;
 
     private static final UriMatcher sUriMatcher;
     static {
@@ -42,6 +44,9 @@ public class PhoneAssistantProvider extends ContentProvider {
 
         sUriMatcher.addURI(DBConstant.AUTHORITIES, DBConstant.TABLE_BLOCK, TABLE_BLOCK);
         sUriMatcher.addURI(DBConstant.AUTHORITIES, DBConstant.TABLE_BLOCK + "/#", TABLE_BLOCK_ID);
+
+        sUriMatcher.addURI(DBConstant.AUTHORITIES, DBConstant.TABLE_BLOCK_DETAIL, TABLE_BLOCK_DETAIL);
+        sUriMatcher.addURI(DBConstant.AUTHORITIES, DBConstant.TABLE_BLOCK_DETAIL + "/#", TABLE_BLOCK_DETAIL_ID);
     }
     @Override
     public boolean onCreate() {
@@ -68,6 +73,10 @@ public class PhoneAssistantProvider extends ContentProvider {
             return DBConstant.BLOCK_CONTENT_TYPE;
         case TABLE_BLOCK_ID:
             return DBConstant.BLOCK_CONTENT_ITEM_TYPE;
+        case TABLE_BLOCK_DETAIL:
+            return DBConstant.BLOCK_DETAIL_CONTENT_TYPE;
+        case TABLE_BLOCK_DETAIL_ID:
+            return DBConstant.BLOCK_DETAIL_CONTENT_ITEM_TYPE;
         default:
             throw new IllegalArgumentException("Unknown URI " + uri);
         }
@@ -101,6 +110,13 @@ public class PhoneAssistantProvider extends ContentProvider {
             case TABLE_BLOCK_ID:
                 id = ContentUris.parseId(uri);
                 c = db.query(DBConstant.TABLE_BLOCK, projection, DBConstant._ID + "=" + id, selectionArgs, null, null, sortOrder);
+                break;
+            case TABLE_BLOCK_DETAIL:
+                c = db.query(DBConstant.TABLE_BLOCK_DETAIL, projection, selection, selectionArgs, null, null, sortOrder);
+                break;
+            case TABLE_BLOCK_DETAIL_ID:
+                id = ContentUris.parseId(uri);
+                c = db.query(DBConstant.TABLE_BLOCK_DETAIL, projection, DBConstant._ID + "=" + id, selectionArgs, null, null, sortOrder);
                 break;
             default:
                 throw new IllegalArgumentException("Unknown URI " + uri);
@@ -140,6 +156,10 @@ public class PhoneAssistantProvider extends ContentProvider {
                     existItem = values.getAsString(DBConstant.BLOCK_NUMBER);
                 }
                 id = db.insertOrThrow(DBConstant.TABLE_BLOCK, DBConstant.FOO, values);
+                notifyChange(uri);
+                break;
+            case TABLE_BLOCK_DETAIL:
+                id = db.insertOrThrow(DBConstant.TABLE_BLOCK_DETAIL, DBConstant.FOO, values);
                 notifyChange(uri);
             break;
             default:
@@ -185,6 +205,15 @@ public class PhoneAssistantProvider extends ContentProvider {
                 ret = db.delete(DBConstant.TABLE_BLOCK, DBConstant._ID + "=" + id, selectionArgs);
                 notifyChange(uri);
                 break;
+            case TABLE_BLOCK_DETAIL:
+                ret = db.delete(DBConstant.TABLE_BLOCK_DETAIL, selection, selectionArgs);
+                notifyChange(uri);
+                break;
+            case TABLE_BLOCK_DETAIL_ID:
+                id = ContentUris.parseId(uri);
+                ret = db.delete(DBConstant.TABLE_BLOCK_DETAIL, DBConstant._ID + "=" + id, selectionArgs);
+                notifyChange(uri);
+                break;
             default:
                 throw new IllegalArgumentException("Unknown URI " + uri);
             }
@@ -223,6 +252,13 @@ public class PhoneAssistantProvider extends ContentProvider {
             case TABLE_BLOCK_ID:
                 id = ContentUris.parseId(uri);
                 ret = db.update(DBConstant.TABLE_BLOCK, values, DBConstant._ID + "=" + id, selectionArgs);
+                break;
+            case TABLE_BLOCK_DETAIL:
+                ret = db.update(DBConstant.TABLE_BLOCK_DETAIL, values, selection, selectionArgs);
+                break;
+            case TABLE_BLOCK_DETAIL_ID:
+                id = ContentUris.parseId(uri);
+                ret = db.update(DBConstant.TABLE_BLOCK_DETAIL, values, DBConstant._ID + "=" + id, selectionArgs);
                 break;
             default:
                 throw new IllegalArgumentException("Unknown URI " + uri);

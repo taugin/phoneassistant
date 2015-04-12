@@ -287,7 +287,6 @@ public class RecordFileManager {
                         info.blockTime = c.getLong(c.getColumnIndex(DBConstant.BLOCK_TIME));
                         info.blockCall = c.getInt(c.getColumnIndex(DBConstant.BLOCK_CALL)) == DBConstant.BLOCK;
                         info.blockSms = c.getInt(c.getColumnIndex(DBConstant.BLOCK_SMS)) == DBConstant.BLOCK;
-                        info.blockContent = c.getString(c.getColumnIndex(DBConstant.BLOCK_CONTENT));
                         list.add(info);
                     } while(c.moveToNext());
                 }

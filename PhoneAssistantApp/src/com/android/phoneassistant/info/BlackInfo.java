@@ -8,7 +8,6 @@ public class BlackInfo {
     public long blockTime;
     public boolean blockCall;
     public boolean blockSms;
-    public String blockContent;
     public boolean checked;
     public boolean expand;
 }

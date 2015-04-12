@@ -181,6 +181,12 @@ public class BlackNameManager {
         for (SmsMessage message : messages) {
             content += message.getDisplayMessageBody();
         }
+        ContentValues values = new ContentValues();
+        values.put(DBConstant.BLOCK_DETAIL_NUMBER, address);
+        values.put(DBConstant.BLOCK_DETAIL_TIME, System.currentTimeMillis());
+        values.put(DBConstant.BLOCK_DETAIL_TYPE, DBConstant.BLOCK_TYPE_MMS);
+        values.put(DBConstant.BLOCK_DETAIL_SMS, content);
+        mContext.getContentResolver().insert(DBConstant.BLOCK_DETAIL_URI, values);
         Toast.makeText(mContext, content, Toast.LENGTH_SHORT).show();
     }
 }
