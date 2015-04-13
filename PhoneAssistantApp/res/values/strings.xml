@@ -61,6 +61,8 @@
     <string name="import_export">Import and Export</string>
     <string name="exporting">Exporting %1$s</string>
     <string name="importing">Importing %1$s</string>
+    <string name="exportover">Export Complete</string>
+    <string name="importover">Import Complete</string>
     <string name="export_file_tip">Export Files</string>
     <string name="app_self_share">ShareSelf</string>
     <string name="all_apps_share">ShareApps</string>

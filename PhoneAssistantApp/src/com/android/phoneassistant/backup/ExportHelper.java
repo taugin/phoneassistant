@@ -16,6 +16,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.text.TextUtils;
 
+import com.android.phoneassistant.backup.ImportExportManager.WorkingState;
 import com.android.phoneassistant.provider.DBConstant;
 import com.android.phoneassistant.util.Log;
 import com.android.phoneassistant.util.Utils;
@@ -23,21 +24,18 @@ import com.android.phoneassistant.util.Utils;
 public class ExportHelper {
 
     private Context mContext;
-    private OnImportExportListener mOnImportExportListener;
+    private ImportExportManager mImportExportManager;
 
-    public ExportHelper(Context context) {
+    public ExportHelper(Context context, ImportExportManager manager) {
         mContext = context;
-    }
-
-    public void setOnImportExportListener(OnImportExportListener l) {
-        mOnImportExportListener = l;
+        mImportExportManager = manager;
     }
 
     @SuppressLint("SimpleDateFormat")
     private String getBackupZipFileName() {
-        String prefix = "phoneassistant_backup_";
+        String prefix = "phoneassistant_";
         String suffix = ".zip";
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
         String time = sdf.format(new Date());
         String recordDir = Utils.getRecorderFolder();
         File recorderFile = new File(recordDir);
@@ -47,28 +45,23 @@ public class ExportHelper {
         return recorderFile + File.separator + prefix + time + suffix;
     }
 
-    private void updateStatus(int index, String fileName) {
-        if (mOnImportExportListener != null) {
-            mOnImportExportListener.onProcessing(index, fileName);
-        }
-    }
-    private void zippingFile(int index, FileInputStream fis, ZipOutputStream zos, String srcPath, String srcName) {
+    private void zippingFile(FileInputStream fis, ZipOutputStream zos, String srcPath, String srcName) {
         try {
-        File file = new File(srcPath);
-        if (file.exists()) {
-            // Log.d(Log.TAG, "Zipping : " + srcName);
-            fis = new FileInputStream(file);
-            byte[] bytes = new byte[1024];
-            int len = 0;
-            ZipEntry entry = new ZipEntry(srcName);
-            zos.putNextEntry(entry);
-            updateStatus(index, srcName);
-            while ((len = fis.read(bytes)) > 0) {
-                zos.write(bytes, 0, len);
+            File file = new File(srcPath);
+            if (file.exists()) {
+                // Log.d(Log.TAG, "Zipping : " + srcName);
+                fis = new FileInputStream(file);
+                byte[] bytes = new byte[1024];
+                int len = 0;
+                ZipEntry entry = new ZipEntry(srcName);
+                zos.putNextEntry(entry);
+                mImportExportManager.working(srcName);
+                while ((len = fis.read(bytes)) > 0) {
+                    zos.write(bytes, 0, len);
+                }
+                fis.close();
+                zos.closeEntry();
             }
-            fis.close();
-            zos.closeEntry();
-        }
         } catch (FileNotFoundException e) {
             Log.d(Log.TAG, "error : " + e);
         } catch (IOException e) {
@@ -89,14 +82,12 @@ public class ExportHelper {
         String recorderFile = null;
 
         Cursor c = null;
-        int index = 1;
         try {
             FileOutputStream fos = new FileOutputStream(zipfile);
             zos = new ZipOutputStream(new BufferedOutputStream(fos));
             String backName = DBConstant.DB_NAME;
             String backFile = recordDir + File.separator + backName;
-            zippingFile(index, fis, zos, backFile, backName);
-            index++;
+            zippingFile(fis, zos, backFile, backName);
             deleteAfterZipping(backFile);
             c = mContext.getContentResolver().query(DBConstant.RECORD_URI,
                     null, null, null, DBConstant.RECORD_START + " DESC");
@@ -105,8 +96,7 @@ public class ExportHelper {
                     recorderName = c.getString(c.getColumnIndex(DBConstant.RECORD_NAME));
                     recorderFile = c.getString(c.getColumnIndex(DBConstant.RECORD_FILE));
                     if (!TextUtils.isEmpty(recorderName) && !TextUtils.isEmpty(recorderFile)) {
-                        zippingFile(index, fis, zos, recorderFile, recorderName);
-                        index++;
+                        zippingFile(fis, zos, recorderFile, recorderName);
                     }
                 } while(c.moveToNext());
             }
@@ -123,6 +113,7 @@ public class ExportHelper {
                     Log.d(Log.TAG, "error : " + e);
                 }
             }
+            mImportExportManager.workDone();
         }
     }
 
@@ -149,8 +140,5 @@ public class ExportHelper {
         Log.d(Log.TAG, "dstPath : " + dstPath);
         Utils.copyFile(srcPath, dstPath);
         generateZipFile();
-        if (mOnImportExportListener != null) {
-            mOnImportExportListener.onEnd();
-        }
     }
 }

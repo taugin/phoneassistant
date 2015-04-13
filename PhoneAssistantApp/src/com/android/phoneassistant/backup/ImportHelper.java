@@ -13,6 +13,7 @@ import java.util.zip.ZipInputStream;
 
 import android.content.Context;
 
+import com.android.phoneassistant.backup.ImportExportManager.WorkingState;
 import com.android.phoneassistant.provider.DBConstant;
 import com.android.phoneassistant.util.Log;
 import com.android.phoneassistant.util.Utils;
@@ -20,32 +21,11 @@ import com.android.phoneassistant.util.Utils;
 public class ImportHelper {
 
     private Context mContext;
-    private OnImportExportListener mOnImportExportListener;
+    private ImportExportManager mImportExportManager;
 
-    public ImportHelper(Context context) {
+    public ImportHelper(Context context, ImportExportManager manager) {
         mContext = context;
-    }
-
-    public void setOnImportExportListener(OnImportExportListener l) {
-        mOnImportExportListener = l;
-    }
-
-    public String[] queryImportFiles() {
-        String recordDir = Utils.getRecorderFolder();
-        File recorderFile = new File(recordDir);
-        if (!recorderFile.exists()) {
-            return null;
-        }
-        String backupFiles[] = recorderFile.list(new FilenameFilter() {
-            @Override
-            public boolean accept(File dir, String filename) {
-                if (filename.endsWith(".zip")) {
-                    return true;
-                }
-                return false;
-            }
-        });
-        return backupFiles;
+        mImportExportManager = manager;
     }
 
     public void importZipFile(String zipFile) {
@@ -57,10 +37,8 @@ public class ImportHelper {
         if (file.exists()) {
             unzipFile(zipFile);
             copyDatabase();
-            if (mOnImportExportListener != null) {
-                mOnImportExportListener.onEnd();
-            }
         }
+        mImportExportManager.workDone();
     }
     private void unzipFile(String file) {
         FileInputStream fis = null;
@@ -73,7 +51,6 @@ public class ImportHelper {
         if (!recorderFile.exists()) {
             recorderFile.mkdirs();
         }
-        int index = 1;
         try {
             Log.d(Log.TAG, "file : " + file);
             fis = new FileInputStream(file);
@@ -87,7 +64,7 @@ public class ImportHelper {
                 }
                 String filename = ze.getName();
                 // Log.d(Log.TAG, "filename : " + filename);
-                updateStatus(index, filename);
+                mImportExportManager.working(filename);
                 byte[] bytes = baos.toByteArray();
                 outFile = new File(recordDir + File.separator + filename);
                 if (!outFile.exists()) {
@@ -96,7 +73,6 @@ public class ImportHelper {
                 fos = new FileOutputStream(outFile);
                 fos.write(bytes);
                 zis.closeEntry();
-                index++;
             }
             zis.close();
         } catch (FileNotFoundException e) {
@@ -122,12 +98,6 @@ public class ImportHelper {
         File dbFile = new File(srcPath);
         if (dbFile.exists()) {
             dbFile.delete();
-        }
-    }
-
-    private void updateStatus(int index, String statusText) {
-        if (mOnImportExportListener != null) {
-            mOnImportExportListener.onProcessing(index, statusText);
         }
     }
 }

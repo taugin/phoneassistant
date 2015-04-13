@@ -5,11 +5,11 @@ import java.io.FilenameFilter;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnShowListener;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.SparseBooleanArray;
@@ -21,25 +21,24 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckedTextView;
 import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.phoneassistant.R;
+import com.android.phoneassistant.backup.ImportExportManager.WorkingState;
+import com.android.phoneassistant.util.Constant;
+import com.android.phoneassistant.util.Log;
 import com.android.phoneassistant.util.Utils;
 
 public class ImportExportActivity extends Activity implements OnClickListener,
-        OnShowListener, Runnable, OnImportExportListener,
         OnItemLongClickListener {
 
-    private ImportExportDialog mImportExportDialog;
-    private boolean mExport;
-    private ExportHelper mExportHelper;
-    private ImportHelper mImportHelper;
-    private String mImportingFile;
+    private Button mExportButton;
+    private Button mImportButton;
+    private Button mDeleteButton;
     private ListView mListView;
     private String[] mExportZipFiles;
     private CheckedTextView mCheckedTextView;
+    private ImportExportManager mImportExportManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,32 +50,43 @@ public class ImportExportActivity extends Activity implements OnClickListener,
         mListView.setOnItemLongClickListener(this);
         mListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         listExportFiles();
-        Button button = null;
-        button = (Button) findViewById(R.id.export);
-        button.setOnClickListener(this);
-        button = (Button) findViewById(R.id.import_);
-        button.setOnClickListener(this);
-        button = (Button) findViewById(R.id.delete_file);
-        button.setOnClickListener(this);
-        mImportHelper = new ImportHelper(this);
-        mImportHelper.setOnImportExportListener(this);
-
-        mExportHelper = new ExportHelper(this);
-        mExportHelper.setOnImportExportListener(this);
+        mExportButton = (Button) findViewById(R.id.export);
+        mExportButton.setOnClickListener(this);
+        mImportButton = (Button) findViewById(R.id.import_);
+        mImportButton.setOnClickListener(this);
+        mDeleteButton = (Button) findViewById(R.id.delete_file);
+        mDeleteButton.setOnClickListener(this);
+        mImportExportManager = ImportExportManager.get(this);
+        boolean working = mImportExportManager.isWorking();
+        mExportButton.setEnabled(!working);
+        mImportButton.setEnabled(!working);
+        mDeleteButton.setEnabled(!working);
     }
+
+    
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(mBroadcastReceiver);
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        IntentFilter filter = new IntentFilter(Constant.ACTION_IMPORTING_EXPORING);
+        registerReceiver(mBroadcastReceiver, filter);
+    }
+
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
         case R.id.export: {
-            mExport = true;
-            mImportExportDialog = new ImportExportDialog(this, true);
-            mImportExportDialog.setOnShowListener(this);
-            mImportExportDialog.show();
+            mImportExportManager.startExport();
         }
             break;
         case R.id.import_:
-            mExport = false;
             importCallFile();
             break;
         case R.id.delete_file:
@@ -143,44 +153,8 @@ public class ImportExportActivity extends Activity implements OnClickListener,
         return backupFiles;
     }
 
-    @Override
-    public void onShow(DialogInterface dialog) {
-        new Thread(this).start();
-    }
-
-    @Override
-    public void run() {
-        if (mExport) {
-            mExportHelper.exportZipFile();
-        } else {
-            mImportHelper.importZipFile(mImportingFile);
-        }
-    }
-
-    @Override
-    public void onStart(int totalCount) {
-        mImportExportDialog.setMax(totalCount);
-        mImportExportDialog.setProgress(0);
-    }
-
-    @Override
-    public void onProcessing(int index, String statusText) {
-        mImportExportDialog.incrementProgress(index, statusText);
-    }
-
-    @Override
-    public void onEnd() {
-        mImportExportDialog.dismiss();
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                listExportFiles();
-            }
-        });
-    }
-
     private void importCallFile() {
-        final String importFiles[] = mImportHelper.queryImportFiles();
+        final String importFiles[] = queryImportFiles();
         if (importFiles == null || importFiles.length == 0) {
             Toast.makeText(this, R.string.no_import_file, Toast.LENGTH_SHORT).show();
             return ;
@@ -197,92 +171,12 @@ public class ImportExportActivity extends Activity implements OnClickListener,
                 if (!recorderFile.exists()) {
                     return;
                 }
-                mImportingFile = recordDir + "/" + importFiles[which];
-                mImportExportDialog = new ImportExportDialog(
-                        ImportExportActivity.this, false);
-                mImportExportDialog
-                        .setOnShowListener(ImportExportActivity.this);
-                mImportExportDialog.show();
+                String importingFile = recordDir + "/" + importFiles[which];
+                mImportExportManager.startImport(importingFile);
             }
         });
         AlertDialog dialog = builder.create();
         dialog.show();
-    }
-
-    class ImportExportDialog extends Dialog {
-
-        private TextView mIndexState;
-        private TextView mStatusText;
-        private ProgressBar mProgressBar;
-        private boolean mBackup;
-
-        public ImportExportDialog(Context context, boolean backup) {
-            super(context);
-            setCancelable(false);
-            setCanceledOnTouchOutside(false);
-            mBackup = backup;
-        }
-
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.import_export_dlg);
-            mIndexState = (TextView) findViewById(R.id.index_state);
-            mStatusText = (TextView) findViewById(R.id.status_text);
-            mProgressBar = (ProgressBar) findViewById(R.id.progress_bar);
-            mProgressBar.setIndeterminate(true);
-            setTitle(mBackup ? R.string.export : R.string.import_);
-        }
-        
-        public void setMax(final int max) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    mProgressBar.setMax(max);
-                }
-            });
-        }
-
-        public void setProgress(final int progress) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    mProgressBar.setProgress(progress);
-                }
-            });
-        }
-
-        public void incrementProgress(final int index, final String text) {
-            runOnUiThread(new Runnable() {
-
-                @Override
-                public void run() {
-                    String statusText = getResources().getString(
-                            mBackup ? R.string.exporting : R.string.importing,
-                            text);
-                    mStatusText.setText(statusText);
-                    mIndexState.setText(String.valueOf(index));
-                }
-            });
-        }
-
-        public void setStatus(final String statusText) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    mStatusText.setText(statusText);
-                }
-            });
-        }
-
-        public void setStatus(final int resId) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    mStatusText.setText(resId);
-                }
-            });
-        }
     }
 
     @Override
@@ -314,4 +208,25 @@ public class ImportExportActivity extends Activity implements OnClickListener,
         Intent shareIntent = Intent.createChooser(intent, "分享");
         return shareIntent;
     }
+    
+    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent == null) {
+                return ;
+            }
+            int state = intent.getIntExtra("workingstate", WorkingState.NOWORKING.ordinal());
+            WorkingState workingState = WorkingState.values()[state];
+            Log.d(Log.TAG, "workingState : " + workingState + " , state : " + state);
+            if (workingState != WorkingState.NOWORKING) {
+                mExportButton.setEnabled(false);
+                mImportButton.setEnabled(false);
+                mDeleteButton.setEnabled(false);
+            } else {
+                mExportButton.setEnabled(true);
+                mImportButton.setEnabled(true);
+                mDeleteButton.setEnabled(true);
+            }
+        }
+    };
 }

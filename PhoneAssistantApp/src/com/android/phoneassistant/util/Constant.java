@@ -14,6 +14,8 @@ public class Constant {
 
     public static final String ACTION_UPDATE_BLACKUI = "com.android.phoneassistant.action.UPDATE_BLACKUI";
 
+    public static final String ACTION_IMPORTING_EXPORING = "com.android.phoneassistant.action.IMPORTING_EXPORING";
+
     public static final String EXTRA_PHONE_NUMBER = "com.android.phoneassistant.extra.PHONE_NUMBER";
     public static final String EXTRA_PHONE_STATE = "com.android.phoneassistant.extra.PHONE_STATE";
 

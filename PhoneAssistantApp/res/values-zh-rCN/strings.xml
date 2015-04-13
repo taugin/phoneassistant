@@ -62,7 +62,8 @@
     <string name="import_export">导入和导出</string>
     <string name="exporting">正在导出 %1$s</string>
     <string name="importing">正在导入 %1$s</string>
-    
+    <string name="exportover">导出完成</string>
+    <string name="importover">导入完成</string>
     <string name="no_import_file">无要导入的文件</string>
     <string name="imported_file">选择要导入的文件</string>
     <string name="export_file_tip">导出文件列表：</string>
