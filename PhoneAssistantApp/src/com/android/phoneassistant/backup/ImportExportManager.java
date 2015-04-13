@@ -4,9 +4,12 @@ import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.os.Handler;
+import android.os.Looper;
 
 import com.android.phoneassistant.R;
 import com.android.phoneassistant.util.Constant;
@@ -20,8 +23,11 @@ public class ImportExportManager {
     private Context mContext = null;
     private WorkingState mWorkingState = WorkingState.NOWORKING;
     private String mImportFilePath = null;
+    private ProgressDialog mProgressDialog = null;
+    private Handler mHandler;
     private ImportExportManager(Context context) {
         mContext = context;
+        mHandler = new Handler(Looper.getMainLooper());
     }
 
     public static ImportExportManager get(Context context) {
@@ -76,14 +82,20 @@ public class ImportExportManager {
         }
     }
 
-    public void working(String fileName) {
+    public void working(final String fileName) {
         // Log.d(Log.TAG, "workState : " + workState + " , fileName : " + fileName);
         Intent intent = new Intent(Constant.ACTION_IMPORTING_EXPORING);
         WorkingState workState = isExport() ? WorkingState.EXPORTING : WorkingState.IMPORTING;
         intent.putExtra("workingstate", workState.ordinal());
         intent.putExtra("workingname", fileName);
         mContext.sendBroadcast(intent);
-        showNotification(fileName);
+        // showNotification(fileName);
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                showProgressDlg(fileName);
+            }
+        });
     }
 
     public void workDone() {
@@ -91,7 +103,34 @@ public class ImportExportManager {
         Intent intent = new Intent(Constant.ACTION_IMPORTING_EXPORING);
         intent.putExtra("workingstate", WorkingState.NOWORKING.ordinal());
         mContext.sendBroadcast(intent);
-        showNotificationOver();
+        // showNotificationOver();
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                showProgressDlgOver();
+            }
+        });
+    }
+
+    private void showProgressDlg(String fileName) {
+        String []splits = fileName.split("_");
+        String tmp = fileName;
+        if (splits != null && splits.length > 1) {
+            tmp = splits[1];
+        }
+        String title = mContext.getResources().getString(isExport() ? R.string.exporting : R.string.importing, "");
+        String message = mContext.getResources().getString(isExport() ? R.string.exporting : R.string.importing, tmp);
+        if (mProgressDialog == null) {
+            mProgressDialog = ProgressDialog.show(mContext, title, message, true, false);
+        }
+        mProgressDialog.setMessage(message);
+    }
+
+    private void showProgressDlgOver() {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.dismiss();
+            mProgressDialog = null;
+        }
     }
 
     @SuppressLint("NewApi")
