@@ -25,16 +25,20 @@ public class ImportExportManager {
     private String mImportFilePath = null;
     private ProgressDialog mProgressDialog = null;
     private Handler mHandler;
-    private ImportExportManager(Context context) {
-        mContext = context;
+    private ImportExportManager() {
         mHandler = new Handler(Looper.getMainLooper());
     }
 
     public static ImportExportManager get(Context context) {
         if (sImportExportManager == null) {
-            sImportExportManager = new ImportExportManager(context);
+            sImportExportManager = new ImportExportManager();
         }
+        sImportExportManager.init(context);
         return sImportExportManager;
+    }
+
+    private void init(Context context) {
+        mContext = context;
     }
 
     public boolean isWorking() {
