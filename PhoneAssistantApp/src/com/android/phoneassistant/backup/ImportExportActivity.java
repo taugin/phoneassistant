@@ -217,7 +217,7 @@ public class ImportExportActivity extends Activity implements OnClickListener,
             }
             int state = intent.getIntExtra("workingstate", WorkingState.NOWORKING.ordinal());
             WorkingState workingState = WorkingState.values()[state];
-            Log.d(Log.TAG, "workingState : " + workingState + " , state : " + state);
+            // Log.d(Log.TAG, "workingState : " + workingState + " , state : " + state);
             if (workingState != WorkingState.NOWORKING) {
                 mExportButton.setEnabled(false);
                 mImportButton.setEnabled(false);

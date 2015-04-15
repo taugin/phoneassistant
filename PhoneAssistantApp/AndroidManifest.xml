@@ -131,6 +131,12 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden"
             />
+        <activity
+            android:name="com.android.phoneassistant.black.BlackDetailActivity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden"
+            />
 
         <service android:name="com.chukong.sdk.service.WebService" />
         <activity

@@ -115,16 +115,10 @@ public class RecordFileManager {
         builder.append(")");
         builder.deleteCharAt(builder.length() - 2);
         String area = builder.toString();
-        String whereBaseInfo = DBConstant._ID + " IN " + area;
-        Log.d(Log.TAG, "deleteBaseInfoFromDB where = " + whereBaseInfo);
-        mContext.getContentResolver().delete(DBConstant.CONTACT_URI, whereBaseInfo, null);
+
         String whereRecord = DBConstant.RECORD_CONTACT_ID + " IN " + area;
-        Log.d(Log.TAG, "deleteBaseInfoFromDB where = " + whereRecord);
-        ArrayList<RecordInfo> list2 = queryRecordFiles(whereRecord);
-        mContext.getContentResolver().delete(DBConstant.RECORD_URI, whereRecord, null);
-        for (RecordInfo info : list2) {
-            deleteRecordFile(info.recordFile);
-        }
+        deleteRecordFilesByDB(whereRecord);
+
         for (int index = list.size() - 1; index >=0; index--) {
             ContactInfo info = list.get(index);
             if (info.checked) {
@@ -132,6 +126,8 @@ public class RecordFileManager {
                 list.remove(index);
             }
         }
+        String whereBaseInfo = DBConstant._ID + " IN " + area;
+        mContext.getContentResolver().delete(DBConstant.CONTACT_URI, whereBaseInfo, null);
     }
 
     public ContactInfo getSingleContact(int id) {
@@ -241,18 +237,16 @@ public class RecordFileManager {
         return list;
     }
 
-    private ArrayList<RecordInfo> queryRecordFiles(String selection) {
+    private ArrayList<RecordInfo> deleteRecordFilesByDB(String selection) {
         Cursor c = null;
         ArrayList<RecordInfo> list = new ArrayList<RecordInfo>();
         try {
             c = mContext.getContentResolver().query(DBConstant.RECORD_URI, null, selection, null, null);
             if (c != null) {
                 if (c.moveToFirst()) {
-                    RecordInfo info = null;
                     do {
-                        info = new RecordInfo();
-                        info.recordFile = c.getString(c.getColumnIndex(DBConstant.RECORD_FILE));
-                        list.add(info);
+                        String recordFile = c.getString(c.getColumnIndex(DBConstant.RECORD_FILE));
+                        deleteRecordFile(recordFile);
                     } while(c.moveToNext());
                 }
             }
@@ -265,7 +259,7 @@ public class RecordFileManager {
         }
         return list;
     }
-    
+
     public ArrayList<BlackInfo> getBlackListFromDB(ArrayList<BlackInfo> list) {
         if (list == null) {
             return null;

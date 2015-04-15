@@ -332,6 +332,11 @@ public class BlackListFragment extends ListFragment implements OnClickListener, 
             //startActivity(intent);
             Log.d(Log.TAG, "position = " + position);
             Log.d(Log.TAG, "info = " + info.blackNumber);
+            Intent intent = new Intent(getActivity(), BlackDetailActivity.class);
+            intent.putExtra("block_id", info._id);
+            intent.putExtra("block_name", info.blackName);
+            intent.putExtra("block_number", info.blackNumber);
+            startActivity(intent);
         } else if (v.getId() == R.id.delete_checkbox) {
             int position = (Integer) v.getTag();
             BlackInfo info = mListAdapter.getItem(position);

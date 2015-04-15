@@ -27,6 +27,15 @@ public class DBHelper extends SQLiteOpenHelper {
           + ")";
     private static final String DROP_CONTACT_TABLE = "DROP TABLE " + DBConstant.TABLE_CONTACTS + " IF EXISTS";
 
+    private static final String TRIGGER_ON_DELETE_CONTACT =
+            "CREATE TRIGGER DELETE_CONTACT_TRIGGER AFTER DELETE ON " + DBConstant.TABLE_CONTACTS
+          + " FOR EACH ROW "
+          + " BEGIN "
+          + " DELETE FROM " + DBConstant.TABLE_RECORD
+          + " WHERE " + DBConstant.TABLE_RECORD + "." + DBConstant.RECORD_CONTACT_ID + "=" + "OLD." + DBConstant._ID + ";"
+          + " END;";
+    private static final String DROP_TRIGGER_CONTACT = "DROP TRIGGER DELETE_CONTACT_TRIGGER";
+
     private static final String CREATE_RECORD_TABLE =
             "CREATE TABLE IF NOT EXISTS " + DBConstant.TABLE_RECORD
           + "("
@@ -102,6 +111,15 @@ public class DBHelper extends SQLiteOpenHelper {
           + " END;";
     private static final String DROP_TRIGGER_BLOCKSMS = "DROP TRIGGER INSERT_BLOCKSMS_TRIGGER";
 
+    private static final String TRIGGER_ON_DELETE_BLOCK =
+            "CREATE TRIGGER DELETE_BLOCK_TRIGGER AFTER DELETE ON " + DBConstant.TABLE_BLOCK
+          + " FOR EACH ROW "
+          + " BEGIN "
+          + " DELETE FROM " + DBConstant.TABLE_BLOCK_DETAIL
+          + " WHERE " + DBConstant.TABLE_BLOCK_DETAIL + "." + DBConstant.BLOCK_ID + "=" + "OLD." + DBConstant._ID + ";"
+          + " END;";
+    private static final String DROP_TRIGGER_BLOCK = "DROP TRIGGER DELETE_BLOCK_TRIGGER";
+
     /**
      * sqlite do not support if else trigger
     private static final String TRIGGER_ON_INSERT_BLOCK =
@@ -138,6 +156,8 @@ public class DBHelper extends SQLiteOpenHelper {
             db.execSQL(TRIGGER_ON_DELETE_RECORD);
             db.execSQL(TRIGGER_ON_INSERT_BLOCKCALL);
             db.execSQL(TRIGGER_ON_INSERT_BLOCKSMS);
+            db.execSQL(TRIGGER_ON_DELETE_BLOCK);
+            db.execSQL(TRIGGER_ON_DELETE_CONTACT);
         }catch(SQLException e){
             Log.d(Log.TAG, "error : " + e);
         }
@@ -154,6 +174,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 db.execSQL(DROP_TRIGGER_RECORD);
                 db.execSQL(DROP_TRIGGER_BLOCKCALL);
                 db.execSQL(DROP_TRIGGER_BLOCKSMS);
+                db.execSQL(DROP_TRIGGER_BLOCK);
+                db.execSQL(DROP_TRIGGER_CONTACT);
             } catch(SQLException e){
                 e.printStackTrace();
             } finally{
