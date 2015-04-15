@@ -26,7 +26,6 @@ import android.widget.Toast;
 import com.android.phoneassistant.R;
 import com.android.phoneassistant.backup.ImportExportManager.WorkingState;
 import com.android.phoneassistant.util.Constant;
-import com.android.phoneassistant.util.Log;
 import com.android.phoneassistant.util.Utils;
 
 public class ImportExportActivity extends Activity implements OnClickListener,

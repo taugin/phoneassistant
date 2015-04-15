@@ -16,7 +16,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.text.TextUtils;
 
-import com.android.phoneassistant.backup.ImportExportManager.WorkingState;
 import com.android.phoneassistant.provider.DBConstant;
 import com.android.phoneassistant.util.Log;
 import com.android.phoneassistant.util.Utils;

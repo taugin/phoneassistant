@@ -23,12 +23,14 @@ public class ServiceUtil {
         Cursor c = null;
         int _id = -1;
         int count = 0;
+        String attribution = null;
         String selection = DBConstant.CONTACT_NUMBER + " LIKE '%" + phoneNumber + "'";
         try {
             c = context.getContentResolver().query(DBConstant.CONTACT_URI, new String[]{DBConstant._ID, DBConstant.CONTACT_CALLLOG_COUNT}, selection, null, null);
             if (c != null && c.moveToFirst() && c.getCount() > 0) {
                 _id = c.getInt(c.getColumnIndex(DBConstant._ID));
                 count = c.getInt(c.getColumnIndex(DBConstant.CONTACT_CALLLOG_COUNT));
+                attribution = c.getString(c.getColumnIndex(DBConstant.CONTACT_ATTRIBUTION));
             }
         } catch (Exception e) {
             
@@ -52,6 +54,10 @@ public class ServiceUtil {
                 values.put(DBConstant.CONTACT_MODIFY_NAME, DBConstant.MODIFY_NAME_ALLOW);
             }
             context.getContentResolver().update(ContentUris.withAppendedId(DBConstant.CONTACT_URI, _id), values, null, null);
+            if (TextUtils.isEmpty(attribution)) {
+                AttributionQuery query = new AttributionQuery(context);
+                query.query(_id, phoneNumber);
+            }
             return _id;
         }
         ContentValues values = new ContentValues();
@@ -63,7 +69,9 @@ public class ServiceUtil {
             values.put(DBConstant.CONTACT_MODIFY_NAME, DBConstant.MODIFY_NAME_FORBID);
         }
         Uri contentUri = context.getContentResolver().insert(DBConstant.CONTACT_URI, values);
-
+        _id = (int) ContentUris.parseId(contentUri);
+        AttributionQuery query = new AttributionQuery(context);
+        query.query(_id, phoneNumber);
         return (int) ContentUris.parseId(contentUri);
     }
     

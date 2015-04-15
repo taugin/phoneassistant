@@ -18,6 +18,7 @@ public class DBHelper extends SQLiteOpenHelper {
           + DBConstant.CONTACT_AGE + " INTEGER,"
           + DBConstant.CONTACT_ADDRESS + " TEXT,"
           + DBConstant.CONTACT_NUMBER + " TEXT UNIQUE,"
+          + DBConstant.CONTACT_ATTRIBUTION + " TEXT,"
           + DBConstant.CONTACT_CALLLOG_COUNT + " INTEGER DEFAULT 0,"
           + DBConstant.CONTACT_ALLOW_RECORD + " INTEGER DEFAULT 1,"
           + DBConstant.CONTACT_STATE + " TEXT,"

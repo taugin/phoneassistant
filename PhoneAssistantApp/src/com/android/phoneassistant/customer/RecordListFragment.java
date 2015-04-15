@@ -35,6 +35,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.SearchView;
@@ -179,7 +180,8 @@ public class RecordListFragment extends ListFragment implements OnCheckedChangeL
         CustomCheckBox deleteItem;
         CustomCheckBox blackName;
         CustomCheckBox sendSms;
-        View blackStateIcon;
+        TextView attribution;
+        ImageView dialIcon;
     }
     private class RecordListAdapter extends ArrayAdapter<ContactInfo> {
 
@@ -202,11 +204,13 @@ public class RecordListFragment extends ListFragment implements OnCheckedChangeL
                 viewHolder.itemContainer.setOnLongClickListener(RecordListFragment.this);
                 viewHolder.displayName = (TextView) convertView.findViewById(R.id.display_name);
                 viewHolder.displayNumber = (TextView) convertView.findViewById(R.id.display_number);
-                viewHolder.blackStateIcon = convertView.findViewById(R.id.black_state_icon);
+                viewHolder.attribution = (TextView) convertView.findViewById(R.id.attribution);
                 viewHolder.callState = (TextView) convertView.findViewById(R.id.call_state);
                 viewHolder.callLogDate = (TextView) convertView.findViewById(R.id.call_log_date);
                 viewHolder.functionMenu = (CustomCheckBox) convertView.findViewById(R.id.function_menu);
                 viewHolder.functionMenu.setOnClickListener(RecordListFragment.this);
+
+                viewHolder.dialIcon = (ImageView) convertView.findViewById(R.id.dial_icon);
 
                 viewHolder.deleteCheckBox = (CustomCheckBox) convertView.findViewById(R.id.delete_checkbox);
                 viewHolder.deleteCheckBox.setOnClickListener(RecordListFragment.this);
@@ -267,14 +271,14 @@ public class RecordListFragment extends ListFragment implements OnCheckedChangeL
                     viewHolder.functionMenu.setVisibility(View.INVISIBLE);
                     viewHolder.deleteCheckBox.setVisibility(View.VISIBLE);
                 }
-
+                viewHolder.attribution.setText(info.contactAttribution);
                 if (mExpandPos != -1) {
                     info.expand = mExpandPos == position;
                 }
                 viewHolder.moreFunction.setVisibility(info.expand ? View.VISIBLE : View.GONE);
                 viewHolder.functionMenu.setChecked(info.expand);
                 viewHolder.blackName.setChecked(info.blocked);
-                viewHolder.blackStateIcon.setVisibility(info.blocked ? View.VISIBLE : View.INVISIBLE);
+                viewHolder.dialIcon.setImageResource(info.blocked ? R.drawable.block_call_icon : R.drawable.ic_dial_number);
             }
             return convertView;
         }

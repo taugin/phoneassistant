@@ -173,6 +173,7 @@ public class RecordFileManager {
                         info.contactNumber = c.getString(c.getColumnIndex(DBConstant.CONTACT_NUMBER));
                         info.contactLogCount = c.getInt(c.getColumnIndex(DBConstant.CONTACT_CALLLOG_COUNT));
                         info.contactUpdate = c.getLong(c.getColumnIndex(DBConstant.CONTACT_UPDATE));
+                        info.contactAttribution = c.getString(c.getColumnIndex(DBConstant.CONTACT_ATTRIBUTION));
                         info.blocked = BlackNameManager.getInstance(mContext).isBlock(info.contactNumber, true);
                         list.add(info);
                     } while(c.moveToNext());

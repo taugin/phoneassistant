@@ -6,14 +6,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import android.content.Context;
 
-import com.android.phoneassistant.backup.ImportExportManager.WorkingState;
 import com.android.phoneassistant.provider.DBConstant;
 import com.android.phoneassistant.util.Log;
 import com.android.phoneassistant.util.Utils;

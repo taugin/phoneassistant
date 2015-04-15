@@ -39,6 +39,7 @@ public class DBConstant {
     public static final String CONTACT_AGE = "contact_age";
     public static final String CONTACT_ADDRESS = "contact_address";
     public static final String CONTACT_NUMBER = "contact_number";
+    public static final String CONTACT_ATTRIBUTION = "contact_attribution";
     public static final String CONTACT_CALLLOG_COUNT = "contact_call_log_count";
     public static final String CONTACT_ALLOW_RECORD = "contact_allow_record";
     public static final String CONTACT_STATE = "contact_state";

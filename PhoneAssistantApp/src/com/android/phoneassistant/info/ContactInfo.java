@@ -8,6 +8,7 @@ public class ContactInfo {
     public int contactAge;
     public String contactAddress;
     public String contactNumber;
+    public String contactAttribution;
     public int contactLogCount;
     public long contactUpdate;
     public int contactAllowRecord;
