@@ -32,6 +32,7 @@ import android.widget.Toast;
 import com.android.phoneassistant.R;
 import com.android.phoneassistant.info.ContactInfo;
 import com.android.phoneassistant.info.RecordInfo;
+import com.android.phoneassistant.manager.FontManager;
 import com.android.phoneassistant.manager.RecordFileManager;
 import com.android.phoneassistant.provider.DBConstant;
 import com.android.phoneassistant.util.Log;
@@ -53,6 +54,7 @@ public class CustomerDetailFragment extends ListFragment implements OnClickListe
         mPhoneNumberView = (TextView) headerView.findViewById(R.id.customer_number);
         mCustomerNameView = (EditText) headerView.findViewById(R.id.customer_name);
         mCustomerNameView.addTextChangedListener(this);
+        mCustomerNameView.setTypeface(FontManager.get(getActivity()).getTTF());
         View dialNumber = headerView.findViewById(R.id.dial_number);
         dialNumber.setOnClickListener(this);
         mEditSave = headerView.findViewById(R.id.edit_save);

@@ -11,6 +11,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ToggleButton;
 
 import com.android.phoneassistant.R;
+import com.android.phoneassistant.manager.FontManager;
 import com.android.phoneassistant.util.Log;
 import com.android.phoneassistant.webserver.activity.HotpotHelper.OnHotpotStateListener;
 import com.android.phoneassistant.webserver.service.WSService;
@@ -36,13 +37,19 @@ public class ShareEntryActivity extends Activity implements OnClickListener, OnC
         mShareType.setOnCheckedChangeListener(this);
         mShareType.setOnClickListener(this);
         mShareType.setChecked(false);
+        mShareType.setTypeface(FontManager.get(this).getTTF());
+
         mAppSelfShare = (Button) findViewById(R.id.app_self_share);
         mAppSelfShare.setOnClickListener(this);
+        mAppSelfShare.setTypeface(FontManager.get(this).getTTF());
+
         mAllAppsShare = (Button) findViewById(R.id.all_apps_share);
         mAllAppsShare.setOnClickListener(this);
+        mAllAppsShare.setTypeface(FontManager.get(this).getTTF());
 
         mServerSettings = (Button) findViewById(R.id.web_settings);
         mServerSettings.setOnClickListener(this);
+        mServerSettings.setTypeface(FontManager.get(this).getTTF());
     }
 
     @Override

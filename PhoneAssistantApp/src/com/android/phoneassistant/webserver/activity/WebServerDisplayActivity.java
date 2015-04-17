@@ -40,6 +40,7 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.android.phoneassistant.R;
+import com.android.phoneassistant.manager.FontManager;
 import com.android.phoneassistant.webserver.listener.OnWsListener;
 import com.android.phoneassistant.webserver.recevier.WSReceiver;
 import com.chukong.sdk.Constants;
@@ -166,6 +167,7 @@ public class WebServerDisplayActivity extends WebServActivity implements OnWsLis
             boolean redirect = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Constants.REDIRECT_STATUS, false);
             toggleBtnRedirect.setChecked(redirect);
             toggleBtnRedirect.setOnClickListener(this);
+            toggleBtnRedirect.setTypeface(FontManager.get(this).getTTF());
         }
         urlText = (TextView) findViewById(R.id.urlText);
         qrCodeView = (ImageView) findViewById(R.id.qrCodeView);

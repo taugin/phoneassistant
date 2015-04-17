@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         >
 
-        <TextView
+        <com.android.phoneassistant.view.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/export_file_tip"

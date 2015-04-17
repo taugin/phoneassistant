@@ -25,6 +25,7 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 import com.android.phoneassistant.R;
+import com.android.phoneassistant.manager.FontManager;
 import com.android.phoneassistant.util.Log;
 
 public class EntryActivity extends Activity implements
@@ -144,6 +145,7 @@ public class EntryActivity extends Activity implements
             view.setCompoundDrawablePadding(40);
             view.setSingleLine();
             view.setEllipsize(TruncateAt.END);
+            view.setTypeface(FontManager.get(mContext).getTTF());
             EntryInfo info = getItem(position);
             view.setText(info.name);
             info.logo.setBounds(0, 0, 56, 56);

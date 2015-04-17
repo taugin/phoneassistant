@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.android.phoneassistant.R;
 import com.android.phoneassistant.backup.ImportExportManager.WorkingState;
+import com.android.phoneassistant.manager.FontManager;
 import com.android.phoneassistant.util.Constant;
 import com.android.phoneassistant.util.Utils;
 
@@ -44,6 +45,7 @@ public class ImportExportActivity extends Activity implements OnClickListener,
         setContentView(R.layout.import_export);
         mCheckedTextView = (CheckedTextView) findViewById(android.R.id.text1);
         mCheckedTextView.setText(R.string.export_file_tip);
+        mCheckedTextView.setTypeface(FontManager.get(this).getTTF());
         mCheckedTextView.setOnClickListener(this);
         mListView = (ListView) findViewById(R.id.export_file_list);
         mListView.setOnItemLongClickListener(this);
@@ -51,10 +53,16 @@ public class ImportExportActivity extends Activity implements OnClickListener,
         listExportFiles();
         mExportButton = (Button) findViewById(R.id.export);
         mExportButton.setOnClickListener(this);
+        mExportButton.setTypeface(FontManager.get(this).getTTF());
+
         mImportButton = (Button) findViewById(R.id.import_);
         mImportButton.setOnClickListener(this);
+        mImportButton.setTypeface(FontManager.get(this).getTTF());
+
         mDeleteButton = (Button) findViewById(R.id.delete_file);
         mDeleteButton.setOnClickListener(this);
+        mDeleteButton.setTypeface(FontManager.get(this).getTTF());
+
         mImportExportManager = ImportExportManager.get(this);
         boolean working = mImportExportManager.isWorking();
         mExportButton.setEnabled(!working);

@@ -8,6 +8,7 @@ import android.widget.CheckBox;
 import android.widget.LinearLayout;
 
 import com.android.phoneassistant.R;
+import com.android.phoneassistant.manager.FontManager;
 
 public class CustomCheckBox extends LinearLayout {
 
@@ -39,6 +40,7 @@ public class CustomCheckBox extends LinearLayout {
             a.recycle();
         }
         mCheckBox = new CheckBox(context);
+        mCheckBox.setTypeface(FontManager.get(getContext()).getTTF());
         mCheckBox.setBackgroundColor(getResources().getColor(android.R.color.transparent));
         mButtonDrawableId = mButtonDrawableId != -1 ? mButtonDrawableId : R.drawable.btn_check;
         mCheckBox.setButtonDrawable(mButtonDrawableId);

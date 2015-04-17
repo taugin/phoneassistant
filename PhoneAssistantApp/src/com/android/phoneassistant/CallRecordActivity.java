@@ -17,11 +17,13 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 
 import com.android.phoneassistant.black.BlackListFragment;
 import com.android.phoneassistant.customer.RecordListFragment;
+import com.android.phoneassistant.manager.FontManager;
 import com.android.phoneassistant.util.Constant;
 import com.android.phoneassistant.util.FragmentListener;
 import com.android.phoneassistant.util.Log;
@@ -55,6 +57,12 @@ public class CallRecordActivity extends Activity implements
         mFragmentManager = getFragmentManager();
 
         mRadioGroup = (RadioGroup) findViewById(R.id.tab_group);
+        RadioButton radioButton = null;
+        radioButton = (RadioButton) mRadioGroup.getChildAt(0);
+        radioButton.setTypeface(FontManager.get(this).getTTF());
+        radioButton = (RadioButton) mRadioGroup.getChildAt(1);
+        radioButton.setTypeface(FontManager.get(this).getTTF());
+
         mRadioGroup.setOnCheckedChangeListener(this);
         mRadioGroup.check(R.id.call_log_radio);
         IntentFilter filter = new IntentFilter(

@@ -3,14 +3,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <TextView
+    <com.android.phoneassistant.view.CustomTextView
         android:id="@+id/version_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/version_name"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <TextView
+    <com.android.phoneassistant.view.CustomTextView
         android:id="@+id/release_time"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,7 +18,7 @@
         android:text="@string/release_time"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
-    <TextView
+    <com.android.phoneassistant.view.CustomTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -29,7 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="100dp" >
 
-        <TextView
+        <com.android.phoneassistant.view.CustomTextView
             android:id="@+id/version_instruction"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

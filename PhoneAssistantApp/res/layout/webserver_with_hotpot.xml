@@ -7,21 +7,21 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         >
-        <TextView 
+        <com.android.phoneassistant.view.CustomTextView 
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="第一步"
             />
-        <TextView 
+        <com.android.phoneassistant.view.CustomTextView 
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="请好友打开手机WIFI，连接到无线网络"
             />
-        <TextView
+        <com.android.phoneassistant.view.CustomTextView
             android:id="@+id/ssid"
             android:layout_width="250dp"
             android:layout_height="48dp"
@@ -37,21 +37,21 @@
             android:layout_height="48dp"
             android:gravity="center"
             android:src="@drawable/next_down"/>
-        <TextView 
+        <com.android.phoneassistant.view.CustomTextView 
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="第二步"
             />
-        <TextView 
+        <com.android.phoneassistant.view.CustomTextView 
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="打开浏览器输入网址 或 扫描二维码"
             />
-        <TextView
+        <com.android.phoneassistant.view.CustomTextView
             android:id="@+id/urlText"
             android:layout_width="250dp"
             android:layout_height="48dp"

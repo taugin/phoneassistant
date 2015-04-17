@@ -3,7 +3,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <TextView
+    <com.android.phoneassistant.view.CustomTextView
         android:id="@+id/status_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:indeterminate="false"
             android:indeterminateOnly="false" />
-    <TextView
+    <com.android.phoneassistant.view.CustomTextView
         android:id="@+id/index_state"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

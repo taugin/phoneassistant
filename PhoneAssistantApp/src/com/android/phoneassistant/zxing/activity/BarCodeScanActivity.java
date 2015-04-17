@@ -8,10 +8,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.phoneassistant.R;
+import com.android.phoneassistant.manager.FontManager;
 import com.android.phoneassistant.util.Log;
 import com.google.zxing.client.result.ParsedResultType;
 
@@ -27,12 +29,22 @@ public class BarCodeScanActivity extends Activity {
     private TextView mScanType;
     private TextView mScanResult;
 
+    private Button mScan;
+    private Button mCopy;
+    private Button mOpen;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.barcode_layout);
         mScanType = (TextView) findViewById(R.id.type);
         mScanResult = (TextView) findViewById(R.id.result);
+        mScan = (Button) findViewById(R.id.scan);
+        mScan.setTypeface(FontManager.get(this).getTTF());
+        mCopy = (Button) findViewById(R.id.copy);
+        mCopy.setTypeface(FontManager.get(this).getTTF());
+        mOpen = (Button) findViewById(R.id.open);
+        mOpen.setTypeface(FontManager.get(this).getTTF());
         toCaptureActivity();
     }
 

@@ -10,22 +10,22 @@
         android:onClick="onScan"
         android:text="@string/barcode_scan" />
 
-    <TextView
+    <com.android.phoneassistant.view.CustomTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="类型" />
 
-    <TextView
+    <com.android.phoneassistant.view.CustomTextView
         android:id="@+id/type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
-    <TextView
+    <com.android.phoneassistant.view.CustomTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="结果" />
 
-    <TextView
+    <com.android.phoneassistant.view.CustomTextView
         android:id="@+id/result"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
