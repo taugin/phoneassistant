@@ -13,14 +13,15 @@ public class CustomListPreference extends ListPreference {
     public CustomListPreference(Context context) {
         super(context);
     }
+
     public CustomListPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
+
     @Override
     protected View onCreateView(ViewGroup parent) {
         View view = super.onCreateView(parent);
         FontManager.get(getContext()).changeFont(view);
         return view;
     }
-    
 }
