@@ -11,6 +11,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Environment;
+import android.text.TextUtils;
 
 import com.android.phoneassistant.info.BlackInfo;
 import com.android.phoneassistant.info.ContactInfo;
@@ -163,6 +164,46 @@ public class RecordFileManager {
         Cursor c = null;
         try {
             c = mContext.getContentResolver().query(DBConstant.CONTACT_URI, null, null, null, DBConstant.CONTACT_UPDATE + " DESC");
+            if (c != null) {
+                if (c.moveToFirst()) {
+                    ContactInfo info = null;
+                    do {
+                        info = new ContactInfo();
+                        info._id = c.getInt(c.getColumnIndex(DBConstant._ID));
+                        info.contactName = c.getString(c.getColumnIndex(DBConstant.CONTACT_NAME));
+                        info.contactNumber = c.getString(c.getColumnIndex(DBConstant.CONTACT_NUMBER));
+                        info.contactLogCount = c.getInt(c.getColumnIndex(DBConstant.CONTACT_CALLLOG_COUNT));
+                        info.contactUpdate = c.getLong(c.getColumnIndex(DBConstant.CONTACT_UPDATE));
+                        info.contactAttribution = c.getString(c.getColumnIndex(DBConstant.CONTACT_ATTRIBUTION));
+                        info.blocked = BlackNameManager.getInstance(mContext).isBlock(info.contactNumber, true);
+                        list.add(info);
+                    } while(c.moveToNext());
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (c != null) {
+                c.close();
+            }
+        }
+        //Collections.sort(list);
+        return list;
+    }
+
+    public ArrayList<ContactInfo> queryContactFromDB(ArrayList<ContactInfo> list, String queryText) {
+        if (list == null) {
+            return null;
+        }
+        list.clear();
+        Cursor c = null;
+        String selection = null;
+        if (!TextUtils.isEmpty(queryText)) {
+            selection = DBConstant.CONTACT_NAME + " LIKE '" + queryText + "%' OR " + DBConstant.CONTACT_NUMBER + " LIKE '" + queryText + "%'";
+        }
+        Log.d(Log.TAG, "selection : " + selection);
+        try {
+            c = mContext.getContentResolver().query(DBConstant.CONTACT_URI, null, selection, null, DBConstant.CONTACT_UPDATE + " DESC");
             if (c != null) {
                 if (c.moveToFirst()) {
                     ContactInfo info = null;

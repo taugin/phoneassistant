@@ -82,7 +82,6 @@ public class RecordListFragment extends ListFragment implements OnCheckedChangeL
         mRecordList = new ArrayList<ContactInfo>();
         mListAdapter = new RecordListAdapter(getActivity(), mRecordList);
         getListView().setAdapter(mListAdapter);
-        getListView().setTextFilterEnabled(true);
         setListShown(true);
         setEmptyText(getResources().getText(R.string.empty_call_log));
     }
@@ -129,7 +128,7 @@ public class RecordListFragment extends ListFragment implements OnCheckedChangeL
         mSearchView = (SearchView) menu.findItem(R.id.search_view).getActionView();
         mSearchView.setOnQueryTextListener(this);
         mSearchView.setSubmitButtonEnabled(false);
-        mSearchView.setInputType(EditorInfo.TYPE_CLASS_PHONE);
+        // mSearchView.setInputType(EditorInfo.TYPE_CLASS_PHONE);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -530,18 +529,13 @@ public class RecordListFragment extends ListFragment implements OnCheckedChangeL
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        Log.d(Log.TAG, "newText = " + newText);
-        if (TextUtils.isEmpty(newText)) {
-            getListView().clearTextFilter();
-        } else {
-            getListView().setFilterText(newText);
-        }
+        RecordFileManager.getInstance(getActivity()).queryContactFromDB(mRecordList, newText);
+        mListAdapter.notifyDataSetChanged();
         return true;
     }
 
     @Override
     public void onFragmentSelected(int pos) {
-        
     }
 
     @Override

@@ -26,7 +26,7 @@ public class ServiceUtil {
         String attribution = null;
         String selection = DBConstant.CONTACT_NUMBER + " LIKE '%" + phoneNumber + "'";
         try {
-            c = context.getContentResolver().query(DBConstant.CONTACT_URI, new String[]{DBConstant._ID, DBConstant.CONTACT_CALLLOG_COUNT}, selection, null, null);
+            c = context.getContentResolver().query(DBConstant.CONTACT_URI, new String[]{DBConstant._ID, DBConstant.CONTACT_CALLLOG_COUNT, DBConstant.CONTACT_ATTRIBUTION}, selection, null, null);
             if (c != null && c.moveToFirst() && c.getCount() > 0) {
                 _id = c.getInt(c.getColumnIndex(DBConstant._ID));
                 count = c.getInt(c.getColumnIndex(DBConstant.CONTACT_CALLLOG_COUNT));
@@ -43,6 +43,7 @@ public class ServiceUtil {
         HashMap<String, String> hashMap = queryContact(context);
         String name = hashMap.get(phoneNumber);
         Log.d(Log.TAG, "name = " + name);
+        Log.d(Log.TAG, "attribution = " + attribution);
         if (_id != -1) {
             ContentValues values = new ContentValues();
             values.put(DBConstant.CONTACT_CALLLOG_COUNT, (count + 1));
@@ -74,7 +75,7 @@ public class ServiceUtil {
         query.query(_id, phoneNumber);
         return (int) ContentUris.parseId(contentUri);
     }
-    
+
     public static void moveTmpInfoToDB(Context context) {
         Log.getLog(context).recordOperation("moveTmpInfoToDB");
         String phoneNumber = TmpStorageManager.getPhoneNumber(context);

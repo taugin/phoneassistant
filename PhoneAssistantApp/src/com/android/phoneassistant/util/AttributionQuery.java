@@ -64,7 +64,7 @@ public class AttributionQuery implements Listener<String>, ErrorListener{
         if (TextUtils.isEmpty(response)) {
             return ;
         }
-        Log.d(Log.TAG, "response : " + response);
+        // Log.d(Log.TAG, "response : " + response);
         String attri = xmlParser(response);
         Log.d(Log.TAG, "attri : " + attri);
         Uri uri = ContentUris.withAppendedId(DBConstant.CONTACT_URI, mId);
@@ -72,6 +72,7 @@ public class AttributionQuery implements Listener<String>, ErrorListener{
         values.put(DBConstant.CONTACT_ATTRIBUTION, attri);
         mContext.getContentResolver().update(uri, values, null, null);
     }
+
     @Override
     public void onErrorResponse(VolleyError error) {
         Log.d(Log.TAG, "error : " + error);
