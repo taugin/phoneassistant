@@ -1,5 +1,6 @@
 package com.android.phoneassistant.settings;
 
+import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -14,6 +15,7 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceFragment;
 
 import com.android.phoneassistant.App;
+import com.android.phoneassistant.BaseActivity;
 import com.android.phoneassistant.R;
 import com.android.phoneassistant.backup.ImportExportActivity;
 import com.android.phoneassistant.upgrade.UpgradeManager;
@@ -146,7 +148,12 @@ public class SettingsFragment extends PreferenceFragment implements
 
     private void startActivityCatchException(Intent intent) {
         try {
-            startActivity(intent);
+            Activity activity = getActivity();
+            if (activity instanceof BaseActivity) {
+                ((BaseActivity)activity).startActivity(intent);
+            } else {
+                startActivity(intent);
+            }
         } catch (ActivityNotFoundException e) {
             Log.d(Log.TAG, "error : " + e);
         }

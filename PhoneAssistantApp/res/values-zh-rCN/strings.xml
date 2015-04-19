@@ -85,4 +85,5 @@
 
     <string name="call_block">电话拦截</string>
     <string name="sms_block">短信拦截</string>
+    <string name="exit">退出</string>
 </resources>

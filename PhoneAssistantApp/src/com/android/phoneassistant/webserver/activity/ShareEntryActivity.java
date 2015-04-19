@@ -1,6 +1,5 @@
 package com.android.phoneassistant.webserver.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -10,6 +9,7 @@ import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ToggleButton;
 
+import com.android.phoneassistant.BaseActivity;
 import com.android.phoneassistant.R;
 import com.android.phoneassistant.manager.FontManager;
 import com.android.phoneassistant.util.Log;
@@ -17,7 +17,7 @@ import com.android.phoneassistant.webserver.activity.HotpotHelper.OnHotpotStateL
 import com.android.phoneassistant.webserver.service.WSService;
 import com.chukong.sdk.GlobalInit;
 
-public class ShareEntryActivity extends Activity implements OnClickListener, OnCheckedChangeListener, OnHotpotStateListener {
+public class ShareEntryActivity extends BaseActivity implements OnClickListener, OnCheckedChangeListener, OnHotpotStateListener {
 
     private ToggleButton mShareType;
     private Button mAppSelfShare;

@@ -19,6 +19,8 @@ public class Constant {
     public static final String EXTRA_PHONE_NUMBER = "com.android.phoneassistant.extra.PHONE_NUMBER";
     public static final String EXTRA_PHONE_STATE = "com.android.phoneassistant.extra.PHONE_STATE";
 
+    public static final String EXTRA_PRE_TITLE = "com.android.phoneassistant.extra.PRE_TITLE";
+
     public static final String FILE_RECORD_FOLDER = "recorder";
 
     public static final String ENABLE_SERVICE = "tel:**67*13800000000%23";

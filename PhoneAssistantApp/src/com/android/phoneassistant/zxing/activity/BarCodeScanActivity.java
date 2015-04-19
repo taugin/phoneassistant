@@ -1,6 +1,5 @@
 package com.android.phoneassistant.zxing.activity;
 
-import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.ClipboardManager;
 import android.content.Intent;
@@ -8,16 +7,15 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.phoneassistant.BaseActivity;
 import com.android.phoneassistant.R;
-import com.android.phoneassistant.manager.FontManager;
 import com.android.phoneassistant.util.Log;
 import com.google.zxing.client.result.ParsedResultType;
 
-public class BarCodeScanActivity extends Activity {
+public class BarCodeScanActivity extends BaseActivity {
 
     private static final int REQ_CAPTURE = 0x0001;
 

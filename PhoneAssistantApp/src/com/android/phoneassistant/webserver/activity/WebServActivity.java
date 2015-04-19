@@ -1,7 +1,6 @@
 package com.android.phoneassistant.webserver.activity;
 
 
-import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +8,7 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 
+import com.android.phoneassistant.BaseActivity;
 import com.chukong.sdk.common.Log;
 import com.chukong.sdk.serv.WebServer.OnWebServListener;
 import com.chukong.sdk.service.WebService;
@@ -17,7 +17,7 @@ import com.chukong.sdk.service.WebService;
  * @brief 绑定Web Service的抽象Activity
  * @author join
  */
-public abstract class WebServActivity extends Activity implements OnWebServListener {
+public abstract class WebServActivity extends BaseActivity implements OnWebServListener {
 
     static final String TAG = "WebServActivity";
 

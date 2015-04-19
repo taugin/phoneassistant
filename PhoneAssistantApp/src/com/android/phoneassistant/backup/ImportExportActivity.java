@@ -3,7 +3,6 @@ package com.android.phoneassistant.backup;
 import java.io.File;
 import java.io.FilenameFilter;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -23,13 +22,14 @@ import android.widget.CheckedTextView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.android.phoneassistant.BaseActivity;
 import com.android.phoneassistant.R;
 import com.android.phoneassistant.backup.ImportExportManager.WorkingState;
 import com.android.phoneassistant.manager.FontManager;
 import com.android.phoneassistant.util.Constant;
 import com.android.phoneassistant.util.Utils;
 
-public class ImportExportActivity extends Activity implements OnClickListener,
+public class ImportExportActivity extends BaseActivity implements OnClickListener,
         OnItemLongClickListener {
 
     private Button mExportButton;

@@ -4,7 +4,6 @@ import java.text.Collator;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Activity;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -24,11 +23,13 @@ import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.TextView;
 
+import com.android.phoneassistant.BaseActivity;
 import com.android.phoneassistant.R;
 import com.android.phoneassistant.manager.FontManager;
+import com.android.phoneassistant.util.Constant;
 import com.android.phoneassistant.util.Log;
 
-public class EntryActivity extends Activity implements
+public class EntryActivity extends BaseActivity implements
         OnItemClickListener {
     /** Called when the activity is first created. */
     private static final int ITEM_WIDTH_HEIGHT = 270;
@@ -43,6 +44,8 @@ public class EntryActivity extends Activity implements
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.entry_layout);
+        setTitleLeft(R.string.exit);
+        setTitleMiddle(R.string.app_name);
         mWidth = getResources().getDisplayMetrics().widthPixels;
         int itemCount = mWidth / ITEM_WIDTH_HEIGHT;
         Log.d(Log.TAG, "itemCount = " + itemCount);

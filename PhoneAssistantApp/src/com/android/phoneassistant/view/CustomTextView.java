@@ -22,6 +22,9 @@ public class CustomTextView extends TextView {
     }
 
     private void init(Context context) {
+        if (isInEditMode()) {
+            return ;
+        }
         setTypeface(FontManager.get(context).getTTF());
     }
 }
