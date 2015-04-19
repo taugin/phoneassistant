@@ -41,15 +41,12 @@ public class ShareEntryActivity extends Activity implements OnClickListener, OnC
 
         mAppSelfShare = (Button) findViewById(R.id.app_self_share);
         mAppSelfShare.setOnClickListener(this);
-        mAppSelfShare.setTypeface(FontManager.get(this).getTTF());
 
         mAllAppsShare = (Button) findViewById(R.id.all_apps_share);
         mAllAppsShare.setOnClickListener(this);
-        mAllAppsShare.setTypeface(FontManager.get(this).getTTF());
 
         mServerSettings = (Button) findViewById(R.id.web_settings);
         mServerSettings.setOnClickListener(this);
-        mServerSettings.setTypeface(FontManager.get(this).getTTF());
     }
 
     @Override

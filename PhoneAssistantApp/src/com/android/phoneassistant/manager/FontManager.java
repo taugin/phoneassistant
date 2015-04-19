@@ -1,11 +1,14 @@
 package com.android.phoneassistant.manager;
 
-import com.android.phoneassistant.util.GlobalConfig;
-import com.android.phoneassistant.util.Log;
-
 import android.content.Context;
 import android.graphics.Typeface;
 import android.text.TextUtils;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.android.phoneassistant.util.GlobalConfig;
+import com.android.phoneassistant.util.Log;
 
 public class FontManager {
 
@@ -58,5 +61,26 @@ public class FontManager {
         }
         mTypeface = mTypeface != null ? mTypeface : Typeface.DEFAULT;
         return mTypeface;
+    }
+
+    public void changeFont(View view) {
+        if (view == null) {
+            return ;
+        }
+        if (view instanceof ViewGroup) {
+            ViewGroup viewGroup = (ViewGroup)view;
+            int count = viewGroup.getChildCount();
+            View v = null;
+            for (int index = 0; index < count; index++) {
+                v = viewGroup.getChildAt(index);
+                if (v instanceof TextView) {
+                    ((TextView)v).setTypeface(mTypeface);
+                } else {
+                    changeFont(v);
+                }
+            }
+        } else if (view instanceof TextView) {
+            ((TextView)view).setTypeface(mTypeface);
+        }
     }
 }

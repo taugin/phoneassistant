@@ -57,11 +57,6 @@ public class CallRecordActivity extends Activity implements
         mFragmentManager = getFragmentManager();
 
         mRadioGroup = (RadioGroup) findViewById(R.id.tab_group);
-        RadioButton radioButton = null;
-        radioButton = (RadioButton) mRadioGroup.getChildAt(0);
-        radioButton.setTypeface(FontManager.get(this).getTTF());
-        radioButton = (RadioButton) mRadioGroup.getChildAt(1);
-        radioButton.setTypeface(FontManager.get(this).getTTF());
 
         mRadioGroup.setOnCheckedChangeListener(this);
         mRadioGroup.check(R.id.call_log_radio);

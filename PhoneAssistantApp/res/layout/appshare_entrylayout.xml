@@ -22,7 +22,7 @@
             android:textOff="@string/wlan_type"
             android:textOn="@string/hotpot_type"
             android:textSize="20sp"/>
-        <Button
+        <com.android.phoneassistant.view.CustomButton
             android:id="@+id/app_self_share"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -30,7 +30,7 @@
             android:text="@string/app_self_share"
             android:textSize="20sp" />
 
-        <Button
+        <com.android.phoneassistant.view.CustomButton
             android:id="@+id/all_apps_share"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -38,7 +38,7 @@
             android:text="@string/all_apps_share"
             android:textSize="20sp" />
 
-        <Button
+        <com.android.phoneassistant.view.CustomButton
             android:id="@+id/web_settings"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -53,15 +53,12 @@ public class ImportExportActivity extends Activity implements OnClickListener,
         listExportFiles();
         mExportButton = (Button) findViewById(R.id.export);
         mExportButton.setOnClickListener(this);
-        mExportButton.setTypeface(FontManager.get(this).getTTF());
 
         mImportButton = (Button) findViewById(R.id.import_);
         mImportButton.setOnClickListener(this);
-        mImportButton.setTypeface(FontManager.get(this).getTTF());
 
         mDeleteButton = (Button) findViewById(R.id.delete_file);
         mDeleteButton.setOnClickListener(this);
-        mDeleteButton.setTypeface(FontManager.get(this).getTTF());
 
         mImportExportManager = ImportExportManager.get(this);
         boolean working = mImportExportManager.isWorking();

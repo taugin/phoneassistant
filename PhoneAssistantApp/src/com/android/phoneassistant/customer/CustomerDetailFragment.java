@@ -54,7 +54,6 @@ public class CustomerDetailFragment extends ListFragment implements OnClickListe
         mPhoneNumberView = (TextView) headerView.findViewById(R.id.customer_number);
         mCustomerNameView = (EditText) headerView.findViewById(R.id.customer_name);
         mCustomerNameView.addTextChangedListener(this);
-        mCustomerNameView.setTypeface(FontManager.get(getActivity()).getTTF());
         View dialNumber = headerView.findViewById(R.id.dial_number);
         dialNumber.setOnClickListener(this);
         mEditSave = headerView.findViewById(R.id.edit_save);

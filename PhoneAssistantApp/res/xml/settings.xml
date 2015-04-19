@@ -1,39 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <ListPreference
+    <com.android.phoneassistant.settings.CustomListPreference
         android:key="key_warning_tone"
         android:title="@string/warning_tone"
         android:entries="@array/warnig_tone_show"
         android:entryValues="@array/warning_tone_value"
         android:defaultValue="busy"/>
-    <CheckBoxPreference
+    <com.android.phoneassistant.settings.CustomCheckBoxPreference
         android:key="key_flip_mute"
         android:persistent="true"
         android:defaultValue="true"
         android:summaryOff="@string/off"
         android:summaryOn="@string/on"
         android:title="@string/flip_mute" />
-    <CheckBoxPreference
+    <com.android.phoneassistant.settings.CustomCheckBoxPreference
         android:key="key_block_all"
         android:persistent="true"
         android:defaultValue="false"
         android:summaryOff="@string/off"
         android:summaryOn="@string/on"
         android:title="@string/block_all_call" />
-    <ListPreference
+    <com.android.phoneassistant.settings.CustomListPreference
         android:key="key_record_content"
         android:title="@string/record_content"
         android:entries="@array/record_content_entries"
         android:entryValues="@array/record_content_value"
         android:defaultValue="all"/>
-    <Preference
+    <com.android.phoneassistant.settings.CustomPreference
         android:key="key_import_export"
         android:title="@string/import_export"/>
-    <Preference
+    <com.android.phoneassistant.settings.CustomPreference
         android:key="key_check_log"
         android:title="@string/check_log"/>
-    <Preference
+    <com.android.phoneassistant.settings.CustomPreference
         android:key="key_check_upgrade"
         android:title="@string/check_upgrade"/>
 </PreferenceScreen>

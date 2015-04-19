@@ -18,13 +18,13 @@
         android:layout_weight="0"
         android:orientation="horizontal" >
 
-        <RadioButton
+        <com.android.phoneassistant.view.CustomRadioButton
             android:id="@+id/call_log_radio"
             style="@style/tab_radio_button"
             android:text="@string/call_log"
             />
 
-        <RadioButton
+        <com.android.phoneassistant.view.CustomRadioButton
             android:id="@+id/black_radio"
             style="@style/tab_radio_button"
             android:text="@string/black_name"

@@ -11,6 +11,7 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.text.util.Linkify;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import android.widget.TwoLineListItem;
 
 import com.android.phoneassistant.R;
 import com.android.phoneassistant.info.BlackDetail;
+import com.android.phoneassistant.manager.FontManager;
 import com.android.phoneassistant.provider.DBConstant;
 import com.android.phoneassistant.util.Log;
 
@@ -95,16 +97,23 @@ public class BlackDetailActivity extends Activity {
 
     class BlackAdapter extends ArrayAdapter<BlackDetail>  {
 
+        private Context mContext;
         public BlackAdapter(Context context) {
             super(context, 0, new ArrayList<BlackDetail>());
+            mContext = context;
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
+            TwoLineListItem twoItem = null;
             if (convertView == null) {
-                convertView = LayoutInflater.from(getApplicationContext()).inflate(android.R.layout.simple_list_item_2, null);
-            } 
-            TwoLineListItem twoItem = (TwoLineListItem)convertView;
+                convertView = LayoutInflater.from(mContext).inflate(android.R.layout.simple_list_item_2, null);
+                twoItem = (TwoLineListItem)convertView;
+                twoItem.getText2().setTypeface(FontManager.get(mContext).getTTF());
+                twoItem.getText2().setAutoLinkMask(Linkify.ALL);
+            } else {
+                twoItem = (TwoLineListItem)convertView;
+            }
             BlackDetail detail = getItem(position);
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             twoItem.getText1().setText(sdf.format(new Date(detail.time)));

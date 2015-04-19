@@ -136,6 +136,7 @@ public class EntryActivity extends Activity implements
                 AbsListView.LayoutParams params = new AbsListView.LayoutParams(
                         ITEM_WIDTH_HEIGHT, ITEM_WIDTH_HEIGHT);
                 view.setLayoutParams(params);
+                view.setTypeface(FontManager.get(mContext).getTTF());
             } else {
                 view = (TextView) convertView;
             }
@@ -145,7 +146,6 @@ public class EntryActivity extends Activity implements
             view.setCompoundDrawablePadding(40);
             view.setSingleLine();
             view.setEllipsize(TruncateAt.END);
-            view.setTypeface(FontManager.get(mContext).getTTF());
             EntryInfo info = getItem(position);
             view.setText(info.name);
             info.logo.setBounds(0, 0, 56, 56);

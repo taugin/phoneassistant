@@ -8,14 +8,14 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal" >
 
-        <Button
+        <com.android.phoneassistant.view.CustomButton
             android:id="@+id/export"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/export" />
 
-        <Button
+        <com.android.phoneassistant.view.CustomButton
             android:id="@+id/import_"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -23,7 +23,7 @@
             android:text="@string/import_" />
     </LinearLayout>
 
-    <Button
+    <com.android.phoneassistant.view.CustomButton
         android:id="@+id/delete_file"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
