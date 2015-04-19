@@ -103,6 +103,10 @@ public class AttributionQuery implements Listener<String>, ErrorListener{
         } catch (IOException e) {
             Log.d(Log.TAG, "error : " + e);
         }
-        return province + city + supplier;
+        String attribute = province + city + supplier;
+        if (!TextUtils.isEmpty(attribute)) {
+            attribute = attribute.replaceAll("\\s+", "");
+        }
+        return attribute;
     }
 }
