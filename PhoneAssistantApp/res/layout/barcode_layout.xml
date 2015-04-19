@@ -3,7 +3,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <Button
+    <com.android.phoneassistant.view.CustomButton
         android:id="@+id/scan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -36,14 +36,14 @@
         android:orientation="horizontal"
         android:gravity="center">
 
-        <Button
+        <com.android.phoneassistant.view.CustomButton
             android:id="@+id/copy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="onCopy"
             android:text="复制"/>
 
-        <Button
+        <com.android.phoneassistant.view.CustomButton
             android:id="@+id/open"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

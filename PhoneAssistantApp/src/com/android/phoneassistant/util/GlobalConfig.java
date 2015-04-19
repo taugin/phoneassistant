@@ -16,6 +16,7 @@ import com.google.gson.Gson;
 
 public class GlobalConfig {
     public boolean debug;
+    public String fontpath;
 
     private static GlobalConfig sGlobalConfig;
 
@@ -107,7 +108,8 @@ public class GlobalConfig {
     }
     public String toString() {
         String str = "=====================\n";
-        str += "debug : " + debug + "\n";
+        str += "debug    : " + debug + "\n";
+        str += "fontpath : " + fontpath + "\n";
         str += "========================\n";
         return str;
     }

@@ -29,22 +29,12 @@ public class BarCodeScanActivity extends Activity {
     private TextView mScanType;
     private TextView mScanResult;
 
-    private Button mScan;
-    private Button mCopy;
-    private Button mOpen;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.barcode_layout);
         mScanType = (TextView) findViewById(R.id.type);
         mScanResult = (TextView) findViewById(R.id.result);
-        mScan = (Button) findViewById(R.id.scan);
-        mScan.setTypeface(FontManager.get(this).getTTF());
-        mCopy = (Button) findViewById(R.id.copy);
-        mCopy.setTypeface(FontManager.get(this).getTTF());
-        mOpen = (Button) findViewById(R.id.open);
-        mOpen.setTypeface(FontManager.get(this).getTTF());
         toCaptureActivity();
     }
 
