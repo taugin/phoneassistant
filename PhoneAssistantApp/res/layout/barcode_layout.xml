@@ -3,13 +3,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <com.android.phoneassistant.view.CustomButton
-        android:id="@+id/scan"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="onScan"
-        android:text="@string/barcode_scan" />
-
     <com.android.phoneassistant.view.CustomTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

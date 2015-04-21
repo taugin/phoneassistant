@@ -1,8 +1,12 @@
 package com.android.phoneassistant.zxing.activity;
 
+import java.util.List;
+
 import android.content.ActivityNotFoundException;
 import android.content.ClipboardManager;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -33,6 +37,12 @@ public class BarCodeScanActivity extends BaseActivity {
         setContentView(R.layout.barcode_layout);
         mScanType = (TextView) findViewById(R.id.type);
         mScanResult = (TextView) findViewById(R.id.result);
+        setTitleIconRight(R.drawable.barcodescan);
+        toCaptureActivity();
+    }
+
+    protected void onTitleRightClick() {
+        Log.d(Log.TAG, "");
         toCaptureActivity();
     }
 
@@ -44,10 +54,6 @@ public class BarCodeScanActivity extends BaseActivity {
         } catch (ActivityNotFoundException e) {
             e.printStackTrace();
         }
-    }
-
-    public void onScan(View view) {
-        toCaptureActivity();
     }
 
     public void onCopy(View view) {
@@ -66,16 +72,24 @@ public class BarCodeScanActivity extends BaseActivity {
             uri = Uri.parse("tel:" + text);
         } else if (mResultType == ParsedResultType.URI) {
             uri = Uri.parse(text);
+            // intent.setPackage(getBrowserPackage("http://www.baidu.com"));
         } else if (mResultType == ParsedResultType.SMS) {
             int index = text.indexOf("\n");
             String phone = text.substring(0, index);
             String body = text.substring(index);
             uri = Uri.parse("smsto:" + phone);
             intent.putExtra("sms_body", body);
+        } else {
+            uri = Uri.parse("http://www.baidu.com/s?wd=" + Uri.encode(text));
+            // intent.setPackage(getBrowserPackage("http://www.baidu.com"));
         }
         if (uri != null) {
             intent.setData(uri);
-            startActivity(intent);
+            try {
+                startActivity(intent);
+            } catch (ActivityNotFoundException e) {
+                Log.d(Log.TAG, "error : " + e);
+            }
         }
     }
 
@@ -100,6 +114,7 @@ public class BarCodeScanActivity extends BaseActivity {
                 mScanResult.setText(result);
                 Log.d(Log.TAG, "result : " + result);
                 boolean isShow = false;
+                toBrowserActivity(result);
                 try {
                     if (type == ParsedResultType.URI) {
                         // toBrowserActivity(result);
@@ -115,5 +130,20 @@ public class BarCodeScanActivity extends BaseActivity {
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
+    }
+
+    private String getBrowserPackage(String reportUrl) {
+        PackageManager pm = getPackageManager();
+        Intent queryIntent = new Intent();
+        queryIntent.setAction(Intent.ACTION_VIEW);
+        queryIntent.setData(Uri.parse(reportUrl));
+        List<ResolveInfo> lists = pm.queryIntentActivities(queryIntent, 0);
+        if (lists == null) {
+            return "";
+        }
+        if (lists.size() > 0) {
+            return lists.get(lists.size() - 1).activityInfo.packageName;
+        }
+        return "";
     }
 }
