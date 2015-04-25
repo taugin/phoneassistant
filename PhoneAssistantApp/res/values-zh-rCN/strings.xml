@@ -4,7 +4,6 @@
     <string name="app_name">手机助手</string>
     <string name="callassistant">通话助手</string>
     <string name="phoneshare">手机分享</string>
-    <string name="websettings">服务器设置</string>
     <string name="barcode_scan">条形码扫描</string>
 
     <string name="action_settings">设置</string>
@@ -67,10 +66,6 @@
     <string name="no_import_file">无要导入的文件</string>
     <string name="imported_file">选择要导入的文件</string>
     <string name="export_file_tip">导出文件列表：</string>
-    <string name="app_self_share">本应用分享</string>
-    <string name="all_apps_share">系统应用分享</string>
-    <string name="wlan_type">局域网方式</string>
-    <string name="hotpot_type">热点方式</string>
     <string name="unzipping">正在解压</string>
     <string name="send_sms">发短信</string>
     <string name="sms_activity_notfound">未找到短信应用！</string>

@@ -4,7 +4,6 @@
     <string name="app_name">PhoneAssistant</string>
     <string name="callassistant">CallAssistant</string>
     <string name="phoneshare">PhoneShare</string>
-    <string name="websettings">WebSettings</string>
     <string name="barcode_scan">BarcodeScan</string>
 
     <string name="action_settings">Settings</string>
@@ -64,10 +63,6 @@
     <string name="exportover">Export Complete</string>
     <string name="importover">Import Complete</string>
     <string name="export_file_tip">Export Files</string>
-    <string name="app_self_share">ShareSelf</string>
-    <string name="all_apps_share">ShareApps</string>
-    <string name="wlan_type">Wlan</string>
-    <string name="hotpot_type">Hotpot</string>
     <string name="unzipping">Unzipping</string>
     <string name="send_sms">SendSms</string>
     <string name="sms_activity_notfound">Sms Activity Not Found !</string>

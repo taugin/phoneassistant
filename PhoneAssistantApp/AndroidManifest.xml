@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.android.phoneassistant"
-    android:versionCode="137"
-    android:versionName="1.3.7" >
+    android:versionCode="138"
+    android:versionName="1.3.8" >
 
     <uses-sdk
         android:minSdkVersion="11"
@@ -140,7 +140,7 @@
 
         <service android:name="com.chukong.sdk.service.WebService" />
         <activity
-            android:name="com.android.phoneassistant.webserver.activity.ShareEntryActivity"
+            android:name="com.chukong.sdk.activity.ShareEntryActivity"
             android:icon="@drawable/ic_share"
             android:screenOrientation="portrait"
             android:label="@string/app_share" >
@@ -150,13 +150,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.android.phoneassistant.webserver.activity.WebServerDisplayActivity"
+            android:name="com.chukong.sdk.activity.WebServerDisplayActivity"
             android:configChanges="keyboardHidden|orientation|screenLayout|screenSize"
             android:label="@string/app_share"
             android:screenOrientation="portrait"
             android:launchMode="singleTop" />
         <activity
-            android:name="com.android.phoneassistant.webserver.activity.PreferActivity"
+            android:name="com.chukong.sdk.activity.PreferActivity"
             android:configChanges="keyboardHidden|orientation"
             android:label="@string/websettings"
             android:screenOrientation="portrait"
@@ -168,7 +168,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.android.phoneassistant.zxing.activity.BarCodeScanActivity"
+            android:name="org.join.zxing.activity.BarCodeScanActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"
             android:icon="@drawable/barcodescan"
@@ -185,7 +185,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.android.phoneassistant.zxing.activity.CaptureActivity"
+            android:name="org.join.zxing.activity.CaptureActivity"
             android:clearTaskOnLaunch="true"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"
@@ -200,7 +200,7 @@
         </activity>
 
         <service
-            android:name="com.android.phoneassistant.webserver.service.WSService"
+            android:name="com.chukong.sdk.service.WSService"
             android:exported="false" >
             <intent-filter>
                 <action android:name="org.join.service.WS" />
@@ -212,7 +212,7 @@
             </intent-filter>
         </service>
 
-        <receiver android:name="com.android.phoneassistant.webserver.recevier.BootReceiver" >
+        <receiver android:name="com.chukong.sdk.recevier.BootReceiver" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
