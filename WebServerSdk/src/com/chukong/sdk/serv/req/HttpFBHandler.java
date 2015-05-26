@@ -3,6 +3,7 @@ package com.chukong.sdk.serv.req;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileFilter;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.URLDecoder;
@@ -33,6 +34,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
@@ -104,7 +106,7 @@ public class HttpFBHandler implements HttpRequestHandler {
         }
         // Handle the css/js files
         Log.d(Log.TAG, "SERV_ROOT_DIR = " + Config.SERV_ROOT_DIR);
-        if (target.startsWith(Config.SERV_ROOT_DIR)){
+        if (target.startsWith(Config.SERV_ROOT_DIR) || target.startsWith(Config.WEBROOT)){
             file = new File(target);
             processFile(file, request, response);
             return ;
@@ -382,7 +384,10 @@ public class HttpFBHandler implements HttpRequestHandler {
                 if (label != null) {
                     name = label;
                 }
-                icon = getApkIcon(link);
+                icon = getApkIconFile(link);
+                if (TextUtils.isEmpty(icon)) {
+                    icon = getApkIcon(link);
+                }
             }
             size = mCommonUtil.readableFileSize(f.length());
             numSize = f.length();
@@ -487,10 +492,66 @@ public class HttpFBHandler implements HttpRequestHandler {
                         // BitmapFactory.decodeResource(context.getResources(),
                         // R.drawable.icon_default);
                     }
+                    if (bmp == null) {
+                        return null;
+                    }
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
                     bmp.compress(Bitmap.CompressFormat.PNG, 100, baos);
                     byte iconbyte[] = baos.toByteArray();
-                    return Base64.encodeToString(iconbyte, Base64.DEFAULT);
+                    String iconBase = "data:image/png;base64,";
+                    return iconBase + Base64.encodeToString(iconbyte, Base64.DEFAULT);
+                } catch (Exception e) {
+                    Log.d(Log.TAG, "e = " + e);
+                }
+            }
+        }
+        return null;
+    }
+    
+    private String getApkIconFile(String apkFile) {
+        Context context = GlobalInit.getInstance().getBaseContext();
+        PackageManager pm = context.getPackageManager();
+        if (pm == null) {
+            return null;
+        }
+        String iconDir = Config.WEBROOT + File.separator + "icons";
+        File iconFileDir = new File(iconDir);
+        iconFileDir.mkdirs();
+        if (!iconFileDir.exists()) {
+            return null;
+        }
+        String iconPath = iconFileDir.getAbsolutePath() + File.separator + apkFile.hashCode() + ".png";
+        File iconPathFile = new File(iconPath);
+        if (iconPathFile.exists()) {
+            Log.d(Log.TAG, "Icon has exits");
+            return iconPath;
+        }
+        PackageInfo info = pm.getPackageArchiveInfo(apkFile,
+                PackageManager.GET_ACTIVITIES);
+        ApplicationInfo appInfo = null;
+        if (info != null) {
+            appInfo = info.applicationInfo;
+            if (appInfo != null) {
+                appInfo.publicSourceDir = apkFile;
+                try {
+                    Drawable drawable = appInfo.loadIcon(pm);
+                    Bitmap bmp = null;
+                    if (drawable instanceof BitmapDrawable) {
+                        bmp = ((BitmapDrawable) drawable).getBitmap();
+                    }
+                    if (bmp != null) {
+                        try {
+                            FileOutputStream fos = new FileOutputStream(iconPath);
+                            bmp.compress(CompressFormat.PNG, 80, fos);
+                            fos.close();
+                            File iconFile = new File(iconPath);
+                            if (iconFile.exists()) {
+                                return iconPath;
+                            }
+                        } catch(Exception e) {
+                            Log.d(Log.TAG, "error : " + e);
+                        }
+                    }
                 } catch (Exception e) {
                     Log.d(Log.TAG, "e = " + e);
                 }

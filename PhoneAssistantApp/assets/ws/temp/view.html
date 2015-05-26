@@ -32,7 +32,7 @@
 				{% if col %}
 					<div class="gctop">
 						<div class="gamesingle gmtopleft">
-							{% if col.icon %}<a class="gmicon fl"><img src="data:image/png;base64,{{col.icon}}" alt="" /></a>{% endif %}
+							{% if col.icon %}<a class="gmicon fl"><img src="{{col.icon}}" alt="" /></a>{% endif %}
 							<div class="gmdes fl">
 								<h6><a href="{{ col.link }}">{{ col.name }}</a></h6>
 								{% if col.desc %}<p>{{col.desc}}</p>{% endif %}
